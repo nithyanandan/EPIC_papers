@@ -1,0 +1,10 @@
+From MNRAS template:
+===================
+
+(*) Add mnras.bst and mnras.cls to git repository
+(*) Create changelog.txt and add to git repository
+(*) Create epic.bib bibliography file and add to git repository
+(*) Create a ms.tex file with a skeleton structure using
+mnras_template.tex and add to git repository
+(*) Latex compile the ms.tex file to create ms.bbl, ms.aux and ms.pdf.
+Add these to git repo
