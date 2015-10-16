@@ -51,6 +51,8 @@
 % Please keep new commands to a minimum, and use \newcommand not \def to avoid
 % overwriting existing commands. Example:
 %\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+\newcommand{\Nant}{N_{\text{ant}}} 
+\newcommand{\Npix}{N_{\text{pix}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -103,19 +105,29 @@ instrumentation: interferometers -- techniques: image processing -- techniques: 
 
 \section{Introduction}
 
+Radio astronomy is entering an era in which interferometers of hundreds to thousands of individual antennas are needed to achieve desired survey speeds. Nowhere is this more apparent than at radio frequencies below 1.4 GHz. The study of the history of hydrogen gas throughout the universe's evolution is pushing technology development towards arrays of low-cost antennas with large fields of view and densely packed apertures. Similarly, the search for transient objects and regular monitoring of the time-dependent sky is driving instruments in the same direction. A number of new telescopes are under development around the world based on this new paradigm, including the Murchison Widefield Array (MWA, \citealt{tin13}), the Precision Array for Probing the Epoch of Reionization (PAPER, \citealt{par10}), the Hydrogen Epoch of Reionization Array (HERA, \citealt{pob14}), the LOw Frequency ARray (LOFAR, \citealt{dev09}), the Canadian Hydrogen Intensity Mapping Experiment (CHIME, \citealt{ban14}), the Long Wavelength Array (LWA, \citealt{ell13}), and the low frequency component of the Square Kilometer Array Low Frequency Aperture Array (SKA-Low \citealt{mel13}).
+
+This paradigm shift requires a fundamentally new approach to the design of digital correlators \citep{lon00}. Modern correlators calculate the cross-power correlation between all antenna pairs in many narrow frequencies, forming \emph{visibilities}, the traditional fundamental measurement of radio interferometers. The computational requirements for a modern FX correlator scale with the number of antenna pairs, or the square of the number of antennas $\sim \Nant^2$ \citep{bun04}. For this reason traditional correlators have difficulty scaling to thousands of antennas. As an example, the full HERA correlator for 352 dishes with 200 MHz of bandwidth requires 212 trillion complex multiplies and adds per second (TMACS). Future arrays with thousands of collecting elements will require orders of magnitude more computation, making the correlator the dominant cost.
+
+For certain classes of radio arrays there is an alternative to the FX correlator that can lower the computational burden by directly performing a spatial fast Fourier transform (FFT) on the electric fields measured by each antenna in the array at each time step, removing the cross-correlation step. This relieves the computational scaling from the harsh $\Nant^2$ to the more gentle envelope of $\Npix\log\Npix$, where $\Npix$ is the number of pixels in the Fourier transform \citep[e.g.][]{mor11,teg09,teg10}. This architecture is often referred to as a ``direct imaging" correlator because it eliminates the intermediary cross-correlation data products of the FX and earlier lag correlators, but instead directly forms images from the electric field measurements.
+
+Direct imaging correlators have begun to be explored on deployed arrays including the Basic Element for SKA Training II (BLAST-2) array \citep{fos14}, the Omniscope \citep{zhe14}, and an earlier incarnation at higher frequencies with the intent of pulsar timing \citep{oto94, dai00}. However, each of these examples make assumptions about the redundancy of the array layout, and require the collecting elements are identical. On the other hand, the MOFF algorithm achieves the same $\Npix \log \Npix$ computational scaling without placing any restriction on antenna placement, can accommodate non-identical beam patterns, and is a provably optimal mapping \citep{mor11}. This algorithm uses the antenna beam patterns to grid the electric field measurements to a regular grid in the software holography/A-transpose fashion \citep{mor09, bha08, teg97} before performing the spatial FFT. This process has been shown to theoretically produce a data product identical to images produced from the traditional FX correlator.
+
+Here we present the first software implementation of the MOFF correlator, and announce the public release of the E-field Parallel Imaging Correlator (EPIC) code. We begin with a technical description of the algorithm in \S \ref{sec:math}, then discuss our particular implementation in \S \ref{sec:software}. We then verify the output data quality from our code in \S \ref{sec:verify} by presenting simulated images from both the EPIC correlator and comparing to a simulated FX correlator. We also demonstrate the performance with real-world data from the LWA. In \S \ref{sec:analysis} we analyze the scaling relationships of the algorithm. We identify specific array design classes where the EPIC correlator is computationally more efficient than the FX algorithm. We conclude and discuss future research prospects in \S\ref{sec:conclusions}
+
 Motivate MOFF from a technical and scientific standpoint. Refer to \citet{del07,mor09,mor11}.
 
-\section{Mathematical Framework}
+\section{Mathematical Framework}\label{sec:math}
 
 Refresh the math equivalence between MOFF and FX.
 
-\section{Software Implementation}
+\section{Software Implementation}\label{sec:software}
 
 Discuss implementation and make code available for public.
 
 Calibration
 
-\section{Verification}
+\section{Verification}\label{sec:verify}
 
 Show examples using simulations
 
@@ -123,7 +135,7 @@ Discuss PSF differences due to slight differences arising out of gridding
 
 Apply it on LWA data
 
-\section{Analysis and Feasibility}
+\section{Analysis and Feasibility}\label{sec:analysis}
 \subsection{Scaling Relations: MOFF vs. FX}
 \subsection{Scaling Up}
 \subsection{Case Study}
@@ -164,7 +176,7 @@ Apply it on LWA data
 % 	\end{tabular}
 % \end{table}
 
-\section{Conclusions}
+\section{Conclusions}\label{sec:conclusions}
 \section*{Acknowledgements}
 
 The Acknowledgements section is not numbered. Here you can thank helpful
