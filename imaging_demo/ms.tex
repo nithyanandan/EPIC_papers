@@ -154,9 +154,9 @@ of pulsar timing \citep{oto94, dai00}. However, each of these examples make
 assumptions about the redundancy of the array layout, and require the collecting
 elements are identical. On the other hand, the MOFF algorithm achieves the same
 $\Npix \log \Npix$ computational scaling without placing any restriction on
-antenna placement, can accommodate non-identical beam patterns, and is a provably
-optimal mapping \citep{mor11}. This algorithm uses the antenna beam patterns to
-grid the electric field measurements to a regular grid in the software
+antenna placement, can accommodate non-identical beam patterns, and is 
+a provably optimal mapping \citep{mor11}. This algorithm uses the antenna beam 
+patterns to grid the electric field measurements to a regular grid in the software
 holography/A-transpose fashion \citep{mor09,bha08,teg97b} before performing the
 spatial FFT. This process has been shown to theoretically produce a data product
 identical to images produced from the traditional FX correlator.
@@ -178,7 +178,11 @@ algorithm. We conclude and discuss future research prospects in \S
 
 \section{Mathematical Framework}\label{sec:math}
 
-We provide a brief summary of the amthematical equivalence of the MOFF and FX correlators detailed in \citet{mor11}. We first relate the dirty image produced from visibilities to the electric fields of astrophysical sources, then show that operations can be reordered to produce the same images at a lower computational cost.
+We provide a brief summary of the amthematical equivalence of the MOFF and 
+FX correlators detailed in \citet{mor11}. We first relate the dirty image produced 
+from visibilities to the electric fields of astrophysical sources, then show that 
+operations can be reordered to produce the same images at a lower 
+computational cost.
 
 Electric fields from astrophysical sources, $E(\hat{\mathbf{s}})$, in the sky
 coordinate system denoted by sine-projected unit vector $\hat{\mathbf{s}}$, 
@@ -186,7 +190,8 @@ propagate towards the observer as:
 \begin{align}
   \widetilde{E}(\mathbf{r}) &= \int E(\hat{\mathbf{s}})\,e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\,\dif^2\hat{\mathbf{s}},
 \end{align}
-where, $\mathbf{r}$ denotes the observer's location (measured in wavelengths relative to some arbitrary origin) and $\widetilde{E}
+where, $\mathbf{r}$ denotes the observer's location (measured in wavelengths 
+relative to some arbitrary origin) and $\widetilde{E}
 (\mathbf{r})$ is the propagated electric field. Thus the propagated electric
 field is a linear superposition of the electric fields emanating from
 astronomical sources with appropriate complex phases. It can also be described
@@ -212,11 +217,21 @@ A visibility, $\widetilde{V}_p$, can be written as:
 		&\qquad \times \left.\left[ \int {W}^\star_b(\hat{\mathbf{s'}})\,E^\star (\hat{\mathbf{s'}})\,e^{i2\pi\mathbf{r}_b\!\cdot\,\hat{\mathbf{s'}}}\,\dif^2\hat{\mathbf{s'}} + \widetilde{n}^\star_b \right] \right\rangle_t \\
                   =& \iint {W}_a(\hat{\mathbf{s}}) {W}^\star_b(\hat{\mathbf{s'}}) \left\langle E(\hat{\mathbf{s}}) E^\star(\hat{\mathbf{s'}}) \right\rangle_t e^{-i2\pi(\mathbf{r}_a\!\cdot\,\hat{\mathbf{s}}-\mathbf{r}_b\!\cdot\,\hat{\mathbf{s'}})}\,\dif^2\hat{\mathbf{s}}\,\dif^2\hat{\mathbf{s'}},
 \end{align}
-where we have brought the time average into the integral under the assumption that the aperture illumination pattern does not change over the time-scale of the averaging. This expression can be further simplified with the sky brightness, $I(\hat{\mathbf{s}}) \delta(\hat{\mathbf{s}}-\hat{\mathbf{s'}})= \left\langle E(\hat{\mathbf{s}}) E^\star(\hat{\mathbf{s'}}) \right\rangle_t $, and defining the antenna pair sky power response function (or the primary beam), $B_p(\hat{\mathbf{s}})~\equiv~{W}_a(\hat{\mathbf{s}})~{W}^\star_b(\hat{\mathbf{s}})$. The result is the visibility expressed in terms of the sky brightness, the primary beam, and uncorrelated noise terms which we group into $\widetilde{n}_p$,
+where we have brought the time average into the integral under the assumption that 
+the aperture illumination pattern does not change over the time-scale of the 
+averaging. This expression can be further simplified with the sky brightness, 
+$I(\hat{\mathbf{s}}) \delta(\hat{\mathbf{s}}-\hat{\mathbf{s'}})= \left\langle 
+E(\hat{\mathbf{s}}) E^\star(\hat{\mathbf{s'}}) \right\rangle_t $, and defining the 
+antenna pair sky power response function (or the primary beam), 
+$B_p(\hat{\mathbf{s}})~\equiv~{W}_a(\hat{\mathbf{s}})~{W}^\star_b(\hat{\mathbf{s}})$. 
+The result is the visibility expressed in terms of the sky brightness, the primary 
+beam, and uncorrelated noise terms which we group into $\widetilde{n}_p$,
 \begin{equation}
 \widetilde{V}_p = \int e^{-i2\pi\mathbf{u}_p\!\cdot\,\hat{\mathbf{s}}}\,B_p(\hat{\mathbf{s}})\,I(\hat{\mathbf{s}})\,\dif^2\hat{\mathbf{s}} + \widetilde{n}_p,
 \end{equation}
-where the baseline coordinate $\mathbf{u}_p=\mathbf{r}_a-\mathbf{r}_b$ is the vector separation between the two antennas. This signifies that the visibility ($\widetilde{V}_p$) measured between a
+where the baseline coordinate $\mathbf{u}_p=\mathbf{r}_a-\mathbf{r}_b$ is the 
+vector separation between the two antennas. This signifies that the visibility 
+($\widetilde{V}_p$) measured between a
 pair of antennas ($p$) is obtained by the multiplying the sky brightness
 $I(\hat{\mathbf{s}})$ by the antenna power response $B(\hat{\mathbf{s}})$ and
 Fourier transforming from the directional coordinates ($\hat{\mathbf{s}}$) to $uv$
@@ -258,18 +273,23 @@ holography image is formed using \citep{mor09}:
   I^\prime(\hat{\mathbf{s}}) &= \mathbf{F}^\textrm{T}(\hat{\mathbf{s}},\mathbf{u})\,\widetilde{B}^{\,\textrm{T}}(\mathbf{u},\mathbf{v})\,\mathbf{N}^{-1}(\mathbf{v},\mathbf{v})\,\mathbf{m}(\mathbf{v}) \label{eqn:dirty-image-FX}
 \end{align}
 where the measured visibilities are weighted by the inverse of the system noise,
-followed by a gridding process using the holographic antenna power response as the
-gridding kernel, followed by a Fourier transform to create an image
-$I^\prime(\hat{\mathbf{s}})$. This is the optimal estimate of the true image $I(\hat{\mathbf{s}})$ given the visibility measurements.
+followed by a gridding process using the holographic antenna power response as 
+the gridding kernel, followed by a Fourier transform to create an image
+$I^\prime(\hat{\mathbf{s}})$. This is the optimal estimate of the true image 
+$I(\hat{\mathbf{s}})$ given the visibility measurements.
 
-The intermediate step of gridding with the antenna power response can be expressed as a convolution of a data vector generated by gridding the electric fields directly with the antenna illumination pattern.
+The intermediate step of gridding with the antenna power response can be 
+expressed as a convolution of a data vector generated by gridding the electric fields 
+directly with the antenna illumination pattern.
 \begin{align}
 &\widetilde{B}^{\,\textrm{T}}(\mathbf{u},\mathbf{v})\,\mathbf{N}^{-1}(\mathbf{v} ,\mathbf{v})\,\mathbf{m}(\mathbf{v})=\nonumber\\
 &\qquad\left\langle \left[\widetilde{\mathbf{W}}^\textrm{T}_a(\mathbf{r},\mathbf{a})\, \widetilde{\mathbf{N}}^{-1}\!(\mathbf{a},\mathbf{a})\, \widetilde{\mathbf{E}}(\mathbf{a})\right]
 \ast\left[\widetilde{\mathbf{W}}_a(\mathbf{r},\mathbf{a})\, \mathbf{N}^{-1}\!(\mathbf{a},\mathbf{a})\, \mathbf{E}^\star(\mathbf{a})\right]\right\rangle_t\label{eqn:e-field-conv}
 \end{align}
 
-We can then use the multiplication-convolution theorem to move the convolution in Equation \ref{eqn:e-field-conv} to a square after the Fourier transform in Equation \ref{eqn:dirty-image-FX}.
+We can then use the multiplication-convolution theorem to move the convolution in 
+Equation \ref{eqn:e-field-conv} to a square after the Fourier transform in Equation 
+\ref{eqn:dirty-image-FX}.
 \begin{align}
   I^\prime(\hat{\mathbf{s}}) &= \left\langle \left|\,\mathbf{F}^\textrm{T}(\hat{\mathbf{s}},\mathbf{r})\,\widetilde{\mathbf{W}}^\textrm{T}(\mathbf{r},\mathbf{a})\,\widetilde{\mathbf{N}}^{-1}(\mathbf{a},\mathbf{a})\,\widetilde{E}(\mathbf{a})\,\right|^2\right\rangle_t. \label{eqn:dirty-image-MOFF}
 \end{align}
@@ -280,7 +300,10 @@ antenna aperture kernel, Fourier transformed and finally squared to obtain the
 same image estimated that would have been obtained using equation~
 \ref{eqn:dirty-image-FX}. 
 
-Equation \ref{eqn:dirty-image-MOFF} is the optimal imaging equation used by the MOFF algorithm. While mathematically equivalent to Equation~\ref{eqn:dirty-image-FX}, squaring in image space rather than convolving in $uv$ space potentially saves orders of magnitude in computation.
+Equation \ref{eqn:dirty-image-MOFF} is the optimal imaging equation used by the 
+MOFF algorithm. While mathematically equivalent to Equation~
+\ref{eqn:dirty-image-FX}, squaring in image space rather than convolving in $uv$ 
+space potentially saves orders of magnitude in computation.
 
 There are some important differences between the two techniques:
 \begin{enumerate}
