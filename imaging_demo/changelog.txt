@@ -1,3 +1,24 @@
+From 011cd95 (master):
+=====================
+
+In epic.bib,
+
+(*) Add references van Cittert (1934), Zernike (1938), Thompson
+et al.(2001), Maneewongvatana and Mount (1999)
+(*) Rearrange order of references
+
+In ms.tex,
+
+(*) Start adding content under section "Mathematical Framework"
+(*) Start adding content under section "Software Implementation"
+(*) Start adding content under section "Verification"
+
+From 1527880 to 011cd95:
+=======================
+
+Pulled from Adam's pull requenst that has added content under the
+Introduction section.
+
 From MNRAS template:
 ===================
 
