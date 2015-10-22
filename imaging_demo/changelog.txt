@@ -1,3 +1,23 @@
+From 0262c58 (master):
+=====================
+
+Update newly compiled pdf file
+
+From a82e3be + f29df02 (master):
+===============================
+
+(*) Merge the two branches
+
+From f32e118 (master):
+=====================
+
+Update figures MOFF_flowchart.eps, FX_flowchart.eps
+
+From 012db0b (master):
+=====================
+
+Pull with Adam's changes
+
 From 011cd95 (master):
 =====================
 
