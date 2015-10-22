@@ -424,6 +424,27 @@ matrix and the grid containing the mapped aperture footprints of the antennas.
 \end{figure}
 
 \subsection{Calibration}
+Calibration of direct imaging correlator remains an unresolved matter. Contrary
+to the FX data flow, direct imagers mix the signals from all antennas before
+averaging and writing to disk. It is therefore essential to apply gain solutions 
+before the gridding step. Previous efforts have resorted to applying FX-generated
+calibration solutions \citep{zhe14, fos14}, or integrate a dedicated FX correlator 
+which periodically forms the full visibility matrix \citep{wij09, dev09}. 
+
+In a companion paper to appear soon, we demonstrate a novel calibration 
+technique (EPICal) which leverages the data products formed by direct imaging 
+correlators to estimate antenna complex gains. This method correlates the antenna 
+electric field signals with an image pixel form the output of the correlator in the 
+feedback calibration fashion outlined in \citealt{mor11} (illustrated in Figure 
+\ref{fig:MOFF-flowchart} by the arrow leading from the imager to the calibration 
+block). Furthermore it allows for arbitrarily complex sky models, and following the 
+MOFF algorithm places no restriction on array layout, and accounts for non-identical 
+antenna beam patterns. Because only a single correlation is needed for each 
+antenna, the computation complexity scales only as $N_{\mathrm{ant}}$. 
+
+The calibration module included in the EPIC repository allows for application of pre-
+determined calibration solutions, or can solve for the complex gains using the 
+EPICal algorithm.
 
 \subsection{Gridding Convolution}
 
