@@ -1,3 +1,9 @@
+From 610cc19 (fetch):
+====================
+
+(*) Merge Adam's updates from upstream master
+(*) remove ms.aux from version control
+
 From a3bda8c (master):
 =====================
 
