@@ -451,7 +451,7 @@ EPICal algorithm.
 The antenna array aperture illumination over the entire grid,
 $\widetilde{W}(\mathbf{r})$, is obtained by a projection of the individual
 antenna aperture illuminations:
-\begin{align}
+\begin{align}\label{eqn:gridding-convolution}
   \widetilde{W}(\mathbf{r}) &= \sum_a \widetilde{W}_a(\mathbf{r}-\mathbf{r}_a) \\
                             &= \mathbf{M}(\mathbf{r},\mathbf{e})\,\mathcal{I}(\mathbf{e}),
 \end{align}
@@ -501,19 +501,214 @@ step has to be performed only once per integration cycle. FX imaging holds this
 advantage as long as the square of the number of antennas is smaller than the
 number of pixels on the image. 
 
+\subsection{Dealing with antenna auto-correlations}\label{sec:rm-autocorr}
+
+The squaring operation under MOFF imaging in the image plane introduces antenna 
+auto-correlations around the zero spacing in the $uv$-plane which are absent in 
+traditional visibility-based imaging. In order for a robust comparison, these 
+auto-correlations have to be removed from both the $uv$ and image planes. 
+
+The shape and extent of these auto-correlations can be estimated from the 
+antenna aperture illumination pattern which is a quantity already available 
+from the gridding step. Figure~\ref{fig:autocorr_wts_PB} shows the estimated 
+weights from antenna auto-correlations in the $uv$-plane (left) and the 
+corresponding response in the image plane (right). The latter is simply the 
+directional antenna power response. 
+
+\begin{figure}
+  \includegraphics[width=\columnwidth]{autocorr_uvwts_pbeam.png}
+  \caption{The auto-correlation of weights of a square shaped antenna aperture
+    in the $uv$ plane (left) and the corresponding directional antenna power 
+    response on the sky (right) in coordinates specified by direction cosines. 
+    The antenna auto-correlation weights are normalized to a sum
+    of unity yielding a peak response of unity in the antenna's directional
+    power pattern on the sky. The color scale for the directional power 
+    pattern is logarithmic. The black circle indicates the sky horizon and
+    values beyond it are not physical and hence ignored.}
+  \label{fig:autocorr_wts_PB}
+\end{figure}
+
+We inverse Fourier transform the squared 
+images and beams back to the $uv$ plane and subtract the estimated 
+auto-correlation kernel scaled to the peak value centered at the zero spacing 
+pixel. The final averaged image is obtained by Fourier transforming the $uv$ 
+plane data and weights with the auto-correlations subtracted to the image plane. 
+These images are now comparable to those obtained from visibility-based imaging. 
+This step of removing auto-correlations is required to be performed only once 
+per integration timescale and does not add significant cost to the full operation.
+
 \section{Verification}\label{sec:verify}
 
 We use the EPIC simulator to generate electric field samples from a sky model. In
-our example, we use 16 frequency channels each of width $\delta f=$100~kHz, 10
-point sources of random flux densities at random locations. The number of
-timestamps in one integration cycle was kept at four where each A/D timeseries is
-$1/\delta f=10\,\mu$s long. 
+our simulations, we use 64 frequency channels each of width $\delta f = 40$~kHz, 
+10 point sources of flux densities 10~Jy at random locations. The number of
+timestamps integrated in one integration cycle was kept at eight where each A/D 
+timeseries is $1/\delta f=25\,\mu$s long. We use the MWA array layout 
+\citep{bea12} for demonstration. Only the inner 51 tiles within a square bounding
+box of 150~m on each side were used. We assumed all tiles are identical and have 
+a square shaped electric field illumination footprint 4.4~m on each side. 
 
-Show examples using simulations
+Figure~\ref{fig:MOFF-FX-image} shows the dirty images (top) and synthesized beams
+(bottom) obtained with antenna-based MOFF and FX visibility-based imaging 
+algorithms packaged in EPIC. The antenna auto-correlations that correspond to 
+zero spacing have been removed from the MOFF image and the corresponding 
+synthesized beam. The sky positions of the simulated sources are indicated by 
+solid black circles. The reconstructed sky image has the simulated sources at the
+expected sky positions in either case. Both algorithms result in images and 
+synthesized beams that are well matched with each other. Their fluxes are 
+modulated by a multiplicative power pattern corresponding to that of a uniform
+square aperture. 
 
-Discuss PSF differences due to slight differences arising out of gridding
+\begin{figure}
+  \includegraphics[width=\columnwidth]{MOFF_FX_image_comparison.eps}
+  \caption{Dirty images (top) and synthesized beams (bottom) obtained from 
+    simulated data using antenna-based MOFF algorithm (left) and FX 
+    visibility-based software holography (right). The solid black circles in the
+    top panels indicate the simulated source positions. The antenna 
+    auto-correlations at zero-spacing have been removed from the MOFF images. 
+    The images in either case reconstruct the sources at the right locations 
+    with the fluxes expected after multiplication by the antenna power pattern. 
+    The synthesized beams from the two algorithms are well matches in size and
+    shape. The overall modulation by the power pattern is seen clearly in both
+    images.}
+  \label{fig:MOFF-FX-image}
+\end{figure}
 
-Apply it on LWA data
+We investigate the two imaging algorithms for differences from the point of 
+view of the quality of their outputs. We begin by comparing the gridded 
+cross-correlation weights in the $uv$-plane. In MOFF imaging, weights 
+from antenna auto-correlations have been removed as described in 
+\S\ref{sec:rm-autocorr}. 
+
+Figure~\ref{fig:MOFF-FX-uvwts} shows the cross-correlation weights obtained 
+with MOFF imaging (left) and visibility-based imaging (right). The first 
+notable difference is in the weights around zero spacing. Though both show a
+dominant void around zero-spacing, the void obtained with MOFF algorithm shows 
+many pixels with non-zero weights. In contrast, the zero-spacing void from 
+traditional imaging consists of predominantly zero-valued pixels. The gridding
+process in the former involves rounding the antenna footprint to the nearest 
+grid pixel. Depending on the exact location of the center of the antenna 
+relative to the grid, the grid pixels that receive contribution from an
+antenna may be a pixel narrower along one or both axes relative to that from
+another identical antenna but with a different center location relative to the
+grid. The resulting auto-correlation footprint will also not necessarily be 
+identical. Hence, using a single expected footprint for subtraction will
+typically leave some residuals behind as seen in the void region in the 
+weights obtained with MOFF imaging. 
+
+These residuals can be mitigated by: 
+\begin{enumerate}
+  \item making the grid spacing finer which makes the rounding error less 
+    susceptible to the location of the antenna center relative to the grid, 
+    and
+  \item subtracting each auto-correlation of antenna weights separately by 
+    using the shape and extent of the footprint appropriate for that specific
+    antenna aperture. 
+\end{enumerate}
+The latter is the most general solution applicable especially in the case of 
+heterogeneous antenna arrays.
+
+The other notable difference is that weights outside the zero-spacing void in
+some regions are different from each other at the few percent level though the 
+sum of weights in these regions are identical. For instance, note the 
+difference in weights at $(u,v)\approx (2,-10)$. This is found to arise 
+because with MOFF imaging the antenna locations were rounded to the nearest 
+grid pixel whereas in visibility-based imaging the baseline locations 
+(difference between antenna locations) were rounded to the nearest grid pixel. 
+Since rounding is not a commutative operation (i.e. rounding of the difference 
+value is not necessarily equal to the difference of the rounded values), the 
+gridding operation in the two cases introduces rounding errors in the placement 
+of antenna aperture and cross-correlated aperture weights. Each antenna 
+aperture weight projected to the nearest grid location can be displaced by 
+$\sim 1$--2 pixels. This effect can be mitigated only by making the grid 
+spacing finer. 
+
+\begin{figure}
+  \includegraphics[width=\columnwidth]{MOFF_FX_comparison_uvwts_test_aperture_zero_spacing_removed.png}
+  \caption{Dirty images (top) and synthesized beams (bottom) obtained from 
+    simulated data using antenna-based MOFF algorithm (left) and FX 
+    visibility-based software holography (right). The solid black circles in the
+    top panels indicate the simulated source positions. The antenna 
+    auto-correlations at zero-spacing have been removed from the MOFF images. 
+    The images in either case reconstruct the sources at the right locations 
+    with the fluxes expected after multiplication by the antenna power pattern. 
+    The synthesized beams from the two algorithms are well matches in size and
+    shape. The overall modulation by the power pattern is seen clearly in both
+    images.}
+  \label{fig:MOFF-FX-uvwts}
+\end{figure}
+
+We study the effect of the differences in gridded weights on the image plane. 
+The synthesized beam can be written as:
+\begin{align}\label{eqn:syn-beam}
+  B(\hat{\mathbf{s}}) &= \left| \sum_\mathbf{r} \widetilde{W}(\mathbf{r})\,e^{-i\frac{2\pi}{\lambda}(\mathbf{r}\cdot\hat{\mathbf{s}})}\right|^2, \\
+  \textrm{or}, \quad B(l,m) &= \left| \sum_{r_x,r_y} \widetilde{W}(r_x,r_y)\,e^{-i\frac{2\pi}{\lambda}(r_x l + r_y m)}\right|^2 
+\end{align}
+where, $\hat{\mathbf{s}}\equiv (l,m)$, $\mathbf{r}\equiv (r_x,r_y)$ and 
+$\widetilde{W}(\mathbf{r})$ is given by equation~\ref{eqn:gridding-convolution}.
+If the errors in the determination of $r_x$ and $r_y$ are denoted by 
+$\delta r_x$ and $\delta r_y$ respectively, the error on $B(l,m)$ can be 
+estimated using a simple propagation of errors, where,
+\begin{align}
+  \frac{\partial{B}(l,m)}{\partial{r_x}} &= e^{-i\frac{2\pi}{\lambda}\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i\frac{2\pi l}{\lambda}\widetilde{W}(\mathbf{r})\right] \label{eqn:syn-beam-pdev1}\\
+  &\qquad\qquad \times \sum_{\mathbf{r}^\prime} \widetilde{W}^\star(\mathbf{r}^\prime)\,e^{+i\frac{2\pi}{\lambda}\mathbf{r}^\prime\cdot \hat{\mathbf{s}}} \\
+  &= e^{-i\frac{2\pi}{\lambda}\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i\frac{2\pi l}{\lambda}\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}), \\
+  \textrm{and},\frac{\partial{B}(l,m)}{\partial{r_y}} &= e^{-i\frac{2\pi}{\lambda}\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i\frac{2\pi m}{\lambda}\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}). \label{eqn:syn-beam-pdev2}
+\end{align}
+It must be noted that although we start with a squaring operation in 
+equation~\ref{eqn:syn-beam}, in equations~\ref{eqn:syn-beam-pdev1} through 
+\ref{eqn:syn-beam-pdev2}, the summations are performed only when 
+$\mathbf{r}\ne \mathbf{r}^\prime$ and therefore do not include the 
+auto-correlations of the antenna weights. The error expected in $B(l,m)$ is:
+\begin{align}
+  \left|\delta B(l,m)\right|^2 &= \sum_{r_x}\left|\frac{\partial{B}(l,m)}{\partial{r_x}}\right|^2 \delta r_x^2 + \sum_{r_y}\left|\frac{\partial{B}(l,m)}{\partial{r_y}}\right|^2 \delta r_y^2 \\
+  &= \delta r_x^2 \sum_{r_x}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i\frac{2\pi l}{\lambda}\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2 \nonumber\\
+  &\qquad + \delta r_y^2 \sum_{r_y}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_y}} - i\frac{2\pi m}{\lambda}\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2
+\end{align}
+For the current simulations, 
+\begin{align}
+  \delta r_x = \delta r_y &\simeq 1, \\
+  \widetilde{W}(r_x,r_y) &= \{0, \textrm{constant}\}, \\
+  \textrm{and},\qquad \frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} &= \frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_y}} = 0.
+\end{align}
+Hence,
+\begin{align}
+  \left|\delta B(l,m)\right|^2 &\simeq \left(\frac{2\pi}{\lambda}\right)^2\left(l^2+m^2\right)\,B(\hat{\mathbf{s}})\,\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2, \\
+\textrm{or},\qquad \left|\delta B(l,m)\right| &\simeq \left(\frac{2\pi}{\lambda}\right)\sqrt{l^2+m^2}\,\left|W(\hat{\mathbf{s}})\right|\,\left(\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2\right)^{1/2}, \label{eqn:syn-beam-error}
+\end{align}
+where, $B(\hat{\mathbf{s}}) \equiv \left|W(\hat{\mathbf{s}})\right|^2$. Thus, 
+the error on the synthesized beam is proportional to the antenna power pattern
+and increases linearly outward in radial bins of direction cosines.
+
+Figure~\ref{fig:psf-diff} shows the difference between the synthesized beams 
+obtained with the two methods. A difference map between the two synthesized 
+beams is shown on top. The amplitude of the difference appears to be 
+modulated by the directional voltage response of the antenna. At the bottom, 
+in radial bins, the rms of the synthesized beam (gray) and the rms of the 
+difference map (black) are plotted in percentage units relative to the peak 
+(to be read using the axis on the left side of the plot). The antenna power 
+pattern (red; to be read using the scale on the right) is plotted for reference. 
+
+\begin{figure}
+  \includegraphics[width=\columnwidth]{diff_psf_MOFF-FX_test_aperture.png}
+  \caption{Map of difference between the synthesized beams obtained with the 
+    two methods (top) and radial statistics of the synthesized beams and 
+    their differences (bottom). The maximum difference is of the order of a 
+    few percent. The difference appears to be modulated in amplitude by the 
+    power pattern of the antenna. }
+  \label{fig:psf-diff}
+\end{figure}
+
+The synthesized beam rms is proportional to the antenna power pattern as 
+expected from a point spread function of uncorrected for the antenna power 
+pattern. A notable observation is that the rms of the difference of
+the synthesized beams seems proportional to the directional antenna voltage
+pattern and also increases gradually with distance from the center as seen 
+from the diverging amplitudes between the black and red curves as predicted
+in equation~\ref{eqn:syn-beam-error}. The rms of the difference appears to 
+be bounded by the actual rms of the synthesized beam indicating that these
+rounding errors in gridding do not affect the statistics of the images or
+the synthesized beams.
 
 \section{Analysis and Feasibility}\label{sec:analysis}
 

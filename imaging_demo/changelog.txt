@@ -1,3 +1,15 @@
+From a3bda8c (master):
+=====================
+
+In epic.bib,
+
+(*) Rearrange references alphabetically
+(*) Add Beardsley et al. (2012) to references
+
+In ms.tex,
+
+(*) Add more text and figures in sections 3 and 4
+
 From 0262c58 (master):
 =====================
 
