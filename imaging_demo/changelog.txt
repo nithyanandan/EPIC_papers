@@ -1,3 +1,8 @@
+From 5feeb9b (fetch):
+====================
+
+Merge Adam's updates on origin/master
+
 From 3c587ae (master):
 =====================
 
