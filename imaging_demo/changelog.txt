@@ -1,3 +1,10 @@
+From 9414f28 (master):
+=====================
+
+In ms.tex,
+
+(*) Create subsections under section 4
+
 From a723a20 (master):
 =====================
 

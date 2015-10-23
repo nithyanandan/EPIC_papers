@@ -683,6 +683,8 @@ per integration timescale and does not add significant cost to the full operatio
 
 \section{Verification}\label{sec:verify}
 
+\subsection{Simulations}\label{sec:sim}
+
 We use the EPIC simulator to generate electric field samples from a sky model. In
 our simulations, we use 64 frequency channels each of width $\delta f = 40$~kHz, 
 10 point sources of flux densities 10~Jy at random locations. The number of
@@ -717,6 +719,8 @@ square aperture.
     images.}
   \label{fig:MOFF-FX-image}
 \end{figure}
+
+\subsection{Differences in outputs}\label{sec:diff}
 
 We investigate the two imaging algorithms for differences from the point of 
 view of the quality of their outputs. We begin by comparing the gridded 
@@ -853,6 +857,8 @@ in equation~\ref{eqn:syn-beam-error}. The rms of the difference appears to
 be bounded by the actual rms of the synthesized beam indicating that these
 rounding errors in gridding do not affect the statistics of the images or
 the synthesized beams.
+
+\subsection{Application to LWA data}\label{sec:LWA-data}
 
 \section{Analysis and Feasibility}\label{sec:analysis}
 
