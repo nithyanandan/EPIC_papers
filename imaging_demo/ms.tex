@@ -462,7 +462,7 @@ We have implemented the MOFF imaging technique in our ``E-field Parallel Imaging
 Correlator'' -- a highly parallelized Object Oriented Python package,
 \footnote{EPIC package can be accessed at https://github.com/nithyanandan/EPIC}
 now publicly available. Besides implementing the MOFF imaging algorithm it also
-includes FX imaging using software holography technique and a simulator for
+includes FX imaging using the software holography technique and a simulator for
 generating electric fields from a sky model. 
 
 Figure~\ref{fig:MOFF-flowchart} shows the flowchart for MOFF imaging. The
@@ -474,7 +474,7 @@ field spectra $E_1(f)\ldots E_\textrm{N}(f)$ ($\widetilde{E}_a$ in matrix
 notation) for each of the antennas. Each of the complex antenna gains are
 calibrated to correct the corresponding electric field spectra. These calibrated
 electric fields are gridded using an antenna-based gridding convolution function
-following which it is spatially Fourier transformed and squared to obtain images
+after which it is spatially Fourier transformed and squared to obtain images
 for every time stamp. These images are then time-averaged to obtain the
 accumulated image $I(f)$ ($I(\hat{\mathbf{s}})$ in matrix notation).
 \begin{figure}
@@ -491,7 +491,7 @@ accumulated image $I(f)$ ($I(\hat{\mathbf{s}})$ in matrix notation).
 
 Figure~\ref{fig:FX-flowchart} shows the flowchart for software holographic
 imaging from a FX correlator. The antenna-based F-engine is identical to that in
-the MOFF processing. The electric field spectra each antenna are then cross-
+the MOFF processing. The electric field spectra from each antenna are then cross-
 multiplied in the X-engine with those from all other antennas to obtain the
 visibilities $V_\textrm{ij}(f)$ ($\mathbf{m}(\mathbf{v})$ in matrix notation).
 They are calibrated and time-averaged to obtain $\langle V_\textrm{ij}(f)\rangle$
@@ -536,7 +536,7 @@ be a power of 2.
 
 The gridding kernel in the simplest case is given by the antenna aperture
 illumination function, $\widetilde{B}(\mathbf{r}-\mathbf{r}_a)$, which can
-specified either by a functional form or as a table of values against locations
+be specified either by a functional form or as a table of values against locations
 around the antennas. A nearest neighbor mapping from all antenna footprints to
 grid locations is created using an efficient k-d tree algorithm \citep{man99}.
 There is no restriction here that the aperture illumination function has to be
@@ -545,12 +545,12 @@ identical across antennas.
 In the most general case, this gridding kernel could contain information on the
 $w$-projection effect, and even other time-dependent ionospheric effects. For a
 stationary antenna array in the absence of any time-dependent effects, this
-mapping has to be determined only once in the antenna array coordinate frame. The
+mapping must only be determined once in the antenna array coordinate frame. The
 antenna-to-grid mapping matrix, $\mathbf{M}(\mathbf{r},\mathbf{e})$ is described
 as a transformation matrix from the space of measured electric fields
 ($\mathbf{e}$) to the antenna array grid denoted by $\mathbf{r}$. Since each
 antenna occupies a footprint typically the size of its aperture,
-$\mathbf{M}(\mathbf{r},\mathbf{e})$ which is generally of size
+$\mathbf{M}(\mathbf{r},\mathbf{e})$, which is generally of size
 $N_\textrm{grid}\times N_\textrm{a}$, reduces to a sparse block-diagonal matrix
 with only $N_\textrm{a}$ blocks and roughly $N_\textrm{k}$ non-zero entries per
 block. Figure~\ref{fig:a2g-mapping} illustrates the antenna-to-grid mapping
@@ -568,11 +568,11 @@ matrix and the grid containing the mapped aperture footprints of the antennas.
 \end{figure}
 
 \subsection{Calibration}
-Calibration of direct imaging correlator remains an unresolved matter. Contrary
+Calibration of direct imaging correlators remains an unresolved matter. Contrary
 to the FX data flow, direct imagers mix the signals from all antennas before
 averaging and writing to disk. It is therefore essential to apply gain solutions 
 before the gridding step. Previous efforts have resorted to applying FX-generated
-calibration solutions \citep{zhe14, fos14}, or integrate a dedicated FX correlator 
+calibration solutions \citep{zhe14, fos14}, or integrating a dedicated FX correlator 
 which periodically forms the full visibility matrix \citep{wij09, dev09}. 
 
 In a companion paper to appear soon, we demonstrate a novel calibration 
@@ -608,10 +608,10 @@ computed at every readout of the electric field spectra. Thus,
 \begin{align}
   \widetilde{E}(\mathbf{r}) &= \mathbf{M}(\mathbf{r},\mathbf{e})\,E(\mathbf{e}),
 \end{align}
-where, $E(\mathbf{e})$ denotes the spectra of measured antenna electric fields.
-
-In practice the grid is set to be a power of 2 such that the grid spacing is at
-most $\lambda/2$ even at the highest frequency in the observing band. 
+where $E(\mathbf{e})$ denotes the spectra of measured antenna electric fields.
+% The sentence below was already stated earlier.
+%In practice the grid is set to be a power of 2 such that the grid spacing is at
+%most $\lambda/2$ even at the highest frequency in the observing band. 
 
 \subsection{Spatial Fourier Transform}
 
@@ -876,7 +876,7 @@ the synthesized beams.
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{MOFF_FX_computations_fov_gridding_annotated.eps}
-  \caption{Current and instruments planned for future in parameter space of
+  \caption{Current and planned instruments in parameter space of
     number of complex multiplies and adds with MOFF and FX.}
   \label{fig:parameter-space-computations-instruments}
 \end{figure}
