@@ -785,8 +785,8 @@ spacing finer.
 We study the effect of the differences in gridded weights on the image plane. 
 The synthesized beam can be written as:
 \begin{align}\label{eqn:syn-beam}
-  B(\hat{\mathbf{s}}) &= \left| \sum_\mathbf{r} \widetilde{W}(\mathbf{r})\,e^{-i\frac{2\pi}{\lambda}(\mathbf{r}\cdot\hat{\mathbf{s}})}\right|^2, \\
-  \textrm{or}, \quad B(l,m) &= \left| \sum_{r_x,r_y} \widetilde{W}(r_x,r_y)\,e^{-i\frac{2\pi}{\lambda}(r_x l + r_y m)}\right|^2 
+  B(\hat{\mathbf{s}}) &= \left| \sum_\mathbf{r} \widetilde{W}(\mathbf{r})\,e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\right|^2, \\
+  \textrm{or}, \quad B(l,m) &= \left| \sum_{r_x,r_y} \widetilde{W}(r_x,r_y)\,e^{-i2\pi(r_x l + r_y m)}\right|^2 
 \end{align}
 where, $\hat{\mathbf{s}}\equiv (l,m)$, $\mathbf{r}\equiv (r_x,r_y)$ and 
 $\widetilde{W}(\mathbf{r})$ is given by equation~\ref{eqn:gridding-convolution}.
@@ -794,10 +794,10 @@ If the errors in the determination of $r_x$ and $r_y$ are denoted by
 $\delta r_x$ and $\delta r_y$ respectively, the error on $B(l,m)$ can be 
 estimated using a simple propagation of errors, where,
 \begin{align}
-  \frac{\partial{B}(l,m)}{\partial{r_x}} &= e^{-i\frac{2\pi}{\lambda}\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i\frac{2\pi l}{\lambda}\widetilde{W}(\mathbf{r})\right] \label{eqn:syn-beam-pdev1}\\
-  &\qquad\qquad \times \sum_{\mathbf{r}^\prime} \widetilde{W}^\star(\mathbf{r}^\prime)\,e^{+i\frac{2\pi}{\lambda}\mathbf{r}^\prime\cdot \hat{\mathbf{s}}} \\
-  &= e^{-i\frac{2\pi}{\lambda}\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i\frac{2\pi l}{\lambda}\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}), \\
-  \textrm{and},\frac{\partial{B}(l,m)}{\partial{r_y}} &= e^{-i\frac{2\pi}{\lambda}\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i\frac{2\pi m}{\lambda}\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}). \label{eqn:syn-beam-pdev2}
+  \frac{\partial{B}(l,m)}{\partial{r_x}} &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i 2\pi l\widetilde{W}(\mathbf{r})\right] \label{eqn:syn-beam-pdev1}\\
+  &\qquad\qquad \times \sum_{\mathbf{r}^\prime} \widetilde{W}^\star(\mathbf{r}^\prime)\,e^{+i2\pi\mathbf{r}^\prime\cdot \hat{\mathbf{s}}} \\
+  &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi l\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}), \\
+  \textrm{and},\frac{\partial{B}(l,m)}{\partial{r_y}} &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi m\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}). \label{eqn:syn-beam-pdev2}
 \end{align}
 It must be noted that although we start with a squaring operation in 
 equation~\ref{eqn:syn-beam}, in equations~\ref{eqn:syn-beam-pdev1} through 
@@ -806,8 +806,8 @@ $\mathbf{r}\ne \mathbf{r}^\prime$ and therefore do not include the
 auto-correlations of the antenna weights. The error expected in $B(l,m)$ is:
 \begin{align}
   \left|\delta B(l,m)\right|^2 &= \sum_{r_x}\left|\frac{\partial{B}(l,m)}{\partial{r_x}}\right|^2 \delta r_x^2 + \sum_{r_y}\left|\frac{\partial{B}(l,m)}{\partial{r_y}}\right|^2 \delta r_y^2 \\
-  &= \delta r_x^2 \sum_{r_x}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i\frac{2\pi l}{\lambda}\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2 \nonumber\\
-  &\qquad + \delta r_y^2 \sum_{r_y}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_y}} - i\frac{2\pi m}{\lambda}\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2
+  &= \delta r_x^2 \sum_{r_x}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi l\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2 \nonumber\\
+  &\qquad + \delta r_y^2 \sum_{r_y}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_y}} - i2\pi m\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2
 \end{align}
 For the current simulations, 
 \begin{align}
@@ -817,8 +817,8 @@ For the current simulations,
 \end{align}
 Hence,
 \begin{align}
-  \left|\delta B(l,m)\right|^2 &\simeq \left(\frac{2\pi}{\lambda}\right)^2\left(l^2+m^2\right)\,B(\hat{\mathbf{s}})\,\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2, \\
-\textrm{or},\qquad \left|\delta B(l,m)\right| &\simeq \left(\frac{2\pi}{\lambda}\right)\sqrt{l^2+m^2}\,\left|W(\hat{\mathbf{s}})\right|\,\left(\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2\right)^{1/2}, \label{eqn:syn-beam-error}
+  \left|\delta B(l,m)\right|^2 &\simeq 4\pi^2\left(l^2+m^2\right)\,B(\hat{\mathbf{s}})\,\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2, \\
+\textrm{or},\qquad \left|\delta B(l,m)\right| &\simeq 2\pi\sqrt{l^2+m^2}\,\left|W(\hat{\mathbf{s}})\right|\,\left(\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2\right)^{1/2}, \label{eqn:syn-beam-error}
 \end{align}
 where, $B(\hat{\mathbf{s}}) \equiv \left|W(\hat{\mathbf{s}})\right|^2$. Thus, 
 the error on the synthesized beam is proportional to the antenna power pattern

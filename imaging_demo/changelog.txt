@@ -1,3 +1,10 @@
+From a723a20 (master):
+=====================
+
+In ms.tex,
+
+(*) Remove usage of lambda in section 4
+
 From 610cc19 (fetch):
 ====================
 
