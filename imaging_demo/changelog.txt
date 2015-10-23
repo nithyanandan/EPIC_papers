@@ -1,3 +1,15 @@
+From 5feeb9b (fetch):
+====================
+
+Merge Adam's updates on origin/master
+
+From 3c587ae (master):
+=====================
+
+In ms.tex,
+
+(*) Add content under LWA data processing
+
 From 9414f28 (master):
 =====================
 

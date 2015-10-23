@@ -861,6 +861,39 @@ the synthesized beams.
 
 \subsection{Application to LWA data}\label{sec:LWA-data}
 
+We have analyzed narrow band data from the LWA in New Mexico. This data is  
+in LWA TBN format with 512 voltage time samples from 255 antennas within 
+roughly a diameter of 100~m. The data is centered at a frequency of 74.03~MHz,
+with a sample rate (equal to the bandwidth) of 100~kHz with 512 complex time 
+samples in a A/D writeout timescale of 5.12~ms, a frequency resolution of 
+195.3125~Hz and dual polarization. There are 391 such timestamps yielding a
+total duration of 2~s. 
+
+We have matched the cable delays of all the antennas but yet to deploy the 
+calibration pipeline we have developed on this data. Therefore, in 
+subsequent discussion we assumed the data is calibrated. 
+
+Figure~\ref{fig:LWA-image} shows the image produced with MOFF imaging 
+packaged in EPIC after averaging over the entire 2~s of data and the inner
+$\approx 80$\% of bandwidth (roughly 80~kHz). The image is shown in direction 
+cosine coordinates -- $l$ along x-axis and $m$ along y-axis. Due to lack of
+calibration the flux scale is arbitrary. Despite the lack of calibration,
+only with delay compensation, we see Cyg~A and Cas~A prominently at
+$(l,m)\approx (0, 0.125)$, and (0.4,0.55) respectively and Sgr~A faintly at
+(-0.5,-0.75), thus validating the functionality of the EPIC package.
+
+\begin{figure}
+  \includegraphics[width=\columnwidth]{LWA_sample_image_391_iterations.png}
+  \caption{Image from LWA TBN data obtained with MOFF imaging using EPIC 
+    package after averaging over 2~s and $\approx 80$~kHz. The x- and y-axes
+    denote direction cosines $l$ and $m$ respectively. The antenna voltages
+    are compensated for their respective delays. The flux scale is arbitrary
+    and not calibrated. Cyg~A is prominently visible near the center at
+    $(l,m)\approx (0, 0.125)$, Cas~A near (0.4,0.55) and Sgr~A near 
+    (-0.5,-0.75).}
+  \label{fig:LWA-image}
+\end{figure}
+
 \section{Analysis and Feasibility}\label{sec:analysis}
 
 \subsection{Scaling Relations: MOFF vs. FX}
