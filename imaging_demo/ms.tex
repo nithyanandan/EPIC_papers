@@ -92,7 +92,26 @@ $^{2}$University of Washington, Department of Physics, Seattle, WA 98195, USA\\
 
 % Abstract of the paper
 \begin{abstract}
-Abstract here (250 words)
+Modern radio telescopes are marching towards densely packed array layouts 
+consisting of a large number of antennas ($N$). Since the cost of traditional 
+correlators scales as $\mathcal{O}(N^2)$, there will be a steep cost for 
+realizing the full imaging potential of these powerful instruments. Through 
+our generic and efficient E-field Parallel Imaging Correlator (EPIC), we present 
+the first software demonstration of a generalized direct imaging algorithm 
+known by the name Modular Optimal Frequency Fourier (MOFF) imager. It takes 
+advantage of the multiplication-convolution theorem of Fourier transform. Not 
+only does it bring down the cost to $\mathcal{O}(N\log N)$ but can also image 
+from irregularly arranged antenna arrays. EPIC is highly modular and 
+parallelizable. It is implemented in object oriented Python and is publicly 
+available. We have verified the images produced to be mathematically identical 
+to those produced using traditional techniques. We have also validated our 
+implementation on data observed with the Long Wavelength Array. Antenna systems
+with a dense filling factor consisting of a large number of antennas such as 
+LWA, SKA, and HERA will gain a significant advantage by deploying EPIC. 
+Inherent availability of calibrated time-domain images on timescales roughly 
+equal to the writeout timescale of the digitizer will make it a prime 
+candidate for transient searches of primarily Fast Radio Bursts (FRB) as well 
+as slower planteary and exoplantenary phenomena. 
 \end{abstract}
 
 % Select between one and six entries from the list of approved keywords.

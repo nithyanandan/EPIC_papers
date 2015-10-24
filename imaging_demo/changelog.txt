@@ -1,3 +1,10 @@
+From 95fd8c8 (master):
+=====================
+
+In ms.tex,
+
+(*) Add abstract
+
 From 68b60bc (master):
 =====================
 
