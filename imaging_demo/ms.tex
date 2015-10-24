@@ -98,10 +98,10 @@ correlators scales as $\mathcal{O}(N^2)$, there will be a steep cost for
 realizing the full imaging potential of these powerful instruments. Through 
 our generic and efficient E-field Parallel Imaging Correlator (EPIC), we present 
 the first software demonstration of a generalized direct imaging algorithm 
-known by the name Modular Optimal Frequency Fourier (MOFF) imager. It takes 
-advantage of the multiplication-convolution theorem of Fourier transform. Not 
+known as the Modular Optimal Frequency Fourier (MOFF) imager. It takes 
+advantage of the multiplication-convolution theorem of Fourier transforms. Not 
 only does it bring down the cost to $\mathcal{O}(N\log N)$ but can also image 
-from irregularly arranged antenna arrays. EPIC is highly modular and 
+from irregularly arranged heterogeneous antenna arrays. EPIC is highly modular and 
 parallelizable. It is implemented in object oriented Python and is publicly 
 available. We have verified the images produced to be mathematically identical 
 to those produced using traditional techniques. We have also validated our 
@@ -530,7 +530,7 @@ from both techniques are identical as explained in \S\ref{sec:math}.
   \label{fig:FX-flowchart}
 \end{figure}
 
-Here, we discuss the components of these architectures in detail. 
+Here we discuss the components of these architectures in detail. 
 
 \subsection{Temporal Fourier transform}\label{sec:F-engine}
 
@@ -672,7 +672,7 @@ number of pixels on the image.
 
 The squaring operation under MOFF imaging in the image plane introduces antenna 
 auto-correlations around the zero spacing in the $uv$-plane which are absent in 
-traditional visibility-based imaging. In order for a robust comparison, these 
+traditional visibility-based imaging. In order to achieve a robust comparison, these 
 auto-correlations have to be removed from both the $uv$ and image planes. 
 
 The shape and extent of these auto-correlations can be estimated from the 
@@ -872,7 +872,7 @@ pattern (red; to be read using the scale on the right) is plotted for reference.
 
 The synthesized beam rms is proportional to the antenna power pattern as 
 expected from a point spread function uncorrected for the antenna power 
-pattern. The amplitude of the rms of difference of the synthesized beams is 
+pattern. The rms of differenced synthesized beams is 
 also modulated by the antenna power pattern. The rms of the difference is 
 definitely lesser than the rms of the synthesized beam in the central regions 
 up to $(l^2+m^2)^{1/2}\lesssim 0.3$. This implies that the beams are well 
@@ -1028,7 +1028,7 @@ solid line showing future trajectory of HERA like systems will be clearly
 favoured by MOFF imaging. The gray shaded area is for a projected LWA 
 expansion and is also predominantly in the region favouring MOFF imaging. 
 It is bounded by the LWA1 and LWA-OV on the left and right 
-respectively. The current (see Table~\ref{tab:antenna-layouts} and
+respectively. The current (see Table~\ref{tab:antenna-layouts}) and
 an expanded layout with a four-fold increase in number of elements over a
 two-fold increase in $b_\textrm{max}$ provide the bounds at the bottom and top 
 respectively. Current instruments such as MWA and LOFAR lie in parameter space
