@@ -550,13 +550,14 @@ $w$-projection effect, and even other time-dependent ionospheric effects. For a
 stationary antenna array in the absence of any time-dependent effects, this
 mapping must only be determined once in the antenna array coordinate frame. The
 antenna-to-grid mapping matrix, $\mathbf{M}(\mathbf{r},\mathbf{a})$ is described
-as a transformation matrix from the space of measured electric fields by the antennas
-($\mathbf{a}$) to the antenna array grid denoted by the coordinate $\mathbf{r}$. Since each
-antenna occupies a footprint typically the size of its aperture,
-$\mathbf{M}(\mathbf{r},\mathbf{a})$, which is generally of size
+as a transformation matrix from the space of measured electric fields by the 
+antennas ($\mathbf{a}$) to the antenna array grid denoted by the coordinate 
+$\mathbf{r}$. Since each antenna occupies a footprint typically the size of its 
+aperture, $\mathbf{M}(\mathbf{r},\mathbf{a})$, which is generally of size
 $N_\textrm{grid}\times N_\textrm{a}$, reduces to a sparse block-diagonal matrix
 with only $N_\textrm{a}$ blocks and roughly $N_\textrm{k}$ non-zero entries per
-block. Fig.~\ref{fig:a2g-mapping} illustrates the antenna-to-grid mapping
+block. This sparse matrix is stored in a Compressed Sparse Row (CSR) format. 
+Fig.~\ref{fig:a2g-mapping} illustrates the antenna-to-grid mapping
 matrix and the grid containing the mapped aperture footprints of the antennas.
 
 \begin{figure}
@@ -602,9 +603,10 @@ antenna aperture illuminations:
   \widetilde{\mathbf{W}}(\mathbf{r}) &= \sum_a \widetilde{\mathbf{W}}_a(\mathbf{r}-\mathbf{r}_a) \\
                             &= \mathbf{M}(\mathbf{r},\mathbf{a})\,\mathcal{I}(\mathbf{a}),
 \end{align}
-where, $\mathcal{I}(\mathbf{a})$ is a row of ones. This is achieved using
+where, $\mathcal{I}(\mathbf{a})$ is a row of ones. This is achieved by
 efficient multiplication with the sparse matrix created in the antenna-to-grid
-mapping process. Unless $\widetilde{\mathbf{W}}(\mathbf{r})$ includes time-dependent
+mapping process using the sparse matrices module in Python's SciPy package. 
+Unless $\widetilde{\mathbf{W}}(\mathbf{r})$ includes time-dependent
 effects of the ionosphere or the instrument, it needs to be computed just once
 for the entire observation. However, the gridding of electric fields must be
 computed at every readout of the electric field spectra,
@@ -788,52 +790,52 @@ spacing finer.
   \label{fig:MOFF-FX-uvwts}
 \end{figure}
 
-We study the effect of the differences in gridded weights on the image plane. 
-The synthesized beam can be written as:
-\begin{align}\label{eqn:syn-beam}
-  B(\hat{\mathbf{s}}) &= \left| \sum_\mathbf{r} \widetilde{W}(\mathbf{r})\,e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\right|^2, \\
-  \textrm{or}, \quad B(l,m) &= \left| \sum_{r_x,r_y} \widetilde{W}(r_x,r_y)\,e^{-i2\pi(r_x l + r_y m)}\right|^2 
-\end{align}
-where, $\hat{\mathbf{s}}\equiv (l,m)$, $\mathbf{r}\equiv (r_x,r_y)$ and 
-$\widetilde{W}(\mathbf{r})$ is given by equation~\ref{eqn:gridding-convolution}.
-If the errors in the determination of $r_x$ and $r_y$ are denoted by 
-$\delta r_x$ and $\delta r_y$ respectively, the error on $B(l,m)$ can be 
-estimated using a simple propagation of errors, where,
-\begin{align}
-  \frac{\partial{B}(l,m)}{\partial{r_x}} &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i 2\pi l\widetilde{W}(\mathbf{r})\right] \label{eqn:syn-beam-pdev1}\\
-  &\qquad\qquad \times \sum_{\mathbf{r}^\prime} \widetilde{W}^\star(\mathbf{r}^\prime)\,e^{+i2\pi\mathbf{r}^\prime\cdot \hat{\mathbf{s}}} \\
-  &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi l\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}), \\
-  \textrm{and},\frac{\partial{B}(l,m)}{\partial{r_y}} &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi m\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}). \label{eqn:syn-beam-pdev2}
-\end{align}
-It must be noted that although we start with a squaring operation in 
-equation~\ref{eqn:syn-beam}, in equations~\ref{eqn:syn-beam-pdev1} through 
-\ref{eqn:syn-beam-pdev2}, the summations are performed only when 
-$\mathbf{r}\ne \mathbf{r}^\prime$ and therefore do not include the 
-auto-correlations of the antenna weights. The error expected in $B(l,m)$ is:
-\begin{align}
-  \left|\delta B(l,m)\right|^2 &= \sum_{r_x}\left|\frac{\partial{B}(l,m)}{\partial{r_x}}\right|^2 \delta r_x^2 + \sum_{r_y}\left|\frac{\partial{B}(l,m)}{\partial{r_y}}\right|^2 \delta r_y^2 \\
-  &= \delta r_x^2 \sum_{r_x}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi l\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2 \nonumber\\
-  &\qquad + \delta r_y^2 \sum_{r_y}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_y}} - i2\pi m\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2
-\end{align}
-For the current simulations, 
-\begin{align}
-  \delta r_x = \delta r_y &\simeq 1, \\
-  \widetilde{W}(r_x,r_y) &= \{0, \textrm{constant}\}, \\
-  \textrm{and},\qquad \frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} &= \frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_y}} = 0.
-\end{align}
-Hence,
-\begin{align}
-  \left|\delta B(l,m)\right|^2 &\simeq 4\pi^2\left(l^2+m^2\right)\,B(\hat{\mathbf{s}})\,\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2, \\
-\textrm{or},\qquad \left|\delta B(l,m)\right| &\simeq 2\pi\sqrt{l^2+m^2}\,\left|W(\hat{\mathbf{s}})\right|\,\left(\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2\right)^{1/2}, \label{eqn:syn-beam-error}
-\end{align}
-where, $B(\hat{\mathbf{s}}) \equiv \left|W(\hat{\mathbf{s}})\right|^2$. Thus, 
-the error on the synthesized beam is proportional to the antenna power pattern
-and increases linearly outward in radial bins of direction cosines.
+% The synthesized beam can be written as:
+% \begin{align}\label{eqn:syn-beam}
+%   B(\hat{\mathbf{s}}) &= \left| \sum_\mathbf{r} \widetilde{W}(\mathbf{r})\,e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\right|^2, \\
+%   \textrm{or}, \quad B(l,m) &= \left| \sum_{r_x,r_y} \widetilde{W}(r_x,r_y)\,e^{-i2\pi(r_x l + r_y m)}\right|^2 
+% \end{align}
+% where, $\hat{\mathbf{s}}\equiv (l,m)$, $\mathbf{r}\equiv (r_x,r_y)$ and 
+% $\widetilde{W}(\mathbf{r})$ is given by equation~\ref{eqn:gridding-convolution}.
+% If the errors in the determination of $r_x$ and $r_y$ are denoted by 
+% $\delta r_x$ and $\delta r_y$ respectively, the error on $B(l,m)$ can be 
+% estimated using a simple propagation of errors, where,
+% \begin{align}
+%   \frac{\partial{B}(l,m)}{\partial{r_x}} &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i 2\pi l\widetilde{W}(\mathbf{r})\right] \label{eqn:syn-beam-pdev1}\\
+%   &\qquad\qquad \times \sum_{\mathbf{r}^\prime} \widetilde{W}^\star(\mathbf{r}^\prime)\,e^{+i2\pi\mathbf{r}^\prime\cdot \hat{\mathbf{s}}} \\
+%   &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi l\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}), \\
+%   \textrm{and},\frac{\partial{B}(l,m)}{\partial{r_y}} &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi m\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}). \label{eqn:syn-beam-pdev2}
+% \end{align}
+% It must be noted that although we start with a squaring operation in 
+% equation~\ref{eqn:syn-beam}, in equations~\ref{eqn:syn-beam-pdev1} through 
+% \ref{eqn:syn-beam-pdev2}, the summations are performed only when 
+% $\mathbf{r}\ne \mathbf{r}^\prime$ and therefore do not include the 
+% auto-correlations of the antenna weights. The error expected in $B(l,m)$ is:
+% \begin{align}
+%   \left|\delta B(l,m)\right|^2 &= \sum_{r_x}\left|\frac{\partial{B}(l,m)}{\partial{r_x}}\right|^2 \delta r_x^2 + \sum_{r_y}\left|\frac{\partial{B}(l,m)}{\partial{r_y}}\right|^2 \delta r_y^2 \\
+%   &= \delta r_x^2 \sum_{r_x}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi l\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2 \nonumber\\
+%   &\qquad + \delta r_y^2 \sum_{r_y}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_y}} - i2\pi m\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2
+% \end{align}
+% For the current simulations, 
+% \begin{align}
+%   \delta r_x = \delta r_y &\simeq 1, \\
+%   \widetilde{W}(r_x,r_y) &= \{0, \textrm{constant}\}, \\
+%   \textrm{and},\qquad \frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} &= \frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_y}} = 0.
+% \end{align}
+% Hence,
+% \begin{align}
+%   \left|\delta B(l,m)\right|^2 &\simeq 4\pi^2\left(l^2+m^2\right)\,B(\hat{\mathbf{s}})\,\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2, \\
+% \textrm{or},\qquad \left|\delta B(l,m)\right| &\simeq 2\pi\sqrt{l^2+m^2}\,\left|W(\hat{\mathbf{s}})\right|\,\left(\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2\right)^{1/2}, \label{eqn:syn-beam-error}
+% \end{align}
+% where, $B(\hat{\mathbf{s}}) \equiv \left|W(\hat{\mathbf{s}})\right|^2$. Thus, 
+% the error on the synthesized beam is proportional to the antenna power pattern
+% and increases linearly outward in radial bins of direction cosines.
 
+We study the effect of the differences in gridded weights on the image plane. 
 Fig.~\ref{fig:psf-diff} shows the difference between the synthesized beams 
 obtained with the two methods. A difference map between the two synthesized 
 beams is shown on top. The amplitude of the difference appears to be 
-modulated by the directional voltage response of the antenna. At the bottom, 
+modulated by the directional power response of the antenna. At the bottom, 
 in radial bins, the rms of the synthesized beam (gray) and the rms of the 
 difference map (black) are plotted in percentage units relative to the peak 
 (to be read using the axis on the left side of the plot). The antenna power 
@@ -850,15 +852,19 @@ pattern (red; to be read using the scale on the right) is plotted for reference.
 \end{figure}
 
 The synthesized beam rms is proportional to the antenna power pattern as 
-expected from a point spread function of uncorrected for the antenna power 
-pattern. A notable observation is that the rms of the difference of
-the synthesized beams seems proportional to the directional antenna voltage
-pattern and also increases gradually with distance from the center as seen 
-from the diverging amplitudes between the black and red curves as predicted
-in equation~\ref{eqn:syn-beam-error}. The rms of the difference appears to 
-be bounded by the actual rms of the synthesized beam indicating that these
-rounding errors in gridding do not affect the statistics of the images or
-the synthesized beams.
+expected from a point spread function uncorrected for the antenna power 
+pattern. The amplitude of the rms of difference of the synthesized beams is 
+also modulated by the antenna power pattern. The rms of the difference is 
+definitely lesser than the rms of the synthesized beam in the central regions 
+up to $(l^2+m^2)^{1/2}\lesssim 0.3$. This implies that the beams are well 
+matched in the central regions. In the outer regions, their mismatch is 
+comparable to the rms of synthesized beams. This indicates the two 
+synthesized beams are not completely randomly different from each other in
+which case the rms of the difference would have been $\approx \sqrt{2}$
+higher than the rms of the each of the synthesized beams. This indicates 
+that while differences exist, large fractions of them are still well matched
+to each other.Thus the rounding errors in gridding do not affect the 
+statistics of the images or the synthesized beams.
 
 \subsection{Application to LWA data}\label{sec:LWA-data}
 
@@ -993,7 +999,6 @@ $N_\textrm{g}\simeq b_\textrm{max}^2/A_\textrm{a}$.
   \end{tablenotes}
   \end{threeparttable}
 \end{table}
-\footnotetext{LWA at Ovens Valley}
 
 Fig.~\ref{fig:parameter-space-computations-instruments} shows the number of 
 complex operations per frequency channel per integration timescale. Telescopes 
@@ -1055,7 +1060,10 @@ imaging is achieved with an increasing grid spacing equal to antenna size and
 hence lowers the amount of computations required with the MOFF algorithm. This
 shifts the black curves leftward. HERA-331, HERA-1027, LWA1, SKA1-LC and 
 SKA1-LCD are inside their respective wedges indicating they are in regions that
-favour the usage of MOFF imaging.
+favour the usage of MOFF imaging. For fixed baseline length, regions favouring
+the MOFF algorithm tend to be towards large $N_\textrm{a}$ indicating large-N
+dense array layouts with smaller antenna elements are best suited for deploying 
+the MOFF algorithm.
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding.eps}
@@ -1115,11 +1123,59 @@ favour the usage of MOFF imaging.
 % \end{table}
 
 \section{Conclusions}\label{sec:conclusions}
+
+As radio astronomy is entering a new era, advances in instrumentation have to
+be accompanied by equal advances in processing techniques to manage 
+computational resources. Many future radio telescopes such as the SKA, HERA and 
+LWA are headed towards the large-N dense array layout model for which 
+computational cost from traditional FX/XF correlator based architecture and 
+visibility based imaging starts rising steeply. We have provided the first 
+software demonstration of a general purpose imaging algorithm using our generic 
+and efficient EPIC software that is designed to bring this cost down from 
+$\mathcal{O}(N^2)$ to $\mathcal{O}(N\log N)$. Under the class of direct imaging 
+techniques, ours is one of the most generic -- neither does it place any 
+constraint on the array layout to be on a regular grid nor does it require the
+antenna array to be homogeneous. 
+
+Our package, now publicly available, written in object oriented Python is 
+highly modularized and parallelizable. It includes an implementation of the 
+MOFF algorithm in addition to visibility based software holography imaging and 
+a data simulator for sky models. It has been successfully tested on simulated 
+as well as real LWA observations. 
+
+The MOFF algorithm packaged with EPIC is already found to be most suitable 
+for many present and planned radio telescopes such as the LWA, HERA and SKA. 
+In general, MOFF is most suited to operate in the region of parameter space
+characterized by dense packing of a large number of antennas especially when 
+consisting of a large number of small antenna elements. 
+
+A unique and significant advantage is the instantaneous availability of 
+calibrated time-domain images bundled together with the hardware frontend 
+such as the F-engine as an integrated module. Hence, it is a compelling 
+candidate for time-domain radio astronomy, e.g. search for and monitoring of 
+transients. Transient detection pipeline at the backend of EPIC can be 
+fine-tuned to target fast transients such as the Fast Radio Bursts 
+\citep[FRB;][]{tho13} on millisecond timescales at GHz frequencies or slow 
+transients from planetary and exoplanetary origins at frequencies around 
+100~MHz. 
+
+Thus, EPIC with the MOFF algorithm packaged is uniquely poised to offer a
+substantial advantage to imaging with large-N dense arrays typical of 
+next-generation radio telescopes as well as push the frontiers of 
+time-domain astronomy to fill gaps in understanding the science behind 
+phenomena responsible for extreme transient events in the Universe.
+
+In the near future, we plan to upgrade our current Python implementation 
+of EPIC to a GPU based pipeline in order to operate on real-time data and 
+develop a transient trigger and monitor backend. In the meanwhile, we plan 
+to demonstrate the capability of EPIC to calibrate and image from heterogeneous 
+arrays and incorporate corrections for non-coplanarity of baselines and 
+direction-dependence of calibration. 
+
 \section*{Acknowledgements}
 
-The Acknowledgements section is not numbered. Here you can thank helpful
-colleagues, acknowledge funding agencies, telescopes and facilities used etc.
-Try to keep it short.
+We thank Larry D'Addario, Gregg Hallinan and Harish Vedantham for their valuable 
+inputs.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1144,12 +1200,12 @@ Try to keep it short.
 
 %%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
 
-\appendix
+% \appendix
 
-\section{Some extra material}
+% \section{Some extra material}
 
-If you want to present additional material which would interrupt the flow of the main paper,
-it can be placed in an Appendix which appears after the list of references.
+% If you want to present additional material which would interrupt the flow of the main paper,
+% it can be placed in an Appendix which appears after the list of references.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

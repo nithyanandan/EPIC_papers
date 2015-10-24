@@ -1,3 +1,10 @@
+From 68b60bc (master):
+=====================
+
+In ms.tex,
+
+(*) Add content under section 6
+
 From 5a9dd6e (master):
 =====================
 
