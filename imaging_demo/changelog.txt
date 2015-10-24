@@ -1,3 +1,15 @@
+From 63a05b7 (master):
+=====================
+
+In epic.bib,
+
+(*) Add references Cornwell et al.(2008),
+Thyagarajan et al.(2015a), Thyagarajan et al.(2015b)
+
+In ms.tex,
+
+(*) Add content under section 5
+
 From 5feeb9b (fetch):
 ====================
 

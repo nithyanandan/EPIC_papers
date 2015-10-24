@@ -220,8 +220,8 @@ A visibility, $\widetilde{V}_p$, can be written as:
 where we have brought the time average into the integral under the assumption that 
 the aperture illumination pattern does not change over the time-scale of the 
 averaging. This expression can be further simplified with the sky brightness, 
-$I(\hat{\mathbf{s}}) \delta(\hat{\mathbf{s}}-\hat{\mathbf{s'}})= \left\langle 
-E(\hat{\mathbf{s}}) E^\star(\hat{\mathbf{s'}}) \right\rangle_t $, and defining the 
+$I(\hat{\mathbf{s}})= \left\langle E(\hat{\mathbf{s}}) E^\star(\hat{\mathbf{s'}}) 
+\right\rangle_t  \delta(\hat{\mathbf{s}}-\hat{\mathbf{s'}})$, and defining the 
 antenna pair sky power response function (or the primary beam), 
 $B_p(\hat{\mathbf{s}})~\equiv~{W}_a(\hat{\mathbf{s}})~{W}^\star_b(\hat{\mathbf{s}})$. 
 The result is the visibility expressed in terms of the sky brightness, the primary 
@@ -606,9 +606,9 @@ efficient multiplication with the sparse matrix created in the antenna-to-grid
 mapping process. Unless $\widetilde{\mathbf{W}}(\mathbf{r})$ includes time-dependent
 effects of the ionosphere or the instrument, it needs to be computed just once
 for the entire observation. However, the gridding of electric fields must be
-computed at every readout of the electric field spectra.
+computed at every readout of the electric field spectra,
 \begin{align}
-  \widetilde{\mathbf{E}}(\mathbf{r}) &= \mathbf{M}(\mathbf{r},\mathbf{a})\,\widetilde{\mathbf{E}}(\mathbf{a}),
+  \widetilde{\mathbf{E}}(\mathbf{r}) &= \mathbf{M}(\mathbf{r},\mathbf{a})\,\widetilde{\mathbf{E}}(\mathbf{a}).
 \end{align}
 % The sentence below was already stated earlier.
 %In practice the grid is set to be a power of 2 such that the grid spacing is at
@@ -895,6 +895,52 @@ $(l,m)\approx (0, 0.125)$, and (0.4,0.55) respectively and Sgr~A faintly at
 \end{figure}
 
 \section{Analysis and Feasibility}\label{sec:analysis}
+
+We now investigate the feasibility of implementing the EPIC imager on current
+and future radio telescopes. 
+
+We have profiled the core routines of EPIC line-by-line for various ranges of
+parameters such as antenna filling fraction, maximum baseline 
+length, bandwidth and frequency resolution, integration timescale, etc. for 
+HERA antenna layouts which are highly compact. 
+
+Of all steps in the MOFF pipeline that are repeated for every writeout from 
+the F-engine, the slowest step even for dense HERA 
+layouts is found to be the spatial two-dimensional FFT in the imaging stage 
+relative to applying the sparse matrix gridding convolution, squaring or 
+time-averaging. For instance, even in the dense array layout scenario that 
+makes these stages perform the slowest, the gridding convolution, squaring and 
+time-averaging take up only $\simeq 40$\%, $\simeq 40$\% and $\simeq 15$\% 
+respectively of the time taken by the spatial Fourier transform. With sparser 
+arrays they will be even faster. 
+
+In the visibility-based imaging, the predominant computational cost is at
+the X-engine requiring $N_\textrm{a}^2$ complex multiplications per channel 
+per correlator writeout timescale. 
+
+In the following discussions, we will assume that the computational cost for
+the MOFF imaging is determined by the spatial Fourier transform while  
+that for visibility-based imaging comes from $N_\textrm{a}^2$ 
+cross-correlations. However, if non-linearities such 
+as non-coplanarity of baselines \citep{cor08} and wide-field phenomena like 
+the {\it pitchfork} effect \citep{thy15a,thy15b} are to be corrected for, 
+the antenna based illumination footprint can start becoming less compact
+in the measurement plane and can result in a costlier gridding process.
+
+The number of complex multiplications and additions in the spatial Fourier 
+transform implemented via Fast Fourier Transform \citep[FFT;][]{coo65} is 
+$\approx \beta N_\textrm{g}\log N_\textrm{g}$ where $N_\textrm{g}$ 
+is the number of pixels on the grid and $\beta$ is a constant that depends on 
+the implementation of twiddle FFT algorithms \citep{bri74}. In our study, we 
+set $\beta=5$, a value much more conservative than was indicated in 
+\citet{mor11}. We set the number of complex multiplications in the X-engine 
+in visibility based imaging to $N_\textrm{a}^2$.
+
+We consider antenna array layouts described by three quantities fundamental
+to radio interferometry, namely, maximum baseline length, number of antennas,
+and the size of each antenna. 
+
+% Figure~\ref{fig:parameter-space-bll-nant-instruments} shows the 
 
 \subsection{Scaling Relations: MOFF vs. FX}
 \subsection{Scaling Up}

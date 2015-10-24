@@ -34,10 +34,23 @@
 {Bhatnagar, S.} {Cornwell, T. J.} {Golap, K.}  {Uson, J. M.} 2008, \mn@doi
   [A\&A] {10.1051/0004-6361:20079284}, 487, 419
 
+\bibitem[\protect\citeauthoryear{{Brigham}}{{Brigham}}{1974}]{bri74}
+{Brigham} E.~O.,  1974, {The fast Fourier Transform}
+
 \bibitem[\protect\citeauthoryear{{Bunton}}{{Bunton}}{2004}]{bun04}
 {Bunton} J.~D.,  2004, \mn@doi [Experimental Astronomy]
   {10.1007/s10686-005-5661-5}, \href
   {http://adsabs.harvard.edu/abs/2004ExA....17..251B} {17, 251}
+
+\bibitem[\protect\citeauthoryear{Cooley \& Tukey}{Cooley \&
+  Tukey}{1965}]{coo65}
+Cooley J.~W.,  Tukey J.~W.,  1965, Math. Comput., 19, 297
+
+\bibitem[\protect\citeauthoryear{{Cornwell}, {Golap}  \&
+  {Bhatnagar}}{{Cornwell} et~al.}{2008}]{cor08}
+{Cornwell} T.~J.,  {Golap} K.,   {Bhatnagar} S.,  2008, \mn@doi [IEEE Journal
+  of Selected Topics in Signal Processing] {10.1109/JSTSP.2008.2005290}, \href
+  {http://adsabs.harvard.edu/abs/2008ISTSP...2..647C} {2, 647}
 
 \bibitem[\protect\citeauthoryear{Daishido et~al.,}{Daishido
   et~al.}{2000}]{dai00}
@@ -113,6 +126,17 @@ Tegmark M.,  Zaldarriaga M.,  2010, \mn@doi [Phys. Rev. D]
 {Thompson} A.~R.,  {Moran} J.~M.,   {Swenson} Jr. G.~W.,  2001, {Interferometry
   and Synthesis in Radio Astronomy, 2nd Edition}.
 Wiley
+
+\bibitem[\protect\citeauthoryear{{Thyagarajan} et~al.,}{{Thyagarajan}
+  et~al.}{2015a}]{thy15a}
+{Thyagarajan} N.,  et~al., 2015a, \mn@doi [\apj] {10.1088/0004-637X/804/1/14},
+  \href {http://adsabs.harvard.edu/abs/2015ApJ...804...14T} {804, 14}
+
+\bibitem[\protect\citeauthoryear{{Thyagarajan} et~al.,}{{Thyagarajan}
+  et~al.}{2015b}]{thy15b}
+{Thyagarajan} N.,  et~al., 2015b, \mn@doi [\apjl]
+  {10.1088/2041-8205/807/2/L28}, \href
+  {http://adsabs.harvard.edu/abs/2015ApJ...807L..28T} {807, L28}
 
 \bibitem[\protect\citeauthoryear{Tingay et~al.,}{Tingay et~al.}{2013}]{tin13}
 Tingay S.~J.,  et~al., 2013, \mn@doi [PASA - Publications of the Astronomical
