@@ -43,6 +43,7 @@
 \usepackage{graphicx}	% Including figure files
 \usepackage{amsmath}	% Advanced maths commands
 \usepackage{amssymb}	% Extra maths symbols
+\usepackage[flushleft]{threeparttable} % For table notes
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -467,7 +468,7 @@ now publicly available. Besides implementing the MOFF imaging algorithm it also
 includes FX imaging using the software holography technique and a simulator for
 generating electric fields from a sky model. 
 
-Figure~\ref{fig:MOFF-flowchart} shows the flowchart for MOFF imaging. The
+Fig.~\ref{fig:MOFF-flowchart} shows the flowchart for MOFF imaging. The
 propagated electric fields are shown on the left at different time stamps,
 $t_1\ldots t_\textrm{M}$. At each time stamp, the electric fields measured by
 antennas are denoted by $E_1(t)\ldots E_\textrm{N}(t)$. The F-engine performs a
@@ -491,7 +492,7 @@ accumulated image $I(f)$ ($\mathbf{I}(\hat{\mathbf{s}})$ in matrix notation).
   \label{fig:MOFF-flowchart}
 \end{figure}
 
-Figure~\ref{fig:FX-flowchart} shows the flowchart for software holographic
+Fig.~\ref{fig:FX-flowchart} shows the flowchart for software holographic
 imaging from a FX correlator. The antenna-based F-engine is identical to that in
 the MOFF processing. The electric field spectra from each antenna are then cross-
 multiplied in the X-engine with those from all other antennas to obtain the
@@ -517,7 +518,7 @@ Here, we discuss the components of these architectures in detail.
 This module is common to the MOFF and FX imaging techniques. Time samples of
 electric fields measured by the antenna and digitized by the A/D converter is
 Fourier transformed to generate electric field spectra. This step can be
-parallelized by antennas as shown in Figure~\ref{fig:f-engine}. The output is
+parallelized by antennas as shown in Fig.~\ref{fig:f-engine}. The output is
 then fed to either MOFF and FX imaging pipelines.
 
 \begin{figure}
@@ -555,7 +556,7 @@ antenna occupies a footprint typically the size of its aperture,
 $\mathbf{M}(\mathbf{r},\mathbf{a})$, which is generally of size
 $N_\textrm{grid}\times N_\textrm{a}$, reduces to a sparse block-diagonal matrix
 with only $N_\textrm{a}$ blocks and roughly $N_\textrm{k}$ non-zero entries per
-block. Figure~\ref{fig:a2g-mapping} illustrates the antenna-to-grid mapping
+block. Fig.~\ref{fig:a2g-mapping} illustrates the antenna-to-grid mapping
 matrix and the grid containing the mapped aperture footprints of the antennas.
 
 \begin{figure}
@@ -581,7 +582,7 @@ In a companion paper to appear soon, we demonstrate a novel calibration
 technique (EPICal) which leverages the data products formed by direct imaging 
 correlators to estimate antenna complex gains. This method correlates the antenna 
 electric field signals with an image pixel form the output of the correlator in the 
-feedback calibration fashion outlined in \citealt{mor11} (illustrated in Figure 
+feedback calibration fashion outlined in \citealt{mor11} (illustrated in Fig. 
 \ref{fig:MOFF-flowchart} by the arrow leading from the imager to the calibration 
 block). Furthermore it allows for arbitrarily complex sky models, and following the 
 MOFF algorithm places no restriction on array layout, and accounts for non-identical 
@@ -655,7 +656,7 @@ auto-correlations have to be removed from both the $uv$ and image planes.
 
 The shape and extent of these auto-correlations can be estimated from the 
 antenna aperture illumination pattern which is a quantity already available 
-from the gridding step. Figure~\ref{fig:autocorr_wts_PB} shows the estimated 
+from the gridding step. Fig.~\ref{fig:autocorr_wts_PB} shows the estimated 
 weights from antenna auto-correlations in the $uv$-plane (left) and the 
 corresponding response in the image plane (right). The latter is simply the 
 directional antenna power response. 
@@ -695,7 +696,7 @@ timeseries is $1/\delta f=25\,\mu$s long. We use the MWA array layout
 box of 150~m on each side were used. We assumed all tiles are identical and have 
 a square shaped electric field illumination footprint 4.4~m on each side. 
 
-Figure~\ref{fig:MOFF-FX-image} shows the dirty images (top) and synthesized beams
+Fig.~\ref{fig:MOFF-FX-image} shows the dirty images (top) and synthesized beams
 (bottom) obtained with antenna-based MOFF and FX visibility-based imaging 
 algorithms packaged in EPIC. The antenna auto-correlations that correspond to 
 zero spacing have been removed from the MOFF image and the corresponding 
@@ -729,7 +730,7 @@ cross-correlation weights in the $uv$-plane. In MOFF imaging, weights
 from antenna auto-correlations have been removed as described in 
 \S\ref{sec:rm-autocorr}. 
 
-Figure~\ref{fig:MOFF-FX-uvwts} shows the cross-correlation weights obtained 
+Fig.~\ref{fig:MOFF-FX-uvwts} shows the cross-correlation weights obtained 
 with MOFF imaging (left) and visibility-based imaging (right). The first 
 notable difference is in the weights around zero spacing. Though both show a
 dominant void around zero-spacing, the void obtained with MOFF algorithm shows 
@@ -829,7 +830,7 @@ where, $B(\hat{\mathbf{s}}) \equiv \left|W(\hat{\mathbf{s}})\right|^2$. Thus,
 the error on the synthesized beam is proportional to the antenna power pattern
 and increases linearly outward in radial bins of direction cosines.
 
-Figure~\ref{fig:psf-diff} shows the difference between the synthesized beams 
+Fig.~\ref{fig:psf-diff} shows the difference between the synthesized beams 
 obtained with the two methods. A difference map between the two synthesized 
 beams is shown on top. The amplitude of the difference appears to be 
 modulated by the directional voltage response of the antenna. At the bottom, 
@@ -873,7 +874,7 @@ We have matched the cable delays of all the antennas but yet to deploy the
 calibration pipeline we have developed on this data. Therefore, in 
 subsequent discussion we assumed the data is calibrated. 
 
-Figure~\ref{fig:LWA-image} shows the image produced with MOFF imaging 
+Fig.~\ref{fig:LWA-image} shows the image produced with MOFF imaging 
 packaged in EPIC after averaging over the entire 2~s of data and the inner
 $\approx 80$\% of bandwidth (roughly 80~kHz). The image is shown in direction 
 cosine coordinates -- $l$ along x-axis and $m$ along y-axis. Due to lack of
@@ -936,31 +937,145 @@ set $\beta=5$, a value much more conservative than was indicated in
 \citet{mor11}. We set the number of complex multiplications in the X-engine 
 in visibility based imaging to $N_\textrm{a}^2$.
 
-We consider antenna array layouts described by three quantities fundamental
-to radio interferometry, namely, maximum baseline length, number of antennas,
-and the size of each antenna. 
+We consider a variety of current and planned radio telescopes. Their antenna 
+layouts are summarized in Table~\ref{tab:antenna-layouts}. The size of the 
+layout gives the maximum baseline $b_\textrm{max}$. The grid spacing is 
+determined by the science goals of the experiment in general. For our 
+purpose, we assume a typical requirement that only the field of view of the 
+antenna is to be imaged. This sets the grid spacing to be equal to the size 
+of the antenna, $A_\textrm{a}$. Hence, 
+$N_\textrm{g}\simeq b_\textrm{max}^2/A_\textrm{a}$. 
 
-% Figure~\ref{fig:parameter-space-bll-nant-instruments} shows the 
+\begin{table}
+  \centering
+  \caption{Radio telescopes and array layouts.}
+  \label{tab:antenna-layouts}
+  \begin{threeparttable}
+  \begin{tabular}{ccccc} 
+    \hline
+    Telescope & Core & Number & Antenna & Frequency \\
+              & size & of Antennas & size & \\
+    (key)     & $b_\textrm{max}$ (in m) & $N_\textrm{a}$ & $A_\textrm{a}$ (in m$^2$) & $f_0$ (in MHz) \\
+    \hline
+    MWA & 1400 & 112 & 16 & 150 \\
+    (MWA-112) \\ \\
+    MWA & 1400 & 496 & 16 & 150 \\
+    (MWA-496) \\ \\
+    LOFAR & 3500 & 24 & & 50 \\
+    (LOFAR-C) & & & & \\ \\
+    LWA1 & 100 & 256 & 10 & 50 \\
+    (LWA1) \\ \\
+    LWA-OV\tnote{a} & 200 & 256 & 10 & 50 \\
+    (LWA-OV) & & & & \\ \\
+    HERA & 70 & 19 & 154 & 150 \\
+    (HERA-19) \\ \\
+    HERA & 98 & 37 & 154 & 150 \\
+    (HERA-37) \\ \\
+    HERA & 294 & 331 & 154 & 150 \\
+    (HERA-331) \\ \\
+    HERA & 1330 & 6769\tnote{b} & 154 & 150 \\
+    (HERA-6769) \\ \\
+    SKA1-Low & 1000 & 750\tnote{c} & 962 & 150 \\
+    (SKA1-LC) \\ \\
+    SKA1-Low & 1000 & 192,000\tnote{c} & 962 & 150 \\
+    Dipoles\tnote{d} \\
+    (SKA1-LCD) \\
+    \hline
+  \end{tabular}
+  \begin{tablenotes}
+    \item[a] Owens Valley LWA
+    \item[b] Hypothetically chosen to have a total collecting area of 
+      1~km$^2$
+    \item[c] This is the number of elements expected to be in the core, 
+      three-fourths of the total number
+    \item[d] All dipoles are used as independent elements without station 
+      beamforming
+  \end{tablenotes}
+  \end{threeparttable}
+\end{table}
+\footnotetext{LWA at Ovens Valley}
 
-\subsection{Scaling Relations: MOFF vs. FX}
-\subsection{Scaling Up}
-\subsection{Case Study}
-
-
-\begin{figure}
-  \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding.eps}
-  \caption{Current and instruments planned for future in parameter space of
-    baseline length and number of antennas with MOFF and FX.}
-  \label{fig:parameter-space-bll-nant-instruments}
-\end{figure}
+Fig.~\ref{fig:parameter-space-computations-instruments} shows the number of 
+complex operations per frequency channel per integration timescale. Telescopes 
+that fall to the left of this line indicate MOFF imaging is computationally
+more efficient than visibility based imaging. All HERA layouts except possibly
+HERA-19 are in a parameter space where MOFF imaging holds the advantage. The 
+solid line showing future trajectory of HERA like systems will be clearly 
+favoured by MOFF imaging. The gray shaded area is for a projected LWA 
+expansion and is also predominantly in the region favouring MOFF imaging. 
+It is bounded by the LWA1 and LWA-OV on the left and right 
+respectively. The current (see Table~\ref{tab:antenna-layouts} and
+an expanded layout with a four-fold increase in number of elements over a
+two-fold increase in $b_\textrm{max}$ provide the bounds at the bottom and top 
+respectively. Current instruments such as MWA and LOFAR lie in parameter space
+favouring visibility based imaging. 
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{MOFF_FX_computations_fov_gridding_annotated.eps}
   \caption{Current and planned instruments in parameter space of
-    number of complex multiplies and adds with MOFF and FX.}
+    number of complex multiplies and adds with MOFF and FX. The dashed line
+    is the boundary at which the number of operations with MOFF and visibility 
+    based imaging are equal. MOFF imaging is more efficient for telescopes 
+    occupying the left of this line and vice versa. All the HERA layouts except
+    possibly HERA-19 lie in the parameter space favoured by MOFF imaging. And so 
+    are SKA1-LC and SKA1-LCD. The solid black curve shows the projected 
+    trajectory of bigger close-packed hexagonal layouts similar to HERA. The 
+    gray shaded area denotes the projected trajectory of the LWA bounded by LWA1 
+    (left edge), LWA-OV (right edge), current layout (bottom) and a four-fold 
+    increase in the number of elements in a two-fold increase in the core size
+    (top). Current instruments such as MWA and LOFAR fall in a region favoured 
+    by visibility based imaging.}
   \label{fig:parameter-space-computations-instruments}
 \end{figure}
 
+We now consider antenna array layouts described by three quantities essential
+to radio interferometry, namely, maximum baseline length, number of antennas,
+and the size of each antenna. 
+
+Fig.~\ref{fig:parameter-space-bll-nant-instruments} shows the ratio of the
+number of computations required with visibility based imaging relative to 
+MOFF imaging and the boundaries where this ratio is unity. The color scale 
+refers to the ratio while using a 1~m antenna element. Pairs of black and
+white lines of the same line style correspond to a specific antenna size. For 
+a given antenna size (annotated on the plot), the white line denotes the 
+minimum baseline length that could achieve the closest packing as a function 
+of the number of antennas. Regions to the right of the white line for a 
+given antenna size imply a physically impossible scenario where antennas will 
+have to be packed overlapping with each other. For the same antenna size, the 
+black line denotes the boundary where the ratio of the number of computations 
+with either algorithm becomes unity. Regions to the right of the black lines 
+favour usage of the MOFF algorithm. Thus the wedge between the white and black 
+lines denotes the region in parameter space where MOFF algorithm holds a 
+definite advantage while visibility based algorithms will be favoured to the 
+left of the black lines. As antenna size increases the maximum number of 
+antennas for a dense packing as a function of baseline length decreases. Hence 
+the white lines shift leftward as antenna size increases. Similarly, with 
+increase in antenna size, $N_\textrm{g}$ also decreases when field of view 
+imaging is achieved with an increasing grid spacing equal to antenna size and
+hence lowers the amount of computations required with the MOFF algorithm. This
+shifts the black curves leftward. HERA-331, HERA-1027, LWA1, SKA1-LC and 
+SKA1-LCD are inside their respective wedges indicating they are in regions that
+favour the usage of MOFF imaging.
+
+\begin{figure}
+  \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding.eps}
+  \caption{Current and instruments planned for future in parameter space of
+    baseline length and number of antennas with MOFF and FX. Color scale shown 
+    is for the ratio of number of computations required by visibility based
+    imaging to that by the MOFF algorithm. Different line styles denote 
+    different antenna sizes annotated. For a given antenna size, the 
+    corresponding white line denotes the maximum number of antennas that can 
+    be packed inside various baseline lengths. The region to the right of the 
+    white lines for corresponding antenna size is physically disallowed. 
+    Regions to the left of the black lines of the same corresponding antenna 
+    size (or line style) favours usage of visibility based imaging. Region 
+    inside the wedge enclosed by the black and white lines favours using the 
+    MOFF algorithm for any given antenna size. These wedges shift leftward with 
+    increasing antenna size. HERA-331, HERA-1027, LWA1, SKA1-LC and SKA1-LCD
+    are inside their corresponding wedges that favour the usage of MOFF 
+    imaging.}
+  \label{fig:parameter-space-bll-nant-instruments}
+\end{figure}
 
 % \subsection{Figures and tables}
 
