@@ -199,7 +199,7 @@ algorithm. We conclude and discuss future research prospects in \S
 
 \section{Mathematical Framework}\label{sec:math}
 
-We provide a brief summary of the amthematical equivalence of the MOFF and 
+We provide a brief summary of the mathematical equivalence of the MOFF and 
 FX correlators detailed in \citet{mor11}. We first relate the dirty image produced 
 from visibilities to the electric fields of astrophysical sources, then show that 
 operations can be reordered to produce the same images at a lower 
@@ -254,7 +254,7 @@ where the baseline coordinate $\mathbf{u}_p=\mathbf{r}_a-\mathbf{r}_b$ is the
 vector separation between the two antennas. This signifies that the visibility 
 ($\widetilde{V}_p$) measured between a
 pair of antennas ($p$) is obtained by the multiplying the sky brightness
-$I(\hat{\mathbf{s}})$ by the antenna power response $B(\hat{\mathbf{s}})$ and
+$I(\hat{\mathbf{s}})$ by the antenna power response $B_p(\hat{\mathbf{s}})$ and
 Fourier transforming from the directional coordinates ($\hat{\mathbf{s}}$) to $uv$
 coordinates, which are then sampled at the locations of the antenna spacings (or
 baselines), namely, $\mathbf{u}_p$, and added to the receiver noise $n_p$. 
@@ -283,7 +283,7 @@ function is weighted and summed using the antenna power response,
 $\widetilde{\mathbf{B}}(\mathbf{v},\mathbf{u})$ in $uv$-space sampled at the baseline
 location to obtain the measured visibilities:
 \begin{align}
-  \mathbf{m}(\mathbf{v}) &= \left\langle \widetilde{\mathbf{E}}^\star(\mathbf{a})\,\widetilde{\mathbf{E}}(\mathbf{a}^\prime)\right\rangle_t, \label{eqn:matrix-cc-vis}
+  \mathbf{m}(\mathbf{v}) &= \left\langle \widetilde{\mathbf{E}}(\mathbf{a})\,\widetilde{\mathbf{E}}^\star(\mathbf{a}^\prime)\right\rangle_t, \label{eqn:matrix-cc-vis}
 \end{align}
 where $\mathbf{m}(\mathbf{v})$ denotes visibilities measured by cross-correlating
 measured antenna electric fields over all possible pairs of $\mathbf{a}$ and
@@ -482,8 +482,8 @@ There are some important differences between the two techniques:
 \section{Software Implementation}\label{sec:software}
 
 We have implemented the MOFF imaging technique in our ``E-field Parallel Imaging
-Correlator'' -- a highly parallelized Object Oriented Python package,
-\footnote{EPIC package can be accessed at https://github.com/nithyanandan/EPIC}
+Correlator'' -- a highly parallelized Object Oriented Python 
+package,\footnote{EPIC package can be accessed at https://github.com/nithyanandan/EPIC}
 now publicly available. Besides implementing the MOFF imaging algorithm it also
 includes FX imaging using the software holography technique and a simulator for
 generating electric fields from a sky model. 
@@ -617,13 +617,13 @@ correlator which periodically forms the full visibility matrix
 In a companion paper to appear soon, we demonstrate a novel calibration 
 technique (EPICal) which leverages the data products formed by direct imaging 
 correlators to estimate antenna complex gains. This method correlates the antenna 
-electric field signals with an image pixel form the output of the correlator in 
+electric field signals with an image pixel from the output of the correlator in 
 the feedback calibration fashion outlined in \citealt{mor11} (illustrated in Fig. 
 \ref{fig:MOFF-flowchart} by the arrow leading from the imager to the calibration 
 block). Furthermore it allows for arbitrarily complex sky models, and following 
 the MOFF algorithm places no restriction on array layout, and accounts for 
 non-identical antenna beam patterns. Because only a single correlation is needed 
-for each antenna, the computation complexity scales only as $N_{\mathrm{ant}}$. 
+for each antenna, the computation complexity scales only as $N_{\mathrm{a}}$. 
 
 The calibration module included in the EPIC repository allows for application of 
 pre-determined calibration solutions, or can solve for the complex gains using 
@@ -720,7 +720,7 @@ modules are built. There is one Antenna module per antenna each having
 attributes -- the propagated electric field time-series, $E(t)$, and spectrum 
 $E(f)$ for both polarizations. The most important function inside this module 
 is the F-engine that Fourier transforms time-series electric field data into 
-spectrum. 
+spectra. 
 
 The other function (not shown in the figure) is to update the data as new data 
 keeps streaming in. This can also be parallelized. Another important attribute
@@ -1047,7 +1047,7 @@ in the future.
 Fig.~\ref{fig:LWA-image} shows the image produced with MOFF imaging 
 packaged in EPIC after averaging over the entire 2~s of data and the inner
 $\approx 80$\% of bandwidth (roughly 80~kHz). The image is shown in direction 
-cosine coordinates -- $l$ along x-axis and $m$ along y-axis. The flux scale 
+cosine coordinates -- $l$ along the horizontal axis and $m$ along the vertical axis. The flux scale 
 is arbitrary. Even in this proof-of-concept demonstration, we see Cyg~A and 
 Cas~A prominently and Sgr~A faintly as annotated, thus validating the 
 functionality of the EPIC package.
