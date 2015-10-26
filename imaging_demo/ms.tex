@@ -307,7 +307,7 @@ directly with the antenna illumination pattern.
 \begin{align}
 &\widetilde{\mathbf{B}}^{\,\textrm{T}}(\mathbf{u},\mathbf{v})\,\mathbf{N}^{-1}(\mathbf{v} ,\mathbf{v})\,\mathbf{m}(\mathbf{v})=\nonumber\\
 &\qquad\left\langle \left[\widetilde{\mathbf{W}}^\textrm{T}_a(\mathbf{r},\mathbf{a})\, \widetilde{\mathbf{N}}^{-1}\!(\mathbf{a},\mathbf{a})\, \widetilde{\mathbf{E}}(\mathbf{a})\right]
-\ast\left[\widetilde{\mathbf{W}}_a(\mathbf{r},\mathbf{a})\, \mathbf{N}^{-1}\!(\mathbf{a},\mathbf{a})\, \mathbf{E}^\star(\mathbf{a})\right]\right\rangle_t\label{eqn:e-field-conv}
+\ast\left[\widetilde{\mathbf{W}}_a(\mathbf{r},\mathbf{a})\, \mathbf{N}^{-1}\!(\mathbf{a},\mathbf{a})\, \widetilde{\mathbf{E}}^\star(\mathbf{a})\right]\right\rangle_t\label{eqn:e-field-conv}
 \end{align}
 
 We can then use the multiplication-convolution theorem to move the convolution in 
@@ -488,18 +488,27 @@ now publicly available. Besides implementing the MOFF imaging algorithm it also
 includes FX imaging using the software holography technique and a simulator for
 generating electric fields from a sky model. 
 
+\subsection{Data Flow}
+
+EPIC can accept dual-polarization inputs and produce images of all four 
+cross-polarizations. Currently two data input formats exist for reading in the 
+electric field time samples measured by the antennas -- simulated electric 
+fields based on a sky model using the simulator packaged with EPIC; and LWA 
+data. Efforts to build interfaces for data from other telescopes are underway.
+
 Fig.~\ref{fig:MOFF-flowchart} shows the flowchart for MOFF imaging. The
 propagated electric fields are shown on the left at different time stamps,
 $t_1\ldots t_\textrm{M}$. At each time stamp, the electric fields measured by
 antennas are denoted by $E_1(t)\ldots E_\textrm{N}(t)$. The F-engine performs a
 temporal Fourier transform on the electric field time-series to obtain electric
-field spectra $E_1(f)\ldots E_\textrm{N}(f)$ ($\widetilde{\mathbf{E}}(\mathbf{a})$ in matrix
-notation) for each of the antennas. Each of the complex antenna gains are
-calibrated to correct the corresponding electric field spectra. These calibrated
-electric fields are gridded using an antenna-based gridding convolution function
-after which it is spatially Fourier transformed and squared to obtain images
-for every time stamp. These images are then time-averaged to obtain the
-accumulated image $I(f)$ ($\mathbf{I}(\hat{\mathbf{s}})$ in matrix notation).
+field spectra $E_1(f)\ldots E_\textrm{N}(f)$ 
+($\widetilde{\mathbf{E}}(\mathbf{a})$ in matrix notation) for each of the 
+antennas. Each of the complex antenna gains are calibrated to correct the 
+corresponding electric field spectra. These calibrated electric fields are 
+gridded using an antenna-based gridding convolution function after which it is 
+spatially Fourier transformed and squared to obtain images for every time stamp. 
+These images are then time-averaged to obtain the accumulated image 
+$I(f)$ ($\mathbf{I}(\hat{\mathbf{s}})$ in matrix notation).
 \begin{figure}
   \includegraphics[width=\columnwidth]{MOFF_flowchart.eps}
   \caption{A flowchart of MOFF imaging in EPIC. The propagated electric fields
@@ -533,13 +542,14 @@ from both techniques are identical as explained in \S\ref{sec:math}.
 
 Here we discuss the components of these architectures in detail. 
 
-\subsection{Temporal Fourier transform}\label{sec:F-engine}
-
-This module is common to the MOFF and FX imaging techniques. Time samples of
-electric fields measured by the antenna and digitized by the A/D converter is
-Fourier transformed to generate electric field spectra. This step can be
-parallelized by antennas as shown in Fig.~\ref{fig:f-engine}. The output is
-then fed to either MOFF and FX imaging pipelines.
+\par\medskip
+\noindent {\bf Temporal Fourier transform}
+\par\medskip
+\noindent This module is common to the MOFF and FX imaging techniques. Time 
+samples of electric fields measured by the antenna and digitized by the A/D 
+converter is Fourier transformed to generate electric field spectra. This step 
+can be parallelized by antennas as shown in Fig.~\ref{fig:f-engine}. The output 
+is then fed to either MOFF and FX imaging pipelines.
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{F-engine.eps}
@@ -549,21 +559,23 @@ then fed to either MOFF and FX imaging pipelines.
   \label{fig:f-engine}
 \end{figure}
 
-\subsection{Antenna-to-Grid Mapping}
-
-A grid is generated on the coordinate system in which antenna locations are
-specified with a grid spacing that is at most $\lambda_\textrm{min}/2$ even at the
-highest frequency to ensure there is no aliasing even from regions of the sky far
-away from the field of view. The number of locations on the grid is restricted to
-be a power of 2. 
+\par\medskip
+\noindent {\bf Antenna-to-Grid Mapping}
+\par\medskip
+\noindent A grid is generated on the coordinate system in which antenna 
+locations are specified with a grid spacing. The grid spacing can be controlled 
+by the user. By default, it is set to be at $\lambda_\textrm{min}/2$ even at the 
+highest frequency to ensure there is no aliasing even from regions of the sky 
+far away from the field of view. The number of locations on the grid is 
+restricted to be a power of 2. 
 
 The gridding kernel in the simplest case is given by the antenna aperture
 illumination function, $\widetilde{B}(\mathbf{r}-\mathbf{r}_a)$, which can
-be specified either by a functional form or as a table of values against locations
-around the antennas. A nearest neighbor mapping from all antenna footprints to
-grid locations is created using an efficient k-d tree algorithm \citep{man99}.
-There is no restriction here that the aperture illumination function has to be
-identical across antennas. 
+be specified either by a functional form or as a table of values against 
+locations around the antennas. A nearest neighbor mapping from all antenna 
+footprints to grid locations is created using an efficient k-d tree algorithm 
+\citep{man99}. There is no restriction here that the aperture illumination 
+function has to be identical across antennas. 
 
 In the most general case, this gridding kernel could contain information on the
 $w$-projection effect, and even other time-dependent ionospheric effects. For a
@@ -591,8 +603,10 @@ matrix and the grid containing the mapped aperture footprints of the antennas.
   \label{fig:a2g-mapping}
 \end{figure}
 
-\subsection{Calibration}
-Calibration of direct imaging correlators remains a challenge. Contrary
+\par\medskip
+\noindent {\bf Calibration}
+\par\medskip
+\noindent Calibration of direct imaging correlators remains a challenge. Contrary
 to the FX data flow, direct imagers mix the signals from all antennas before
 averaging and writing to disk. It is therefore essential to apply gain solutions 
 before the gridding step. Previous efforts have resorted to applying FX-generated
@@ -603,23 +617,24 @@ correlator which periodically forms the full visibility matrix
 In a companion paper to appear soon, we demonstrate a novel calibration 
 technique (EPICal) which leverages the data products formed by direct imaging 
 correlators to estimate antenna complex gains. This method correlates the antenna 
-electric field signals with an image pixel form the output of the correlator in the 
-feedback calibration fashion outlined in \citealt{mor11} (illustrated in Fig. 
+electric field signals with an image pixel form the output of the correlator in 
+the feedback calibration fashion outlined in \citealt{mor11} (illustrated in Fig. 
 \ref{fig:MOFF-flowchart} by the arrow leading from the imager to the calibration 
-block). Furthermore it allows for arbitrarily complex sky models, and following the 
-MOFF algorithm places no restriction on array layout, and accounts for non-identical 
-antenna beam patterns. Because only a single correlation is needed for each 
-antenna, the computation complexity scales only as $N_{\mathrm{ant}}$. 
+block). Furthermore it allows for arbitrarily complex sky models, and following 
+the MOFF algorithm places no restriction on array layout, and accounts for 
+non-identical antenna beam patterns. Because only a single correlation is needed 
+for each antenna, the computation complexity scales only as $N_{\mathrm{ant}}$. 
 
-The calibration module included in the EPIC repository allows for application of pre-
-determined calibration solutions, or can solve for the complex gains using the 
-EPICal algorithm.
+The calibration module included in the EPIC repository allows for application of 
+pre-determined calibration solutions, or can solve for the complex gains using 
+the EPICal algorithm.
 
-\subsection{Gridding Convolution}
-
-The antenna array aperture illumination over the entire grid,
-$\widetilde{\mathbf{W}}(\mathbf{r})$, is obtained by a projection of the individual
-antenna aperture illuminations:
+\par\medskip
+\noindent {\bf Gridding Convolution}
+\par\medskip
+\noindent The antenna array aperture illumination over the entire grid,
+$\widetilde{\mathbf{W}}(\mathbf{r})$, is obtained by a projection of the 
+individual antenna aperture illuminations:
 \begin{align}\label{eqn:gridding-convolution}
   \widetilde{\mathbf{W}}(\mathbf{r}) &= \sum_a \widetilde{\mathbf{W}}_a(\mathbf{r}-\mathbf{r}_a) \\
                             &= \mathbf{M}(\mathbf{r},\mathbf{a})\,\mathcal{I}(\mathbf{a}),
@@ -638,11 +653,12 @@ computed at every readout of the electric field spectra,
 %In practice the grid is set to be a power of 2 such that the grid spacing is at
 %most $\lambda/2$ even at the highest frequency in the observing band. 
 
-\subsection{Spatial Fourier Transform}
-
-Before the spatial Fourier transform, the gridded electric fields are padded with
-zeros in order to match the grid size and angular size of each image pixel that
-would have been obtained with software holography of output from an FX
+\par\medskip
+\noindent {\bf Spatial Fourier Transform}
+\par\medskip
+\noindent Before the spatial Fourier transform, the gridded electric fields are 
+padded with zeros in order to match the grid size and angular size of each image 
+pixel that would have been obtained with software holography of output from an FX
 correlator. 
 
 In MOFF imaging, these are spatially Fourier transformed followed by a squaring
@@ -650,14 +666,15 @@ operation at every timestamp for every frequency channel. In FX imaging, the
 spatial Fourier transform is performed only once per integration timescale and
 does not include a squaring operation.
 
-\subsection{Time-averaging}
-
-In MOFF imaging, the measured antenna electric fields and the corresponding
-holographic electric field images are zero-mean stochastic quantities. Hence,
-they cannot be time-averaged to reduce noise. The statistical quantity stable
-with time in this case are the square of the holographic electric field images.
-Thus, squared images have to be formed at every instant of time before averaging
-as indicated in equation~\ref{eqn:dirty-image-MOFF}.
+\par\medskip
+\noindent {\bf Time-averaging}
+\par\medskip
+\noindent In MOFF imaging, the measured antenna electric fields and the 
+corresponding holographic electric field images are zero-mean stochastic 
+quantities. Hence, they cannot be time-averaged to reduce noise. The statistical 
+quantity stable with time in this case are the square of the holographic 
+electric field images. Thus, squared images have to be formed at every instant 
+of time before averaging as indicated in equation~\ref{eqn:dirty-image-MOFF}.
 
 In contrast, visibilities measured by an antenna are statistically stable within
 an integration time interval. Hence, they are averaged after calibration as shown
@@ -668,14 +685,142 @@ timescale, the imaging step has to be performed only once per integration cycle.
 % FX imaging holds this advantage as long as the square of the number of antennas 
 % is smaller than the number of pixels on the image. 
 
+\subsection{Software Architecture}\label{sec:software-modules}
+
+EPIC is built using object oriented programming in Python and is built on
+carefully crafted modules which closely represent real-life entities in radio 
+interferometer arrays and observations. The essential modules along with their
+key attributes and methods are illustrated in Fig.~\ref{fig:software-modules}.
+These modules are described below.
+
+\begin{figure*}
+  \includegraphics[width=\linewidth]{EPIC-modules.eps}
+  \caption{Software architecture of EPIC with core modules, their essential
+    attributes and functions. The Antenna module forms the fundamental building 
+    block. It consists of electric field time-series and spectra and the 
+    F-engine that performs a temporal FFT to obtain electric field spectra from 
+    the time-series. The Interferometer module is made of a pair of Antenna 
+    modules. Its main function is the X-engine (FX or XF) to produce visibility 
+    spectra. The Antenna Array module is made of all individual Antenna modules
+    as its components and contains collective properties about the antenna 
+    subsystems. Its core function is the creation of antenna-to-grid mapping and 
+    that of gridded aperture weights and electric fields. The Interferometer 
+    Array module is very similar in principle to the Antenna Array module 
+    except it operates on cross-correlations and produces gridded visibilities.
+    The Image module takes gridded electric fields or visibilities and performs
+    a two-dimensional spatial FFT (and squares the intermediate image in case 
+    of the former) to produce output images.}
+  \label{fig:software-modules}
+\end{figure*}
+
+\subsubsection{Antenna module}
+
+The Antenna module is a fundamental building block upon which all the other 
+modules are built. There is one Antenna module per antenna each having 
+attributes -- the propagated electric field time-series, $E(t)$, and spectrum 
+$E(f)$ for both polarizations. The most important function inside this module 
+is the F-engine that Fourier transforms time-series electric field data into 
+spectrum. 
+
+The other function (not shown in the figure) is to update the data as new data 
+keeps streaming in. This can also be parallelized. Another important attribute
+(not shown in figure) are antenna flags for each polarization appropriate for 
+the data stream being held by the Antenna module. 
+
+\subsubsection{Interferometer module}
+
+The Interferometer module holds the attributes and functions pertaining to
+a pair of antennas and represents the cross-correlation information obtained
+from the pair. Its important attributes are the two Antenna modules. It also
+contains four cross-polarized visibility time-series and spectra. 
+
+The most important function of the Interferometer module is the X-engine. 
+This is essentially a software analog of hardware correlators of real 
+telescope systems. The X-engine can be toggled between two states of operation,
+namely, the FX and XF modes. The FX mode obtains the electric field spectra, 
+$E(f)$ from the individual Antenna modules inside the Interferometer module and
+multiplies the two to obtain visibility spectra, $V(f)$. On the other hand, the
+XF mode cross-correlates the electric field time-series from its Antenna modules
+to obtain the visibilities as a function of lags, $V_t(t)$, which is then Fourier 
+transformed to obtain $V(f)$. Both modules can operate on dual-polarizations to
+obtain all four cross-polarizations.
+
+The other attributes (not shown in figure) are the flags applicable for each
+cross-polarization for the current data stream. Similar to the Antenna module,
+it has an update function that can update the visibilities $V_t(t)$ or $V(f)$
+directly rather than through the electric fields of its component antennas. 
+This functionality is to allow EPIC to operate while attached to the backend 
+of traditional correlator systems. Currently, this feature is not utilized 
+for purposes of this paper.
+
+The Interferometer module forms the fundamental unit for the InterferometerArray
+module (to be discussed below) and in general for visibility based correlator 
+and imaging systems. 
+
+\subsubsection{Antenna Array module}
+
+The AntennaArray module consists of all the Antenna modules as its attributes
+and represents the collective properties of its component antennas. By virtue of 
+holding each antenna data independently in their respective modules the F-engine 
+for the entire array can be distributed to the F-engines of the component 
+antenna modules thus achieving a highly parallelized F-engine while emulating 
+real telescope systems.
+
+The most important attributes held by this module are the antenna aperture 
+illumination weights and electric fields projected on the grid using the 
+gridding convolution method described above and implemented by the gridding 
+function (denoted by grid()) in this module. Significant parts of the 
+antenna-to-grid mapping and gridding convolution are parallelizable 
+across antennas and frequencies.
+
+Individual antenna flags are carried over as additional weights to be applied
+to the gridded aperture illumination and electric fields. A series of data 
+streams can be stacked up to take advantage of the array optimization available 
+in Python. This module is also equipped to manage dual-polarization. 
+
+\subsubsection{Interferometer Array module}
+
+Similar to the AntennaArray module, the InterferometerArray module consists of
+individual Interferometer modules. It can parallelize the correlator operations
+by distributing the X-operation over the X-engines of its component 
+Interferometer modules. The interferometer-to-grid mapping and gridding 
+convolution are very similar in nature to that of the Antenna Array module. 
+Flag-based grid weights, stacking and ability to handle all four 
+cross-polarizations are built into this module. 
+
+\subsubsection{Image module}
+
+The Image module is built as a general purpose module that can switch between 
+operating on gridded electric fields or visibilities. At its heart, it consists
+of a two-dimensional FFT where the padding can be specified by the user to 
+control the resolution in the output images. In case of electric field based
+imaging, there is an additional step of squaring the holographic electric field
+images. This is packaged into the function annotated as imagr().
+
+Besides its core functions of spatial Fourier transform and squaring, it can 
+stack, accumulate and average images, and optionally remove the antenna
+auto-correlations centered around the zero-spacing pixel in the $uv$ plane. 
+It also handles all four cross-polarization products. Currently, it can 
+support writing data out in standard FITS format. 
+
+\section{Verification}\label{sec:verify}
+
+In order to prove the accuracy of the EPIC code, we verify the images produced 
+through simulations. We simulate electric field streams from a model sky and 
+process the data through both the MOFF and visibility based imaging algorithms. 
+We then compare the output images to demonstrate their equivalence.
+
 \subsection{Dealing with antenna auto-correlations}\label{sec:rm-autocorr}
 
-The squaring operation under MOFF imaging in the image plane introduces antenna 
-auto-correlations around the zero spacing in the $uv$-plane which are absent in 
-traditional visibility-based imaging. In order to facilitate a robust comparison, 
-these auto-correlations are removed from both the $uv$ and image planes, which 
-is otherwise not an essential part of the core algorithm. We describe below how 
-they can be removed from the $uv$ plane in a straightforward manner. 
+Before diving into the details of simulations and comparison with visibility 
+based imaging, we describe the elimination of a minor mathematical difference 
+between the two techniques. The squaring operation under MOFF imaging in the 
+image plane introduces antenna auto-correlations around the zero spacing in 
+the $uv$-plane which are absent in traditional visibility-based imaging. In 
+order to facilitate a robust comparison, these auto-correlations are removed 
+from both the $uv$ and image planes, which is otherwise not an essential part 
+of the core algorithm. We describe below how they can be removed from the $uv$ 
+plane in a straightforward manner. 
 
 The shape and extent of these auto-correlations can be estimated from the 
 antenna aperture illumination pattern. The aperture illumination patterns
@@ -697,21 +842,14 @@ is simply the directional antenna power response.
   \label{fig:autocorr_wts_PB}
 \end{figure}
 
-We inverse Fourier transform the squared 
-images and beams back to the $uv$ plane and subtract the estimated 
-auto-correlation kernel scaled to the peak value centered at the zero spacing 
-pixel. The final averaged image is obtained by Fourier transforming the $uv$ 
-plane data and weights with the auto-correlations subtracted to the image plane. 
-These images are now comparable to those obtained from visibility-based imaging. 
-This step of removing auto-correlations is required to be performed only once 
-per integration timescale and does not add significant cost to the full operation.
-
-\section{Verification}\label{sec:verify}
-
-In order to prove the accuracy of the EPIC code, we verify the images produced 
-through simulations. We simulate electric field streams from a model sky and 
-process the data through both the MOFF and visibility based imaging algorithms. 
-We then compare the output images to demonstrate their equivalence.
+We inverse Fourier transform the squared images and beams back to the $uv$ 
+plane and subtract the estimated auto-correlation kernel scaled to the peak 
+value centered at the zero spacing pixel. The final averaged image is obtained 
+by Fourier transforming the $uv$ plane data and weights with the 
+auto-correlations subtracted to the image plane. These images are now comparable 
+to those obtained from visibility-based imaging. This step of removing 
+auto-correlations is optional and required to be performed only once per 
+integration timescale and does not add significant cost to the full operation.
 
 \subsection{Simulations}\label{sec:sim}
 
@@ -948,17 +1086,17 @@ Fourier transform. With sparser arrays the gridding process will be be even
 faster. 
 
 In the visibility-based imaging, the predominant computational cost is at
-the X-engine requiring $N_\textrm{a}^2$ complex multiplications per channel 
-per correlator writeout timescale. 
+the X-engine requiring $N_\textrm{a}(N_\textrm{a}-1)/2$ complex multiplications 
+per channel at every correlator writeout timescale. 
 
 In the following discussions, we will assume that the computational cost for
 the MOFF imaging is determined by the spatial Fourier transform while  
-that for visibility-based imaging comes from $N_\textrm{a}^2$ 
-cross-correlations. However, if non-linearities such 
-as non-coplanarity of baselines \citep{cor08} and wide-field phenomena like 
-the {\it pitchfork} effect \citep{thy15a,thy15b} are to be corrected for, 
-the antenna based illumination footprint can start becoming less compact
-in the measurement plane and can result in a costlier gridding process.
+that for visibility-based imaging comes from $N_\textrm{a}(N_\textrm{a}-1)/2$ 
+cross-correlations. However, if non-linearities such as non-coplanarity of 
+baselines \citep{cor08} and wide-field phenomena like the {\it pitchfork} 
+effect \citep{thy15a,thy15b} are to be corrected for, the antenna based 
+illumination footprint can start becoming less compact in the measurement 
+plane and can result in a costlier gridding process.
 
 The number of complex multiplications and additions in the spatial Fourier 
 transform implemented via Fast Fourier Transform \citep[FFT;][]{coo65} is 
@@ -1033,7 +1171,7 @@ expansion and is also predominantly in the region favouring MOFF imaging.
 It is bounded by the LWA1 and LWA-OV on the left and right 
 respectively. The current (see Table~\ref{tab:antenna-layouts}) and
 an expanded layout with a four-fold increase in number of elements over a
-two-fold increase in $b_\textrm{max}$ provide the bounds at the bottom and top 
+50\% increase in $b_\textrm{max}$ provide the bounds at the bottom and top 
 respectively. Current instruments such as MWA and LOFAR lie in parameter space
 favouring visibility based imaging. 
 
@@ -1043,15 +1181,15 @@ favouring visibility based imaging.
     number of complex multiplies and adds with MOFF and FX. The dashed line
     is the boundary at which the number of operations with MOFF and visibility 
     based imaging are equal. MOFF imaging is more efficient for telescopes 
-    occupying the left of this line and vice versa. All the HERA layouts except
-    possibly HERA-19 lie in the parameter space favoured by MOFF imaging. And so 
-    are SKA1-LC and SKA1-LCD. The solid black curve shows the projected 
-    trajectory of bigger close-packed hexagonal layouts similar to HERA. The 
-    gray shaded area denotes the projected trajectory of the LWA bounded by LWA1 
-    (left edge), LWA-OV (right edge), current layout (bottom) and a four-fold 
-    increase in the number of elements in a two-fold increase in the core size
-    (top). Current instruments such as MWA and LOFAR fall in a region favoured 
-    by visibility based imaging.}
+    occupying the left of this line and vice versa. CHIME, HIRAX and all the 
+    HERA layouts except HERA-19 and HERA-37 lie in the parameter space favoured 
+    by MOFF imaging. And so are SKA1-LC and SKA1-LCD. The solid black curve 
+    shows the projected trajectory of bigger close-packed hexagonal layouts 
+    similar to HERA. The gray shaded area denotes the projected trajectory of 
+    the LWA bounded by LWA1 (left edge), LWA-OV (right edge), current layout 
+    (bottom) and a four-fold increase in the number of elements within a 50\% 
+    increase in the core size (top). Current instruments such as MWA and LOFAR 
+    fall in a region favoured by visibility based imaging.}
   \label{fig:parameter-space-computations-instruments}
 \end{figure}
 

@@ -1,3 +1,15 @@
+From 7ed89ad (master):
+=====================
+
+(*) Add new figure EPIC-modules.eps to the repository
+
+In ms.tex,
+
+(*) Add a new figure illustrating software architecture and modules
+(*) Restructure subsections in section 3
+(*) Add subsection on software architecture
+(*) Move removal of auto-correlations to section 4 under Verification
+
 From a5f2570 (master):
 =====================
 
