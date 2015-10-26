@@ -34,6 +34,11 @@
 {Bhatnagar, S.} {Cornwell, T. J.} {Golap, K.}  {Uson, J. M.} 2008, \mn@doi
   [A\&A] {10.1051/0004-6361:20079284}, 487, 419
 
+\bibitem[\protect\citeauthoryear{{Bowman} et~al.,}{{Bowman}
+  et~al.}{2013}]{bow13}
+{Bowman} J.~D.,  et~al., 2013, \mn@doi [\pasa] {10.1017/pas.2013.009}, \href
+  {http://adsabs.harvard.edu/abs/2013PASA...30...31B} {30, 31}
+
 \bibitem[\protect\citeauthoryear{{Brigham}}{{Brigham}}{1974}]{bri74}
 {Brigham} E.~O.,  1974, {The fast Fourier Transform}
 
@@ -168,6 +173,12 @@ de Vos M.,  Gunst A.,   Nijboer R.,  2009, \mn@doi [Proceedings of the IEEE]
 \bibitem[\protect\citeauthoryear{{van Cittert}}{{van Cittert}}{1934}]{van34}
 {van Cittert} P.~H.,  1934, \mn@doi [Physica] {10.1016/S0031-8914(34)90026-4},
   \href {http://adsabs.harvard.edu/abs/1934Phy.....1..201V} {1, 201}
+
+\bibitem[\protect\citeauthoryear{{van Haarlem} et~al.,}{{van Haarlem}
+  et~al.}{2013}]{van13}
+{van Haarlem} M.~P.,  et~al., 2013, \mn@doi [\aap]
+  {10.1051/0004-6361/201220873}, \href
+  {http://adsabs.harvard.edu/abs/2013A%26A...556A...2V} {556, A2}
 
 \makeatother
 \end{thebibliography}

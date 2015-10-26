@@ -1,3 +1,19 @@
+From a5f2570 (master):
+=====================
+
+(*) Add LWA_MOFF_bandavg_image_4_iterations_analytic_aperture.eps to
+repository and remove LWA_sample_image_391_iterations.png from the
+repository
+
+In epic.bib,
+
+(*) Add Bowman et al.(2013) to references
+
+In ms.tex,
+
+(*) Many many of the changes suggested by Judd and Adam
+(*) Modify table
+
 From 77cd1d9 (master):
 =====================
 
