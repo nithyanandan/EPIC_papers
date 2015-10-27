@@ -1,3 +1,22 @@
+From 88cd7fb (master):
+=====================
+
+In ms.tex,
+
+(*) Restructure section 5 into two subsections, one of which is a new
+subsection on data throughput with the two algorithms
+(*) Change figure 12
+(*) Update figure 10
+(*) Rearrange subsections in section 4
+(*) Update figure 5
+(*) Incorporate other changes suggested by Judd and Adam
+(*) Minor changes to abstract, introduction and conclusions
+
+From e37ddb6 (master):
+=====================
+
+(*) Merge changes made by Adam on remote
+
 From 7ed89ad (master):
 =====================
 
