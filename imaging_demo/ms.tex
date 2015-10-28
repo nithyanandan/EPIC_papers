@@ -21,15 +21,15 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Basic setup. Most papers should leave these options alone.
-\documentclass[a4paper,fleqn,usenatbib]{../mnras}
+\documentclass[a4paper,fleqn,usenatbib]{mnras}
 
 % MNRAS is set in Times font. If you don't have this installed (most LaTeX
 % installations will be fine) or prefer the old Computer Modern fonts, comment
 % out the following line
-\usepackage{newtxtext,newtxmath}
+% \usepackage{newtxtext,newtxmath}
 % Depending on your LaTeX fonts installation, you might get better results with one of these:
-%\usepackage{mathptmx}
-%\usepackage{txfonts}
+% \usepackage{mathptmx}
+% \usepackage{txfonts}
 
 % Use vector fonts, so it zooms properly in on-screen viewing software
 % Don't change these lines unless you know what you are doing
@@ -122,8 +122,6 @@ of Fast Radio Bursts (FRB) as well as planetary and exoplanetary phenomena.
 \begin{keywords}
 instrumentation: interferometers -- techniques: image processing -- techniques: interferometric
 \end{keywords}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
 
@@ -350,142 +348,6 @@ There are some important differences between the two techniques:
   spacing and thus yield the true total power of the imaged field.
 \end{enumerate} 
 
-%%%%%%%%%
-
-%We provide a brief summary of the mathematical equivalence of the MOFF and FX
-%correlators detailed in \citet{mor11}. 
-%
-%Electric fields from astrophysical sources, $E(\hat{\mathbf{s}})$, in the sky
-%coordinate system denoted by unit vector $\hat{\mathbf{s}}$ propagate towards
-%the observer as:
-%\begin{align}
-%  \widetilde{E}(\mathbf{r}) &= \int E(\hat{\mathbf{s}})\,e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\,\dif^2\hat{\mathbf{s}},
-%\end{align}
-%where, $\mathbf{r}$ denotes the observer's coordinate system and $\widetilde{E}
-%(\mathbf{r})$ is the propagated electric field. Thus the propagated electric
-%field is a linear superposition of the electric fields emanating from
-%astronomical sources with appropriate complex phases. It can also be described
-%as a Fourier transform of the electric fields in the sky coordinates. 
-%
-%An antenna, $a$, measures a phased sum of these propagated electric fields over
-%its effective collecting area with an additive receiver noise:
-%\begin{align}\label{eqn:measured-E-field}
-%  \widetilde{E}_a &= \int \widetilde{W}_a(\mathbf{r}-\mathbf{r}_a)\,\widetilde{E}(\mathbf{r})\,\dif^2\mathbf{r} + \widetilde{n}_a \\
-%                  &= \int \widetilde{W}_a(\mathbf{r}-\mathbf{r}_a) \left[ \int E(\hat{\mathbf{s}})\,e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\,\dif^2\hat{\mathbf{s}} \right] \dif^2\mathbf{r} + \widetilde{n}_a \\
-%                  &= \int \delta(\mathbf{r}-\mathbf{r}_a) \left[ \int {W}_a(\hat{\mathbf{s}})\,E(\hat{\mathbf{s}})\,e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\,\dif^2\hat{\mathbf{s}} \right] \dif^2\mathbf{r} + \widetilde{n}_a
-%\end{align}
-%where, $\widetilde{W}_a(\mathbf{r})$ is the aperture electric field illumination
-%pattern of the antenna and its Fourier transform, $W_a(\hat{\mathbf{s}})$ is the
-%directional antenna voltage response.
-%
-%Interferometers measure {\it visibility} -- the degree of coherence -- between
-%electric fields measured by a pair of antennas \citep{van34,zer38,tho01}.
-%Visibility, $\widetilde{V}_p$, can be written as:
-%
-%\begin{align}
-%  \widetilde{V}_p &= \left\langle \widetilde{E}_a\widetilde{E}_b^\star \right\rangle \label{eqn:cc-vis}\\
-%                  &= \int\delta(\mathbf{u}-\mathbf{u}_p)\left[\int e^{-i2\pi\mathbf{u}.\hat{\mathbf{s}}}\,B(\hat{\mathbf{s}})\,I(\hat{\mathbf{s}})\,\dif^2\hat{\mathbf{s}}\right] \dif^2\mathbf{u} + n_p,
-%\end{align}
-%where, $I(\hat{\mathbf{s}})$ is the sky brightness, $B(\hat{\mathbf{s}})$ is the
-%antenna power response, $\mathbf{u}$ denotes the coordinates of the $uv$-
-%measurement plane, $\mathbf{u}_p\equiv \mathbf{r}_a-\mathbf{r}_b$ is the antenna
-%spacing vector corresponding to the antenna pair $p$, and $n_p$ is the receiver
-%noise. This signifies that the visibility ($\widetilde{V}_p$) measured between a
-%pair of antennas ($p$) is obtained by the multiplying the sky brightness
-%$I(\hat{\mathbf{s}})$ by the antenna power response $B(\hat{\mathbf{s}})$ and
-%Fourier transform from the directional coordinates ($\hat{\mathbf{s}}$) to $uv$
-%coordinates, which are then sampled at the locations of the antenna spacings (or
-%baselines), namely, $\mathbf{u}_p$ using the sampling function
-%$\delta(\mathbf{u}-\mathbf{u}_p)$ and added to the receiver noise $n_p$. This can
-%be equivalently re-written as:
-%\begin{align}\label{eqn:software-holography}
-%  \widetilde{V}_p &= \int\delta(\mathbf{u}^\prime-\mathbf{u}_p)\left[\int \tilde{B}(\mathbf{u}^\prime-\mathbf{u}) \right. \nonumber\\
-%  &\left. \qquad \times \left[\int e^{-i2\pi\mathbf{u}.\hat{\mathbf{s}}}\,I(\hat{\mathbf{s}})\,\dif^2\hat{\mathbf{s}}\right]\dif^2\mathbf{u}\vphantom{\int}\right] \dif^2\mathbf{u}^\prime + n_p,
-%\end{align}
-%where, $\tilde{B}(\mathbf{u})$ denotes the $uv$-space antenna power response
-%obtained by a Fourier transform of $B(\hat{\mathbf{s}})$. Effectively, the
-%multiplication in image space by $B(\hat{\mathbf{s}})$ has been replaced by a
-%convolution with $\tilde{B}(\mathbf{u})$ in $uv$-space. This is the software
-%holographic equivalent of traditional FX correlator output. Following the matrix
-%notation of \citet{mor11}, the above equation can be expressed as:
-%\begin{align}
-%  \mathbf{m}(\mathbf{v}) &= \widetilde{B}(\mathbf{v},\mathbf{u})\,\mathbf{F}(\mathbf{u},\hat{\mathbf{s}})\,I(\hat{\mathbf{s}}) + \mathbf{n}(\mathbf{v}),
-%\end{align}
-%where, the sky brightness $I(\hat{\mathbf{s}})$ is Fourier transformed using
-%$\mathbf{F}(\mathbf{u},\hat{\mathbf{s}})$ and the resultant spatial coherence
-%function is weighted and summed using the antenna power response,
-%$\widetilde{B}(\mathbf{v},\mathbf{u})$ in $uv$-space sampled at the baseline
-%location to obtain the measured visibilities:
-%\begin{align}
-%  \mathbf{m}(\mathbf{v}) &= \left\langle \widetilde{E}(\mathbf{a})\ast\widetilde{E}(\mathbf{a}^\prime)\right\rangle_t. \label{eqn:matrix-cc-vis}
-%\end{align}
-%$\mathbf{m}(\mathbf{v})$ denotes visibilities measured by cross-correlating
-%measured antenna electric fields over all possible pairs of $\mathbf{a}$ and
-%$\mathbf{a}^\prime$. It is the same as equation~\ref{eqn:cc-vis} written in
-%matrix notation.
-%
-%Using the optimal map-making formalism \citep{teg97a,teg97b}, a software
-%holography image is formed using \citep{mor09}:
-%\begin{align}
-%  I^\prime(\hat{\mathbf{s}}) &= \mathbf{F}^\textrm{T}(\hat{\mathbf{s}},\mathbf{u})\,\widetilde{B}^{\,\textrm{T}}(\mathbf{u},\mathbf{v})\,\mathbf{N}^{-1}\,\mathbf{m}(\mathbf{v}) \label{eqn:dirty-image-FX}
-%\end{align}
-%where the measured visibilities are weighted by the inverse of the system noise,
-%following a gridding process using the holographic antenna power response as the
-%gridding kernel followed by a Fourier transform to create an image
-%$I^\prime(\hat{\mathbf{s}})$ which is the optimal estimate of the true image
-%$I(\hat{\mathbf{s}})$. 
-
-%It may be noted that the antenna power response in $uv$-plane can be written as:
-%\begin{align}\label{eqn:antenna-power-breakup}
-%  \tilde{B}_p(\mathbf{u}) &= \widetilde{W}_a(\mathbf{u}) \ast \widetilde{W}_b^\star(\mathbf{u})
-%\end{align}
-%where, $W_a(\mathbf{u})$ and $W_b(\mathbf{u})$ denote the individual antenna
-%voltage responses. Thus $\tilde{B}_p(\mathbf{u})$ is a cross-correlation of the
-%individual antenna voltage responses. Similarly, it can be shown that 
-%\begin{align}
-%  \left\langle E(\hat{\mathbf{s}})\,E^\star(\hat{\mathbf{s}}^\prime)\right\rangle &= \left\langle E(\hat{\mathbf{s}})\,E^\star(\hat{\mathbf{s}}^\prime) \delta(\hat{\mathbf{s}}-\hat{\mathbf{s}}^\prime) \right\rangle \nonumber\\
-%  &= \left\langle \left|E(\hat{\mathbf{s}})\right|^2 \right\rangle = I(\hat{\mathbf{s}}) \label{eqn:sky-intensity}
-%\end{align}
-%
-%From equations~\ref{eqn:measured-E-field}, \ref{eqn:software-holography},
-%\ref{eqn:matrix-cc-vis}, \ref{eqn:antenna-power-breakup} and
-%\ref{eqn:sky-intensity}, the optimal image in equation \ref{eqn:dirty-image-FX}
-%can be expressed equivalently as:
-%\begin{align}
-%  I^\prime(\hat{\mathbf{s}}) &= \left\langle \left|\,\mathbf{F}^\textrm{T}(\hat{\mathbf{s}},\mathbf{r})\,\widetilde{\mathbf{W}}^\textrm{T}(\mathbf{r},\mathbf{a})\,\widetilde{\mathbf{N}}(\mathbf{a},\mathbf{a})\,\widetilde{E}(\mathbf{a})\,\right|^2\right\rangle_t. \label{eqn:dirty-image-MOFF}
-%\end{align}
-%The term inside the angular brackets before squaring has a very similar form as
-%that in equation~\ref{eqn:dirty-image-FX}. It signifies that the measured antenna
-%electric fields are weighted by the antenna noise, weighted and gridded by the
-%antenna aperture kernel, Fourier transformed and finally squared to obtain the
-%same image estimated that would have been obtained using equation~
-%\ref{eqn:dirty-image-FX}. 
-
-%Equations~\ref{eqn:dirty-image-MOFF} and \ref{eqn:dirty-image-FX} are identical
-%to each other obtained as a consequence of the multiplication-convolution theorem
-%of Fourier transforms. In other words, equation~\ref{eqn:dirty-image-FX} is
-%obtained by a Fourier transform of the gridded spatial correlation of electric
-%fields measured by antennas while equation~\ref{eqn:dirty-image-MOFF} is obtained
-%by squaring the Fourier transform of the gridded electric fields measured by the
-%antennas. The time-scale of averaging in equations~\ref{eqn:cc-vis} and
-%\ref{eqn:dirty-image-MOFF} is set by the coherence time-scale of the electric
-%fields or the science requirement (e.g., timescale of variability or transients).
-%
-%There are some important differences between the two techniques:
-%\begin{enumerate}
-%\item The time-averaging cannot be performed on a stochastic measurement but
-%  only on its statistical properties. In FX imaging, the visibilities measured
-%  between antenna pairs represent spatial correlations which can be time-averaged
-%  following which the they gridded and imaged. However, in MOFF imaging both
-%  antenna and gridded electric fields are stochastic and therefore have to be
-%  imaged before time-averaging. 
-%\item In FX imaging, electric fields measured on antennas are not correlated with
-%  themselves and hence lack zero spacing measurements. In contrast, in MOFF
-%  imaging, since the gridded electric fields are imaged and squared, they
-%  contain information from auto-correlated electric fields at zero spacing.
-%  Hence, they have to be subtracted from the images.
-%\end{enumerate} 
-
 \section{Software Implementation}\label{sec:software}
 
 We have implemented the MOFF imaging technique in our ``E-field Parallel Imaging
@@ -517,7 +379,8 @@ spatially Fourier transformed and squared to obtain an image cube for every time
 stamp. These images are then time-averaged to obtain the accumulated image 
 $I(f)$ ($\mathbf{I}(\hat{\mathbf{s}})$ in matrix notation).
 \begin{figure}
-  \includegraphics[width=\columnwidth]{MOFF_flowchart.eps}
+  \includegraphics[width=\columnwidth]{MOFF_flowchart}
+  % \includegraphics[width=\columnwidth]{MOFF_flowchart.eps}
   \caption{A flowchart of MOFF imaging in EPIC. The propagated electric fields
     shown on the left are measured as time-series $E_1(t)\ldots E_\textrm{N}(t)$
     by the antennas $\textrm{A}_1\ldots \textrm{A}_\textrm{N}$ which are then 
@@ -539,7 +402,8 @@ $\langle V_\textrm{ij}(f)\rangle$ which are then gridded and imaged to obtain th
 image $I(f)$. The $I(f)$ obtained from both techniques are theoretically 
 identical as explained in \S\ref{sec:math}.
 \begin{figure}
-  \includegraphics[width=\columnwidth]{FX_flowchart.eps}
+  \includegraphics[width=\columnwidth]{FX_flowchart}
+  % \includegraphics[width=\columnwidth]{FX_flowchart.eps}
   \caption{A flowchart of visibility based software holographic imaging in EPIC. 
     The FX process flow shares the F-engine with the MOFF process. Following the 
     F-engine, the electric fields pass through the X-engine to produce 
@@ -585,7 +449,8 @@ Fig.~\ref{fig:a2g-mapping} illustrates the antenna-to-grid mapping
 matrix and the grid containing the mapped aperture footprints of the antennas.
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{a2g_mapping.eps}
+  \includegraphics[width=\columnwidth]{a2g_mapping}
+  % \includegraphics[width=\columnwidth]{a2g_mapping.eps}
   \caption{Block diagram of an antenna-to-grid mapping. A sparse block-diagonal
     matrix of total size $\Ngrid\times \Nant$ is created where each
     block contains roughly the number of pixels covered by the respective kernel.
@@ -606,7 +471,8 @@ Fig.~\ref{fig:f-engine}. The output is then fed to either MOFF or visibility
 based imaging pipelines.
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{F-engine.eps}
+  \includegraphics[width=\columnwidth]{F-engine}
+  % \includegraphics[width=\columnwidth]{F-engine.eps}
   \caption{Block diagram of a F-engine. The electric field data streams from
     antennas are Fourier transformed in parallel to generate electric field
     spectra.}
@@ -659,9 +525,6 @@ computed at every readout of the electric field spectra,
 \begin{align}
   \widetilde{\mathbf{E}}(\mathbf{r}) &= \mathbf{M}(\mathbf{r},\mathbf{a})\,\widetilde{\mathbf{E}}(\mathbf{a}).
 \end{align}
-% The sentence below was already stated earlier.
-%In practice the grid is set to be a power of 2 such that the grid spacing is at
-%most $\lambda/2$ even at the highest frequency in the observing band. 
 
 \par\medskip
 \noindent {\bf Spatial Fourier Transform}
@@ -702,7 +565,8 @@ key attributes and methods are illustrated in Fig.~\ref{fig:software-modules}.
 These modules are described below.
 
 \begin{figure*}
-  \includegraphics[width=\linewidth]{EPIC-modules.eps}
+  \includegraphics[width=\linewidth]{EPIC-modules}
+  % \includegraphics[width=\linewidth]{EPIC-modules.eps}
   \caption{Software architecture of EPIC with core modules, their essential
     attributes and functions. The antenna module forms the fundamental building 
     block. It consists of electric field time-series and spectra and the 
@@ -849,7 +713,8 @@ shows the estimated weights from antenna auto-correlations in the $uv$-plane
 is simply the directional antenna power response. 
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{autocorr_uvwts_pbeam.png}
+  \includegraphics[width=\columnwidth]{autocorr_uvwts_pbeam}
+  % \includegraphics[width=\columnwidth]{autocorr_uvwts_pbeam.png}
   \caption{The auto-correlation of weights of a square shaped antenna aperture
     in the $uv$ plane (left) and the corresponding directional antenna power 
     response on the sky (right) in coordinates specified by direction cosines. 
@@ -890,7 +755,8 @@ modulated by a multiplicative power pattern corresponding to that of a uniform
 square aperture. 
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{MOFF_FX_comparison_10_random_source_positions_4_iterations_test_aperture_zoomed.eps}
+  \includegraphics[width=\columnwidth]{MOFF_FX_comparison_10_random_source_positions_4_iterations_test_aperture_zoomed}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_10_random_source_positions_4_iterations_test_aperture_zoomed.eps}
   \caption{Dirty images (top) and synthesized beams (bottom) obtained from 
     simulated data using antenna-based MOFF algorithm (left) and FX 
     visibility-based software holography (right). The solid black circles in the
@@ -941,57 +807,9 @@ shape and extent of the sampled footprint appropriate for that specific antenna
 aperture. This is a general solution applicable even in case of heterogeneous 
 antenna arrays and is under active development for EPIC.
 
-% ----
-
-% Fig.~\ref{fig:MOFF-FX-uvwts} shows the cross-correlation weights obtained 
-% with MOFF imaging (left) and visibility based imaging (right). The first 
-% notable difference is in the weights around zero spacing. Though both show a
-% dominant void around zero-spacing, the void obtained with MOFF algorithm shows 
-% many pixels with non-zero weights. In contrast, the zero-spacing void from 
-% traditional imaging consists of predominantly zero-valued pixels. The gridding
-% process in the former involves tying the antenna footprint (either in 
-% analytic or lookup table formats) to the nearest grid pixel. Depending on the 
-% exact location of the center of the antenna relative to the grid and the 
-% coarseness of grid spacing, grid pixels that receive contribution from an 
-% antenna may be a pixel narrower along one or both axes relative to that from 
-% another identical antenna but with a different center location relative to the 
-% grid. The resulting auto-correlation footprint will also not necessarily be 
-% identical. Hence, using a single expected footprint for subtraction will 
-% typically leave some residuals behind as seen in the void region in the weights 
-% obtained with MOFF imaging. 
-
-% These residuals can be mitigated by: 
-% \begin{enumerate}
-%   \item making the grid spacing finer which makes the nearest neighbour 
-%     association between the antenna footprint and the grid less susceptible 
-%     (proportional to grid spacing) to the location of the antenna center 
-%     relative to the grid, and
-%   \item subtracting each auto-correlation of antenna weights separately by 
-%     using the shape and extent of the footprint appropriate for that specific
-%     antenna aperture. 
-% \end{enumerate}
-% The latter is the most general solution applicable especially in the case of 
-% heterogeneous antenna arrays and is under active development for EPIC.
-
-% The other notable difference is that weights outside the zero-spacing void in
-% some regions are different from each other at the few percent level though the 
-% sum of weights in these regions are identical. For instance, note the 
-% difference in weights at $(u,v)\approx (2,-10)$. This is found to arise 
-% because with MOFF imaging the antenna locations were tied to the nearest 
-% grid pixel whereas in visibility based imaging the baseline locations 
-% (difference between antenna locations) were tied to the nearest grid pixel. 
-% Since rounding is not a commutative operation (i.e. rounding of the difference 
-% value is not necessarily equal to the difference of the rounded values), the 
-% gridding operation in the two cases introduces rounding errors in the placement 
-% of antenna aperture and cross-correlated aperture weights. Each antenna 
-% aperture weight projected to the nearest grid location can be displaced by 
-% $\sim 1$--2 pixels. This effect can be mitigated only by making the grid 
-% spacing finer at the expense of increased computational cost. 
-
-% ----
-
 \begin{figure}
-  \includegraphics[width=\columnwidth]{MOFF_FX_comparison_uvwts_test_aperture_zero_spacing_removed.eps}
+  \includegraphics[width=\columnwidth]{MOFF_FX_comparison_uvwts_test_aperture_zero_spacing_removed}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_uvwts_test_aperture_zero_spacing_removed.eps}
   \caption{Comparison of $uv$ plane antenna power response with MOFF (left) and 
     visibility based imaging (right). The zero-spacing footprint from the $uv$ 
     weights obtained with MOFF has been subtracted. Differences in the void 
@@ -1000,47 +818,6 @@ antenna arrays and is under active development for EPIC.
     further made severe by the correlation process.}
   \label{fig:MOFF-FX-uvwts}
 \end{figure}
-
-% The synthesized beam can be written as:
-% \begin{align}\label{eqn:syn-beam}
-%   B(\hat{\mathbf{s}}) &= \left| \sum_\mathbf{r} \widetilde{W}(\mathbf{r})\,e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\right|^2, \\
-%   \textrm{or}, \quad B(l,m) &= \left| \sum_{r_x,r_y} \widetilde{W}(r_x,r_y)\,e^{-i2\pi(r_x l + r_y m)}\right|^2 
-% \end{align}
-% where, $\hat{\mathbf{s}}\equiv (l,m)$, $\mathbf{r}\equiv (r_x,r_y)$ and 
-% $\widetilde{W}(\mathbf{r})$ is given by equation~\ref{eqn:gridding-convolution}.
-% If the errors in the determination of $r_x$ and $r_y$ are denoted by 
-% $\delta r_x$ and $\delta r_y$ respectively, the error on $B(l,m)$ can be 
-% estimated using a simple propagation of errors, where,
-% \begin{align}
-%   \frac{\partial{B}(l,m)}{\partial{r_x}} &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i 2\pi l\widetilde{W}(\mathbf{r})\right] \label{eqn:syn-beam-pdev1}\\
-%   &\qquad\qquad \times \sum_{\mathbf{r}^\prime} \widetilde{W}^\star(\mathbf{r}^\prime)\,e^{+i2\pi\mathbf{r}^\prime\cdot \hat{\mathbf{s}}} \\
-%   &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi l\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}), \\
-%   \textrm{and},\frac{\partial{B}(l,m)}{\partial{r_y}} &= e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\left[\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi m\widetilde{W}(\mathbf{r})\right]\,W^\star(\hat{\mathbf{s}}). \label{eqn:syn-beam-pdev2}
-% \end{align}
-% It must be noted that although we start with a squaring operation in 
-% equation~\ref{eqn:syn-beam}, in equations~\ref{eqn:syn-beam-pdev1} through 
-% \ref{eqn:syn-beam-pdev2}, the summations are performed only when 
-% $\mathbf{r}\ne \mathbf{r}^\prime$ and therefore do not include the 
-% auto-correlations of the antenna weights. The error expected in $B(l,m)$ is:
-% \begin{align}
-%   \left|\delta B(l,m)\right|^2 &= \sum_{r_x}\left|\frac{\partial{B}(l,m)}{\partial{r_x}}\right|^2 \delta r_x^2 + \sum_{r_y}\left|\frac{\partial{B}(l,m)}{\partial{r_y}}\right|^2 \delta r_y^2 \\
-%   &= \delta r_x^2 \sum_{r_x}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} - i2\pi l\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2 \nonumber\\
-%   &\qquad + \delta r_y^2 \sum_{r_y}\left|\frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_y}} - i2\pi m\widetilde{W}(\mathbf{r})\right|^2\,\left|W(\hat{\mathbf{s}})\right|^2
-% \end{align}
-% For the current simulations, 
-% \begin{align}
-%   \delta r_x = \delta r_y &\simeq 1, \\
-%   \widetilde{W}(r_x,r_y) &= \{0, \textrm{constant}\}, \\
-%   \textrm{and},\qquad \frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_x}} &= \frac{\partial{\widetilde{W}(r_x,r_y)}}{\partial{r_y}} = 0.
-% \end{align}
-% Hence,
-% \begin{align}
-%   \left|\delta B(l,m)\right|^2 &\simeq 4\pi^2\left(l^2+m^2\right)\,B(\hat{\mathbf{s}})\,\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2, \\
-% \textrm{or},\qquad \left|\delta B(l,m)\right| &\simeq 2\pi\sqrt{l^2+m^2}\,\left|W(\hat{\mathbf{s}})\right|\,\left(\sum_\mathbf{r}\,\left|\widetilde{W}(\mathbf{r})\right|^2\right)^{1/2}, \label{eqn:syn-beam-error}
-% \end{align}
-% where, $B(\hat{\mathbf{s}}) \equiv \left|W(\hat{\mathbf{s}})\right|^2$. Thus, 
-% the error on the synthesized beam is proportional to the antenna power pattern
-% and increases linearly outward in radial bins of direction cosines.
 
 We study the effect of the differences in gridded weights on the image plane. 
 Fig.~\ref{fig:psf-diff} shows the difference between the synthesized beams 
@@ -1053,7 +830,8 @@ difference map (black) are plotted in percentage units relative to the peak
 pattern (red; to be read using the scale on the right) is plotted for reference. 
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{diff_psf_MOFF-FX_test_aperture.eps}
+  \includegraphics[width=\columnwidth]{diff_psf_MOFF-FX_test_aperture}
+  % \includegraphics[width=\columnwidth]{diff_psf_MOFF-FX_test_aperture.eps}
   \caption{Map of difference between the synthesized beams obtained with the 
     two methods (top) and radial statistics of the synthesized beams and 
     their differences (bottom). The radial variations of rms of the synthesized 
@@ -1103,7 +881,8 @@ we see Cyg~A and Cas~A prominently as annotated, thus validating the
 functionality of the EPIC package.
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{LWA_MOFF_bandavg_image_4_iterations_analytic_aperture.eps}
+  \includegraphics[width=\columnwidth]{LWA_MOFF_bandavg_image_4_iterations_analytic_aperture}
+  % \includegraphics[width=\columnwidth]{LWA_MOFF_bandavg_image_4_iterations_analytic_aperture.eps}
   \caption{Image from LWA TBN data obtained with MOFF imaging using EPIC 
     package after averaging over 20~ms and $\approx 80$~kHz. The x- and y-axes
     denote direction cosines $l$ and $m$ respectively. The antenna voltages
@@ -1171,6 +950,7 @@ of the antenna, $A_\textrm{a}$. Hence,
 $\Ngrid\simeq b_\textrm{max}^2/A_\textrm{a}$. 
 
 \begin{table}
+  \scriptsize
   \centering
   \caption{Radio telescopes and array layouts.}
   \label{tab:antenna-layouts}
@@ -1232,7 +1012,8 @@ provide the bounds at the bottom and top respectively. Current instruments such
 as MWA and LOFAR lie in parameter space favoring visibility based imaging. 
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{MOFF_FX_computations_fov_gridding_annotated.eps}
+  \includegraphics[width=\columnwidth]{MOFF_FX_computations_fov_gridding_annotated}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_computations_fov_gridding_annotated.eps}
   \caption{Current and planned instruments in parameter space of
     number of complex multiplies and adds with MOFF and FX. The solid line
     is the boundary at which the number of operations with MOFF and visibility 
@@ -1293,7 +1074,8 @@ large $\Nant$ indicating large-N dense array layouts with smaller antenna
 elements are best suited for deploying EPIC.
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended.eps}
+  \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended.eps}
   \caption{Current and planned instruments in parameter space of
     baseline length and number of antennas with MOFF and FX. Line styles of 
     different colors denote different classes of antenna sizes (cyan - 1~m$^2$, 
@@ -1454,26 +1236,11 @@ Contract N00014-07-C-0147. Support for operations and continuing development of
 the LWA1 is provided by the National Science Foundation under grant AST-1139974 
 of the University Radio Observatory program.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
 
-% The best way to enter references is to use BibTeX:
-
-\bibliographystyle{../mnras}
-\bibliography{../epic} % if your bibtex file is called example.bib
-
-
-% Alternatively you could enter them by hand, like this:
-% This method is tedious and prone to error if you have lots of references
-% \begin{thebibliography}{99}
-% \bibitem[\protect\citeauthoryear{Author}{2012}]{Author2012}
-% Author A.~N., 2013, Journal of Improbable Astronomy, 1, 1
-% \bibitem[\protect\citeauthoryear{Others}{2013}]{Others2013}
-% Others S., 2012, Journal of Interesting Stuff, 17, 198
-% \end{thebibliography}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{mnras}
+% \bibliography{../epic} 
+\input{ms.bbl}
 
 %%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
 

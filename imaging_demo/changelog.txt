@@ -1,3 +1,16 @@
+From 70146f3 (arxiv):
+====================
+
+In ms.tex,
+
+(*) Change including .bib file to including .bbl file
+(*) Remove commented lines
+(*) Remove figure filename extensions
+(*) Comment out \usepackage{newtxtext,newtxmath} to be compatible
+with arXiv submission
+(*) Change fontsize of first table to scriptsize to fit the column
+width
+
 From cadd827 (master):
 =====================
 
