@@ -1,3 +1,18 @@
+From cadd827 (master):
+=====================
+
+(*) Add updated image comparison figure, uvwts comparison figure to
+the repository and remove older versions
+
+In ms.tex,
+
+(*) Correct minor typos throughtout the paper
+(*) Update figures 6, 7, 8, 9 and 12
+(*) Recalculate throughput for FX data rates in case of transients
+(*) Emphasize the whole point of EPIC
+(*) Provide a unified explanation for differences seen with the two
+imaging approaches
+
 From 88cd7fb (master):
 =====================
 
