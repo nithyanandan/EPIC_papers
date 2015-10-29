@@ -499,7 +499,7 @@ the feedback calibration fashion outlined in \citealt{mor11} (illustrated in Fig
 block). Furthermore it allows for arbitrarily complex sky models, and following 
 the MOFF algorithm places no restriction on array layout, and accounts for 
 non-identical antenna beam patterns. Because only a single correlation is needed 
-for each antenna, the computation complexity scales only as $N_{\mathrm{a}}$. 
+for each antenna, the computation complexity scales only as $\sim N_{\mathrm{a}}N_\textrm{c}$, where $N_\textrm{c}$ is the number of calibrators in the field. 
 
 The calibration module included in the EPIC repository allows for application of 
 pre-determined calibration solutions, or can solve for the complex gains using 
@@ -758,8 +758,8 @@ square aperture.
   \includegraphics[width=\columnwidth]{MOFF_FX_comparison_10_random_source_positions_4_iterations_test_aperture_zoomed}
   % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_10_random_source_positions_4_iterations_test_aperture_zoomed.eps}
   \caption{Dirty images (top) and synthesized beams (bottom) obtained from 
-    simulated data using antenna-based MOFF algorithm (left) and FX 
-    visibility-based software holography (right). The solid black circles in the
+    simulated data using EPIC implementation of antenna-based MOFF algorithm 
+    (left) and visibility-based imaging (right). The solid black circles in the
     top panels indicate the simulated source positions. The antenna 
     auto-correlations at zero-spacing have been removed from the MOFF images. 
     The images in either case reconstruct the sources at the right locations 
@@ -833,8 +833,8 @@ pattern (red; to be read using the scale on the right) is plotted for reference.
   \includegraphics[width=\columnwidth]{diff_psf_MOFF-FX_test_aperture}
   % \includegraphics[width=\columnwidth]{diff_psf_MOFF-FX_test_aperture.eps}
   \caption{Map of difference between the synthesized beams obtained with the 
-    two methods (top) and radial statistics of the synthesized beams and 
-    their differences (bottom). The radial variations of rms of the synthesized 
+    two methods (left) and radial statistics of the synthesized beams and 
+    their differences (right). The radial variations of rms of the synthesized 
     beam (gray) and that of the rms of the difference (black) are shown as 
     percentage of the peak synthesized beam. Radially averaged directional 
     antenna power response in absolute scale is shown in red and is to be read 
@@ -976,7 +976,7 @@ $\Ngrid\simeq b_\textrm{max}^2/A_\textrm{a}$.
     SKA1-LC\tnote{e} & 1000 & 750 & 962 & 150 \\
     SKA1-LCD\tnote{f} & 1000 & 192,000 & 2 & 150 \\
     CHIME & 100 & 1280 & 8 & 600 \\
-    HIRAX\tnote{g} & 200 & 1024 & 6 & 600 \\
+    HIRAX\tnote{g} & 200 & 1024 & 28 & 600 \\
     \hline
   \end{tabular}
   \begin{tablenotes}

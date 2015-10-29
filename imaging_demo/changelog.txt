@@ -1,3 +1,15 @@
+From f6809de (arxiv):
+====================
+
+In ms.tex,
+
+(*) Mention calibration scales as number of calibrators as well as
+number of antennas
+(*) Correct the collecting area of HIRAX in the table
+(*) Change caption of figure 9 to left and right instead of top and
+bottom
+(*) Update caption of figure 7
+
 From 70146f3 (arxiv):
 ====================
 
