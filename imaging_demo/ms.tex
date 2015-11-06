@@ -133,17 +133,17 @@ thousands of individual antennas are needed to achieve desired survey speeds.
 Nowhere is this more apparent than at radio frequencies below 1.4 GHz. The study
 of the history of hydrogen gas throughout the universe's evolution is pushing
 technology development towards arrays of low-cost antennas with large fields of
-view and densely packed apertures. Similarly, the search for transient objects
+view and densely packed layouts. Similarly, the search for transient objects
 and regular monitoring of the time-dependent sky is driving instruments in the
 same direction with the added requirement of fast read-outs. A number of new 
-telescopes are under development around the world based on this new paradigm, 
-including the Murchison Widefield Array (MWA;\citealt{tin13,bow13}), the 
-Precision Array for Probing the Epoch of Reionization (PAPER; \citealt{par10}), 
-the Hydrogen Epoch of Reionization Array\footnote{http://reionization.org} 
-(HERA), the LOw Frequency ARray (LOFAR;\citealt{van13}), the Canadian Hydrogen 
-Intensity Mapping Experiment (CHIME,\citealt{ban14}), the Long Wavelength 
-Array (LWA, \citealt{ell13}), and the low frequency Square Kilometer Array 
-(SKA1-Low \citealt{mel13}).
+telescopes are being or were developed around the world based on this new 
+paradigm, the Hydrogen Epoch of Reionization 
+Array\footnote{http://reionization.org} (HERA), including the Murchison 
+Widefield Array (MWA;\citealt{tin13,bow13}), the Precision Array for Probing 
+the Epoch of Reionization (PAPER; \citealt{par10}), the LOw Frequency ARray 
+(LOFAR;\citealt{van13}), the Canadian Hydrogen Intensity Mapping Experiment 
+(CHIME,\citealt{ban14}), the Long Wavelength Array (LWA, \citealt{ell13}), and 
+the low frequency Square Kilometer Array (SKA1-Low \citealt{mel13}).
 
 This paradigm shift requires a fundamentally new approach to the design of
 digital correlators \citep{lon00}. Modern correlators calculate the cross-power
@@ -163,10 +163,10 @@ that can lower the computational burden by directly performing a spatial fast
 Fourier transform (FFT) on the electric fields measured by each antenna in the
 array at each time step, removing the cross-correlation step. This relieves the
 computational scaling from the harsh $\Nant^2$ to the more gentle envelope of
-$\Ngrid\log_2\Ngrid$, where $\Ngrid$ is the number of pixels in the Fourier 
-transform \citep[e.g.][]{mor11,teg09,teg10}. This architecture is often referred 
-to as a ``direct imaging" correlator because it eliminates the intermediary 
-cross-correlation data products of the FX and earlier lag correlators, but 
+$\sim\Ngrid\log_2\Ngrid$, where $\sim\Ngrid$ is the number of grid points in the 
+Fourier transform \citep[e.g.][]{mor11,teg09,teg10}. This architecture is often 
+referred to as a ``direct imaging'' correlator because it eliminates the 
+intermediate cross-correlation data products of the FX and XF correlators, but 
 instead directly forms images from the electric field measurements.
 
 Direct imaging correlators have begun to be explored on deployed arrays including
@@ -197,11 +197,12 @@ then discuss our particular implementation in \S\ref{sec:software}. We then
 verify the output data quality from our code in \S\ref{sec:verify} by presenting 
 simulated images from both the EPIC correlator and comparing to a simulated FX 
 correlator. We also demonstrate the performance with real-world data from the 
-LWA. In \S \ref{sec:analysis} we analyze the scaling relationships of the 
-algorithm. We identify specific array design classes where the EPIC correlator 
-is computationally more efficient and in the field of transients, demands 
-significantly lesser bandwidth relative to visibility based approaches. We 
-conclude and discuss future research prospects in \S\ref{sec:conclusions}.
+LWA. In \S \ref{sec:analysis}, we explore the scalability of the algorithm in the 
+context of several array design choices. We identify specific array design 
+classes where the EPIC correlator -- is computationally more efficient; and in 
+the field of transients, demands significantly lesser I/O bandwidth relative to 
+visibility based approaches. We conclude and discuss future research prospects 
+in \S\ref{sec:conclusions}.
 
 \section{Mathematical Framework}\label{sec:math}
 
