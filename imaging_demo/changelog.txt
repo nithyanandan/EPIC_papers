@@ -1,3 +1,12 @@
+From 137f5a4 (review):
+=====================
+
+(*) Update figure 12 (layouts in parameter space)
+
+In ms.tex,
+
+(*) Update sections 4, 5 and 6 with suggested changes
+
 From 3b460d9 (review):
 =====================
 

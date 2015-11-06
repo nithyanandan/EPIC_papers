@@ -712,7 +712,7 @@ mathematical difference between the two techniques. The squaring operation under
 MOFF imaging in the image plane introduces antenna auto-correlations around the 
 zero spacing in the $uv$-plane which are absent in traditional visibility based 
 imaging. In order to facilitate a robust comparison between MOFF and visibility 
-based imaging techniques, these auto-correlations are removed from both the MOFF 
+based imaging techniques, these auto-correlations are removed from the MOFF 
 algorithm output, which is otherwise not an essential part of the core algorithm. 
 We describe below how they are removed. 
 
@@ -749,21 +749,20 @@ integration timescale and does not add significant cost to the full operation.
 \subsection{Comparison of outputs}\label{sec:diff}
 
 We investigate the two imaging algorithms for differences from the point of 
-view of the quality of their outputs. We begin by comparing the gridded 
-cross-correlation weights in the $uv$-plane. In MOFF imaging, weights 
-from antenna auto-correlations have been removed as described in 
-\S\ref{sec:rm-autocorr}. 
+view of the quality of their outputs. We begin by comparing the images produced 
+with the two approaches. 
 
 Fig.~\ref{fig:MOFF-FX-image} shows the dirty images (top) and synthesized beams
 (bottom) obtained with antenna-based MOFF and FX visibility based imaging 
 algorithms packaged in EPIC. The antenna auto-correlations that correspond to 
-zero spacing have been removed from the MOFF image and the corresponding 
-synthesized beam. The sky positions of the simulated sources are indicated by 
-solid black circles. The reconstructed sky image has the simulated sources at the
-expected sky positions in either case. Both algorithms result in images and 
-synthesized beams that are well matched with each other. Their fluxes are 
-modulated by a multiplicative power pattern corresponding to that of a uniform
-square aperture. 
+zero spacing have been removed from the correlated weights and data in the 
+$uv$ plane, the MOFF image and the corresponding synthesized beam as 
+described in \S\ref{sec:rm-autocorr}. The sky positions of the simulated sources 
+are indicated by solid black circles. The reconstructed sky image has the 
+simulated sources at the expected sky positions in either case. Both algorithms 
+result in images and synthesized beams that are well matched with each other. 
+Their fluxes are modulated by a multiplicative power pattern corresponding to 
+that of a uniform square aperture. 
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{MOFF_FX_comparison_10_random_source_positions_4_iterations_test_aperture_zoomed}
@@ -781,6 +780,7 @@ square aperture.
   \label{fig:MOFF-FX-image}
 \end{figure}
 
+Now we investigate the gridded cross-correlation weights in the $uv$-plane. 
 Fig.~\ref{fig:MOFF-FX-uvwts} shows the correlated weights obtained with MOFF 
 imaging (left) and visibility based imaging (right). There are two notable 
 differences. The first is in the weights around zero spacing. Though both show a
@@ -872,24 +872,25 @@ gridding do not affect the statistics of the images or the synthesized beams.
 \subsection{Application to LWA data}\label{sec:LWA-data}
 
 Here we demonstrate our software using narrow band data from the LWA station 
-in New Mexico. This data is in LWA narrow-band transient buffer (TBN) format with 
-512 voltage time samples from 255 antennas within roughly a diameter of 100~m. 
-The data is centered at a frequency of 74.03~MHz, with a sample rate (equal to 
-the bandwidth) of 100~kHz with 512 complex time samples in a A/D writeout 
-timescale of 5.12~ms, a frequency resolution of 195.3125~Hz and dual 
-polarization. There are 391 such time stamps yielding a total duration of 2~s. 
+in New Mexico. This data is in LWA narrow-band transient buffer (TBN) format 
+from 255 antennas within roughly a diameter of 100~m. The data is centered at a 
+frequency of 74.03~MHz, with a sample rate (equal to the bandwidth) of 100~kHz 
+with 512 complex time samples per antenna in a A/D writeout timescale of 
+5.12~ms, a frequency resolution of 195.3125~Hz and dual polarization. There are 
+391 such writeouts (or time stamps; each contains 512 time samples at 100~kHz 
+sampling ) yielding a total duration of 2~s. 
 
 We corrected the cable delays, but otherwise assume the data is sufficiently 
 calibrated to image directly. A test of EPICal on this data will be conducted 
 in the future.
 
 Fig.~\ref{fig:LWA-image} shows the image produced with MOFF imaging 
-packaged in EPIC after averaging over 20~ms of data and the inner
-$\approx 80$\% of bandwidth (roughly 80~kHz). The image is shown in direction 
-cosine coordinates -- $l$ along the horizontal axis and $m$ along the vertical 
-axis. The flux scale is arbitrary. Even in this proof-of-concept demonstration, 
-we see Cyg~A and Cas~A prominently as annotated, thus validating the 
-functionality of the EPIC package.
+packaged in EPIC after averaging over $\approx$~20~ms (four writeouts) of data 
+and the inner $\approx 80$\% of bandwidth (roughly 80~kHz). The image is shown 
+in direction cosine coordinates -- $l$ along the horizontal axis and $m$ along 
+the vertical axis. The flux scale is arbitrary. Even in this proof-of-concept 
+demonstration, we see Cyg~A and Cas~A prominently as annotated, thus validating 
+the functionality of the EPIC package.
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{LWA_MOFF_bandavg_image_4_iterations_analytic_aperture}
@@ -917,18 +918,19 @@ optimization of routines in place will determine the relative speeds of the
 different stages in the pipeline. 
 
 Of all steps in the MOFF pipeline that are repeated for every writeout from 
-the F-engine, the slowest step even for dense HERA layouts is found to be the 
-spatial two-dimensional FFT in the imaging stage relative to applying the sparse 
-matrix gridding convolution, squaring or time-averaging. For instance, even in 
-the dense array layout scenario that makes these stages perform the slowest, the 
-gridding convolution, squaring and time-averaging take up only $\lesssim 20$\%, 
-$\lesssim 20$\% and $\lesssim 5$\% respectively of the total time taken by all 
-these processes while the spatial Fourier transform takes up $\gtrsim 55\%$ of
-the total time. With sparser arrays the gridding process will be be even faster. 
+the F-engine, the most expensive step even for dense HERA layouts is found to be 
+the spatial two-dimensional FFT in the imaging stage relative to applying the 
+sparse matrix gridding convolution, squaring or time-averaging. For instance, 
+even in the conservative dense array layout scenario that makes these other 
+stages even more expensive, the gridding convolution, squaring and time-averaging 
+take up only $\lesssim 20$\%, $\lesssim 20$\% and $\lesssim 5$\% respectively of 
+the total processing time while the spatial Fourier transform takes up 
+$\gtrsim 55\%$ of the total time. With sparser arrays the gridding process will 
+be be even faster. 
 
-In the visibility based imaging, the predominant computational cost is at
-the X-engine requiring $\Nant(\Nant-1)/2$ complex multiplications 
-per channel at every correlator writeout timescale. 
+In visibility based imaging, the predominant computational cost is at the 
+X-engine requiring $\Nant(\Nant-1)/2$ complex multiplications per channel at 
+every A/D writeout timescale. 
 
 In the following discussions, we will assume that the computational cost for
 the MOFF imaging is determined by the spatial Fourier transform while  
@@ -1010,7 +1012,7 @@ Fig.~\ref{fig:parameter-space-computations-instruments} shows the number of
 complex operations per frequency channel per cross-polarization per integration 
 timescale. Telescopes that fall to the left of the solid line indicate MOFF 
 imaging is computationally more efficient than visibility based imaging. All HERA 
-layouts except HERA-19 and possibly HERA-37 are in a region of parameter space 
+layouts except HERA-19 and HERA-37 are in a region of parameter space 
 where MOFF imaging holds the advantage. The dashed line showing future trajectory 
 of HERA like systems will be clearly favored by MOFF imaging. The dotted line is 
 similarly a hypothetical trajectory for the MWA with more tiles added inside the 
@@ -1070,19 +1072,18 @@ required with the MOFF algorithm. This shifts the dashed curves leftward.
 The different antennas are color coded by roughly the class of antenna size 
 they fall into. Thus symbols of one color falling into a wedge of the same color 
 indicates MOFF imaging is favored for those telescopes and vice versa. For 
-e.g., MOFF imaging is favored in HERA-33 and HERA-6769 because they are inside 
+e.g., MOFF imaging is favored in HERA-331 and HERA-6769 because they are inside 
 the wedge but not so in cases of HERA-19 and HERA-37. A majority of the 
 next-generation radio telescopes, namely, HERA-331 and its future expanded 
-versions, SKA1-LC, SKA1-LCD, HIRAX, CHIME, LWA1 and its future expansions 
-(LWA1-x2x1 and LWA1-x4x1.5 denote two-fold and four-fold increase in the number 
+versions, SKA1-LC, SKA1-LCD, HIRAX, and CHIME will fall in the regime where MOFF 
+imaging will be desirable. LWA1 and LWA-OV are already very close to the dividing 
+line. Their hypothetical expansions,\footnote{LWA1-x2x1 and LWA1-x4x1.5, and 
+LWA-OVx2x1 and LWA-OVx4x1.5 denote two-fold and four-fold increase in the number 
 of antennas within a core diameter that is 1 and 1.5 times the current size of 
-100~m respectively), and a couple of the expanded versions of LWA-OV (LWA-OVx2x1 
-and LWA-OVx4x1.5 denote two-fold and four-fold increase in the number of antennas
-within a core diameter that is 1 and 1.5 times the current size of 200~m 
-respectively) will fall in the regime where MOFF imaging will be desirable. For 
-a fixed baseline length, regions favoring the MOFF algorithm tend to be towards 
-large $\Nant$ indicating large-N dense array layouts with smaller antenna 
-elements are best suited for deploying EPIC.
+100~m and 200~m respectively for LWA1 and LWA-OV.} will be in the computational 
+regime favored by MOFF. For a fixed baseline length, regions favoring the MOFF 
+algorithm tend to be towards large $\Nant$ indicating large-N dense array 
+layouts with smaller antenna elements are best suited for deploying EPIC.
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended}
@@ -1102,7 +1103,7 @@ elements are best suited for deploying EPIC.
     with increasing antenna size. The different antennas are color coded by 
     roughly the class of antenna size they fall into. Thus symbols of one 
     color falling into a wedge of the same color indicates MOFF imaging is 
-    advantageous for those telescopes and vice versa. For e.g., MOFF imaging
+    advantageous for those telescopes and vice versa. For example, MOFF imaging
     is favored in HERA-331 and HERA-6769 because they are inside the wedge 
     but not so in cases of HERA-19 and HERA-37.}
   \label{fig:parameter-space-bll-nant-instruments}
@@ -1196,7 +1197,8 @@ computational cost from traditional FX/XF correlator based architecture and
 visibility based imaging starts rising steeply. We have provided the first 
 software demonstration of a general purpose imaging algorithm using our generic 
 and efficient EPIC software that is designed to bring this cost down from 
-$\mathcal{O}(N^2)$ to $\mathcal{O}(N\log_2 N)$. Under the class of direct imaging 
+$\mathcal{O}(\Nant^2)$ to $\mathcal{O}(\Ngrid\log_2 \Ngrid)$. Under the class of 
+direct imaging 
 techniques, ours is one of the most generic -- neither does it place any 
 constraint on the array layout to be on a regular grid nor does it require the
 antenna array to be homogeneous. 
@@ -1207,7 +1209,8 @@ MOFF algorithm in addition to visibility based software holography imaging and
 a data simulator for sky models. It is designed to provide a development 
 platform to compare different imaging approaches and serve as a stepping stone 
 for real-life GPU/FPGA based implementation on telescopes. It has been 
-successfully tested on simulated as well as real LWA observations. 
+successfully tested on simulated MWA observations as well as real LWA 
+observations. 
 
 The MOFF algorithm packaged with EPIC is already found to be most suitable 
 for many present and planned radio telescopes such as the LWA, HERA, CHIME,
@@ -1215,15 +1218,17 @@ HIRAX and SKA. In general, MOFF is most suited to operate in the region of
 parameter space characterized by dense packing of a large number of antennas 
 especially when consisting of a large number of small antenna elements. 
 
-A unique advantage is the instantaneous availability of calibrated time-domain 
-images bundled together with the hardware frontend such as the F-engine as an 
-integrated module. It is seen to have significant savings in data throughput 
-relative to a X-engine based pipeline. Hence, it is a compelling candidate for 
-time-domain radio astronomy, e.g. search for and monitoring of transients. 
-Transient detection pipeline at the backend of EPIC can be fine-tuned to target 
-fast transients such as the Fast Radio Bursts \citep[FRB;][]{tho13} on 
-millisecond timescales at GHz frequencies or slow transients from planetary and 
-exoplanetary origins at frequencies around 100~MHz. 
+It is seen to have significant savings in data throughput relative to a 
+X-engine based pipeline. A unique advantage is the instantaneous availability 
+of calibrated time-domain images at no extra cost. Hence, it is a compelling 
+candidate for time-domain radio astronomy, e.g. search for and monitoring of 
+transients. Potentially, it could allow on-chip processing thus lowering even 
+further the relatively low I/O bandwidth shown in table~\ref{tab:data-rates} 
+except when a transient event is detected. Transient detection pipelines at 
+the backend of EPIC can be fine-tuned to target fast transients such as the 
+Fast Radio Bursts \citep[FRB;][]{tho13} on millisecond timescales at GHz 
+frequencies or slow transients from planetary and exoplanetary origins at 
+frequencies around 100~MHz. 
 
 Thus, EPIC with the MOFF algorithm packaged is uniquely poised to offer a
 substantial advantage to imaging with large-N dense arrays typical of 
