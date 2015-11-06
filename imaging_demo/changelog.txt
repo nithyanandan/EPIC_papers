@@ -1,9 +1,39 @@
+From b5cac02 (master) + ae5ce63 (arXiv):
+=======================================
+
+Merge changes from the arXiv branch onto master branch
+
 From 70146f3 (master):
 =====================
 
 In ms.tex,
 
 (*) Update abstract with suggestions from Adam
+
+From f6809de (arxiv):
+====================
+
+In ms.tex,
+
+(*) Mention calibration scales as number of calibrators as well as
+number of antennas
+(*) Correct the collecting area of HIRAX in the table
+(*) Change caption of figure 9 to left and right instead of top and
+bottom
+(*) Update caption of figure 7
+
+From 70146f3 (arxiv):
+====================
+
+In ms.tex,
+
+(*) Change including .bib file to including .bbl file
+(*) Remove commented lines
+(*) Remove figure filename extensions
+(*) Comment out \usepackage{newtxtext,newtxmath} to be compatible
+with arXiv submission
+(*) Change fontsize of first table to scriptsize to fit the column
+width
 
 From cadd827 (master):
 =====================
