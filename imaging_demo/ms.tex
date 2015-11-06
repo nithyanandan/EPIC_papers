@@ -99,22 +99,23 @@ traditional correlators scales as $\mathcal{O}(\Nant^2)$, there will be a steep
 cost for realizing the full imaging potential of these powerful instruments. 
 Through our generic and efficient E-field Parallel Imaging Correlator (EPIC), 
 we present the first software demonstration of a generalized direct imaging 
-algorithm known as the Modular Optimal Frequency Fourier (MOFF) imager. It takes 
+algorithm, namely, the Modular Optimal Frequency Fourier (MOFF) imager. It takes 
 advantage of the multiplication-convolution theorem of Fourier transforms. Not 
 only does it bring down the cost for dense layouts to 
 $\mathcal{O}(\Nant\log_2\Nant)$ but can also image from irregularly arranged 
 heterogeneous antenna arrays. EPIC is highly modular and parallelizable, 
 implemented in object oriented Python, and publicly available. We have verified 
 the images produced to be equivalent to those produced using traditional 
-techniques. We have also validated our implementation on data observed with the 
-Long Wavelength Array (LWA). Antenna systems with a dense filling factor 
-consisting of a large number of antennas such as LWA, the Square Kilometre Array, 
-Hydrogen Epoch of Reionization Array, and Canadian Hydrogen Intensity Mapping 
-Experiment will gain significant advantage by deploying EPIC. Inherent 
-availability of calibrated time-domain images on timescales roughly equal to the 
-writeout timescale of the digitizer and vastly lower bandwidth relative to 
-visibility based systems will make it a prime candidate for transient searches 
-of Fast Radio Bursts (FRB) as well as planetary and exoplanetary phenomena. 
+techniques to within a precision determined by coarseness of gridding. We have 
+also validated our implementation on data observed with the Long Wavelength Array 
+(LWA). Antenna layouts with a dense filling factor consisting of a large number 
+of antennas such as LWA, the Square Kilometre Array, Hydrogen Epoch of 
+Reionization Array, and Canadian Hydrogen Intensity Mapping Experiment will gain 
+significant computational advantage by deploying EPIC. Inherent availability of 
+calibrated time-domain images on timescales roughly equal to the writeout 
+timescale of the digitizer and vastly lower I/O bandwidth relative to visibility 
+based systems will make it a prime candidate for transient searches of Fast Radio 
+Bursts (FRB) as well as planetary and exoplanetary phenomena. 
 \end{abstract}
 
 % Select between one and six entries from the list of approved keywords.

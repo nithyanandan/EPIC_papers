@@ -1,3 +1,10 @@
+From 70146f3 (master):
+=====================
+
+In ms.tex,
+
+(*) Update abstract with suggestions from Adam
+
 From cadd827 (master):
 =====================
 
