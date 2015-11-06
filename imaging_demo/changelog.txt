@@ -1,3 +1,10 @@
+From a01e819 (master):
+=====================
+
+In ms.tex,
+
+(*) Update section 1 with changes suggested by Adam
+
 From b5cac02 (master) + ae5ce63 (arXiv):
 =======================================
 
