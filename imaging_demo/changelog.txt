@@ -1,3 +1,10 @@
+From 3b460d9 (review):
+=====================
+
+In ms.tex,
+
+(*) Update section 3 with suggested changes
+
 From b7d9d50 (review):
 =====================
 
