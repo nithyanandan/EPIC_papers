@@ -1,3 +1,12 @@
+From 2bc22fc (review):
+=====================
+
+In ms.tex,
+
+(*) Minor changes mentioning about noise in simulations
+(*) Minor changes in section 4.2 heading
+(*) Other minor changes
+
 From cb584b3 (review):
 =====================
 
