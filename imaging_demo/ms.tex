@@ -137,10 +137,10 @@ view and densely packed layouts. Similarly, the search for transient objects
 and regular monitoring of the time-dependent sky is driving instruments in the
 same direction with the added requirement of fast read-outs. A number of new 
 telescopes are being or were developed around the world based on this new 
-paradigm, the Hydrogen Epoch of Reionization 
-Array\footnote{http://reionization.org} (HERA), including the Murchison 
-Widefield Array (MWA;\citealt{tin13,bow13}), the Precision Array for Probing 
-the Epoch of Reionization (PAPER; \citealt{par10}), the LOw Frequency ARray 
+paradigm, including the Hydrogen Epoch of Reionization 
+Array\footnote{http://reionization.org} (HERA), the Murchison Widefield Array 
+(MWA;\citealt{tin13,bow13}), the Precision Array for Probing the Epoch of 
+Reionization (PAPER; \citealt{par10}), the LOw Frequency ARray 
 (LOFAR;\citealt{van13}), the Canadian Hydrogen Intensity Mapping Experiment 
 (CHIME,\citealt{ban14}), the Long Wavelength Array (LWA, \citealt{ell13}), and 
 the low frequency Square Kilometer Array (SKA1-Low \citealt{mel13}).
@@ -163,7 +163,7 @@ that can lower the computational burden by directly performing a spatial fast
 Fourier transform (FFT) on the electric fields measured by each antenna in the
 array at each time step, removing the cross-correlation step. This relieves the
 computational scaling from the harsh $\Nant^2$ to the more gentle envelope of
-$\sim\Ngrid\log_2\Ngrid$, where $\sim\Ngrid$ is the number of grid points in the 
+$\sim\Ngrid\log_2\Ngrid$, where $\Ngrid$ is the number of grid points in the 
 Fourier transform \citep[e.g.][]{mor11,teg09,teg10}. This architecture is often 
 referred to as a ``direct imaging'' correlator because it eliminates the 
 intermediate cross-correlation data products of the FX and XF correlators, but 
@@ -354,10 +354,11 @@ There are some important differences between the two techniques:
 
 We have implemented the MOFF imaging technique in our ``E-field Parallel Imaging
 Correlator'' -- a highly parallelized Object Oriented Python 
-package,\footnote{EPIC package can be accessed at https://github.com/nithyanandan/EPIC}
-now publicly available. Besides implementing the MOFF imaging algorithm it also
-includes visibility based imaging using the software holography technique and a 
-simulator for generating electric fields from a sky model. 
+package,\footnote{The E-field Parallel Imaging Correlator (EPIC) package can be 
+accessed at https://github.com/nithyanandan/EPIC} now publicly available. Besides 
+implementing the MOFF imaging algorithm it also includes visibility based imaging 
+using the software holography technique and a simulator for generating electric 
+fields from a sky model. 
 
 \subsection{Data Flow}
 
@@ -373,7 +374,7 @@ propagated electric fields are shown on the left at different time stamps,
 $t_1\ldots t_\textrm{M}$. At each time stamp, the electric fields measured by
 antennas are denoted by $E_1(t)\ldots E_\textrm{N}(t)$. The F-engine performs a
 temporal Fourier transform on the electric field time-series to obtain electric
-field spectra $E_1(f)\ldots E_\textrm{N}(f)$ 
+field spectra $\widetilde{E}_1(f)\ldots \widetilde{E}_\textrm{N}(f)$ 
 ($\widetilde{\mathbf{E}}(\mathbf{a})$ in matrix notation) for each of the 
 antennas. Each of the complex antenna gains are calibrated to correct the 
 corresponding electric field spectra. These calibrated electric fields are 
@@ -388,10 +389,11 @@ $I(f)$ ($\mathbf{I}(\hat{\mathbf{s}})$ in matrix notation).
     shown on the left are measured as time-series $E_1(t)\ldots E_\textrm{N}(t)$
     by the antennas $\textrm{A}_1\ldots \textrm{A}_\textrm{N}$ which are then 
     Fourier transformed by the F-engine to produce electric field spectra 
-    $E_1(f)\ldots E_\textrm{N}(f)$. They are calibrated and gridded. The gridded 
-    electric fields $E_\textrm{g}(f)$ from each time series are imaged to produce 
-    images $I_1(f)\ldots I_\textrm{M}(f)$. These images are time-averaged to 
-    obtain the final image $I(f)$.}
+    $\widetilde{E}_1(f)\ldots \widetilde{E}_\textrm{N}(f)$. They are calibrated 
+    and gridded. The gridded electric fields $\widetilde{E}_\textrm{g}(f)$ from 
+    each time series are imaged to produce images 
+    $I_1(f)\ldots I_\textrm{M}(f)$. These images are time-averaged to obtain the 
+    final image $I(f)$.}
   \label{fig:MOFF-flowchart}
 \end{figure}
 
@@ -399,20 +401,21 @@ Fig.~\ref{fig:FX-flowchart} shows the flowchart for a visibility based software
 holographic imaging from a FX correlator. The antenna-based F-engine is identical 
 to that in the MOFF processing. The electric field spectra from each antenna are 
 then cross-multiplied in the X-engine with those from all other antennas to 
-obtain the visibilities $V_\textrm{p}(f)$ ($\mathbf{m}(\mathbf{v})$ in matrix 
-notation). They are calibrated and time-averaged to obtain 
-$\langle V_\textrm{p}(f)\rangle$ which are then gridded and imaged to obtain the 
-image $I(f)$. The $I(f)$ obtained from both techniques are theoretically 
-identical as explained in \S\ref{sec:math}.
+obtain the visibilities $\widetilde{V}_\textrm{p}(f)$ ($\mathbf{m}(\mathbf{v})$ 
+in matrix notation). They are calibrated and time-averaged to obtain 
+$\langle \widetilde{V}_\textrm{p}(f)\rangle$ which are then gridded and imaged to 
+obtain the image $I(f)$. The $I(f)$ obtained from both techniques are 
+theoretically identical as explained in \S\ref{sec:math}.
 \begin{figure}
   \includegraphics[width=\columnwidth]{FX_flowchart}
   % \includegraphics[width=\columnwidth]{FX_flowchart.eps}
   \caption{A flowchart of visibility based software holographic imaging in EPIC. 
     The FX process flow shares the F-engine with the MOFF process. Following the 
     F-engine, the electric fields pass through the X-engine to produce 
-    visibilities $V_\textrm{p}(f)$ which are calibrated and time-averaged. Then 
-    they are gridded to obtain the gridded visibilities $V_\textrm{g}(f)$ which 
-    are then Fourier transformed to obtain the image, $I(f)$.}
+    visibilities $\widetilde{V}_\textrm{p}(f)$ which are calibrated and 
+    time-averaged. Then they are gridded to obtain the gridded visibilities 
+    $\widetilde{V}_\textrm{g}(f)$ which are then Fourier transformed to obtain 
+    the image, $I(f)$.}
   \label{fig:FX-flowchart}
 \end{figure}
 
@@ -423,7 +426,7 @@ Here we discuss the components of these architectures in detail.
 \par\medskip
 \noindent A grid is generated on the coordinate system in which antenna 
 locations are specified with a grid spacing. The grid spacing can be controlled 
-by the user. By default, it is set to be at $\lambda/2$ even at the 
+by the user. By default, it is set to be $\le\lambda/2$ even at the 
 lowest wavelength to ensure there is no aliasing even from regions of the sky 
 far away from the field of view. The number of locations on the grid is 
 restricted to be a power of 2 for efficient use of FFT. 
@@ -603,9 +606,9 @@ These modules are described below.
 The antenna module is a fundamental building block upon which all the other 
 modules are built. There is one antenna module per antenna each having 
 attributes -- the propagated electric field time-series, $E(t)$, and spectrum 
-$E(f)$ for both polarizations. The most important function inside this module 
-is the F-engine that Fourier transforms time-series electric field data into 
-spectra. 
+$\widetilde{E}(f)$ for both polarizations. The most important function inside 
+this module is the F-engine that Fourier transforms time-series electric field 
+data into spectra. 
 
 The other function (not shown in the figure) is to update the data as new data 
 streams in. This can also be parallelized. Another important attribute
@@ -624,20 +627,21 @@ The critical component of the interferometer module is the X-engine. This is
 essentially a software analog of hardware correlators of real telescope 
 systems. The X-engine can be toggled between two states of operation, 
 namely, the FX and XF modes. The FX mode obtains the electric field spectra, 
-$E(f)$ from the individual antenna modules inside this module and multiplies 
-the two to obtain visibility spectra, $V(f)$. On the other hand, the XF mode 
-cross-correlates the electric field time-series from its Antenna modules
-to obtain the visibilities as a function of lags, $V_t(t)$, which is then Fourier 
-transformed to obtain $V(f)$. Both modules can operate on dual-polarizations to
-obtain all four cross-polarizations.
+$\widetilde{E}(f)$ from the individual antenna modules inside this module and 
+multiplies the two to obtain visibility spectra, $\widetilde{V}(f)$. On the 
+other hand, the XF mode cross-correlates the electric field time-series from 
+its Antenna modules to obtain the visibilities as a function of lags, 
+$\widetilde{V}_t(t)$, which is then Fourier transformed to obtain 
+$\widetilde{V}(f)$. Both modules can operate on dual-polarizations to obtain 
+all four cross-polarizations.
 
 The other attributes (not shown in figure) are the flags applicable for each
 cross-polarization for the current data stream. Similar to the antenna module,
-it has an update function that can update the visibilities $V_t(t)$ or $V(f)$
-directly rather than through the electric fields of its component antennas. 
-This functionality is to allow EPIC to operate while attached to the backend 
-of traditional correlator systems. This feature is not utilized for purposes 
-of this paper.
+it has an update function that can update the visibilities $\widetilde{V}_t(t)$ 
+or $\widetilde{V}(f)$ directly rather than through the electric fields of its 
+component antennas. This functionality is to allow EPIC to operate while 
+attached to the backend of traditional correlator systems. This feature is not 
+utilized for purposes of this paper.
 
 This module forms the fundamental unit for the interferometer array module 
 (to be discussed below) and in general for visibility based correlator and 
@@ -878,7 +882,7 @@ frequency of 74.03~MHz, with a sample rate (equal to the bandwidth) of 100~kHz
 with 512 complex time samples per antenna in a A/D writeout timescale of 
 5.12~ms, a frequency resolution of 195.3125~Hz and dual polarization. There are 
 391 such writeouts (or time stamps; each contains 512 time samples at 100~kHz 
-sampling ) yielding a total duration of 2~s. 
+sampling) yielding a total duration of 2~s. 
 
 We corrected the cable delays, but otherwise assume the data is sufficiently 
 calibrated to image directly. A test of EPICal on this data will be conducted 
@@ -890,7 +894,7 @@ and the inner $\approx 80$\% of bandwidth (roughly 80~kHz). The image is shown
 in direction cosine coordinates -- $l$ along the horizontal axis and $m$ along 
 the vertical axis. The flux scale is arbitrary. Even in this proof-of-concept 
 demonstration, we see Cyg~A and Cas~A prominently as annotated, thus validating 
-the functionality of the EPIC package.
+the functionality of EPIC.
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{LWA_MOFF_bandavg_image_4_iterations_analytic_aperture}
@@ -1111,7 +1115,7 @@ layouts with smaller antenna elements are best suited for deploying EPIC.
 
 \subsection{Data Throughput}
 
-We elaborate on the data rates required with the MOFF and visibility based
+We elaborate on the I/O data rates required with the MOFF and visibility based
 algorithms. This is particularly relevant in the context of radio transient 
 detection. 
 
@@ -1223,12 +1227,12 @@ X-engine based pipeline. A unique advantage is the instantaneous availability
 of calibrated time-domain images at no extra cost. Hence, it is a compelling 
 candidate for time-domain radio astronomy, e.g. search for and monitoring of 
 transients. Potentially, it could allow on-chip processing thus lowering even 
-further the relatively low I/O bandwidth shown in table~\ref{tab:data-rates} 
-except when a transient event is detected. Transient detection pipelines at 
-the backend of EPIC can be fine-tuned to target fast transients such as the 
-Fast Radio Bursts \citep[FRB;][]{tho13} on millisecond timescales at GHz 
-frequencies or slow transients from planetary and exoplanetary origins at 
-frequencies around 100~MHz. 
+further the already relatively low I/O bandwidth shown in 
+table~\ref{tab:data-rates} except when a transient event is detected. Transient 
+detection pipelines at the backend of EPIC can be fine-tuned to target fast 
+transients such as the Fast Radio Bursts \citep[FRB;][]{tho13} on millisecond 
+timescales at GHz frequencies or slow transients from planetary and exoplanetary 
+origins at frequencies around 100~MHz. 
 
 Thus, EPIC with the MOFF algorithm packaged is uniquely poised to offer a
 substantial advantage to imaging with large-N dense arrays typical of 
