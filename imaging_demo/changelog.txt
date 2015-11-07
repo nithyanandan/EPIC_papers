@@ -1,3 +1,15 @@
+From cb584b3 (review):
+=====================
+
+In ms.tex,
+
+(*) Move section 3.2 (software architecture) to appendix
+(*) Remove section 3.1 heading "Data flow"
+(*) Add a sentence at end of section 3 to refer the interested reader
+to the appendix
+(*) Update abstract
+(*) Few minor changes
+
 From a25a02a (review):
 =====================
 

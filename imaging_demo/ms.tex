@@ -93,7 +93,7 @@ $^{2}$University of Washington, Department of Physics, Seattle, WA 98195, USA\\
 
 % Abstract of the paper
 \begin{abstract}
-Modern radio telescopes are favoring densely packed array layouts consisting of 
+Modern radio telescopes are favoring densely packed array layouts with 
 large numbers of antennas ($\Nant\gtrsim 1000$). Since the complexity of 
 traditional correlators scales as $\mathcal{O}(\Nant^2)$, there will be a steep 
 cost for realizing the full imaging potential of these powerful instruments. 
@@ -103,19 +103,19 @@ algorithm, namely, the Modular Optimal Frequency Fourier (MOFF) imager. It takes
 advantage of the multiplication-convolution theorem of Fourier transforms. Not 
 only does it bring down the cost for dense layouts to 
 $\mathcal{O}(\Nant\log_2\Nant)$ but can also image from irregularly arranged 
-heterogeneous antenna arrays. EPIC is highly modular and parallelizable, 
-implemented in object oriented Python, and publicly available. We have verified 
-the images produced to be equivalent to those produced using traditional 
-techniques to within a precision determined by coarseness of gridding. We have 
-also validated our implementation on data observed with the Long Wavelength Array 
-(LWA). Antenna layouts with a dense filling factor consisting of a large number 
-of antennas such as LWA, the Square Kilometre Array, Hydrogen Epoch of 
-Reionization Array, and Canadian Hydrogen Intensity Mapping Experiment will gain 
-significant computational advantage by deploying EPIC. Inherent availability of 
-calibrated time-domain images on timescales roughly equal to the writeout 
-timescale of the digitizer and vastly lower I/O bandwidth relative to visibility 
-based systems will make it a prime candidate for transient searches of Fast Radio 
-Bursts (FRB) as well as planetary and exoplanetary phenomena. 
+heterogeneous antenna. EPIC is highly modular and parallelizable, implemented in 
+object oriented Python, and publicly available. We have verified the images 
+produced to be equivalent to those produced using traditional techniques to 
+within a precision determined by coarseness of gridding. We have also validated 
+our implementation on data observed with the Long Wavelength Array (LWA). Antenna 
+layouts with a dense filling factor consisting of a large number of antennas such 
+as LWA, the Square Kilometre Array, Hydrogen Epoch of Reionization Array, and 
+Canadian Hydrogen Intensity Mapping Experiment will gain significant 
+computational advantage by deploying EPIC. Inherent availability of calibrated 
+time-domain images on digitizer writeout timescales and vastly lower I/O 
+bandwidth relative to visibility based systems will make it a prime candidate 
+for transient searches of Fast Radio Bursts (FRB) as well as planetary and 
+exoplanetary phenomena. 
 \end{abstract}
 
 % Select between one and six entries from the list of approved keywords.
@@ -159,15 +159,16 @@ will require orders of magnitude more computation, making the correlator the
 dominant cost.
 
 For certain classes of radio arrays there is an alternative to the FX correlator
-that can lower the computational burden by directly performing a spatial fast
-Fourier transform (FFT) on the electric fields measured by each antenna in the
-array at each time step, removing the cross-correlation step. This relieves the
-computational scaling from the harsh $\Nant^2$ to the more gentle envelope of
-$\sim\Ngrid\log_2\Ngrid$, where $\Ngrid$ is the number of grid points in the 
-Fourier transform \citep[e.g.][]{mor11,teg09,teg10}. This architecture is often 
-referred to as a ``direct imaging'' correlator because it eliminates the 
-intermediate cross-correlation data products of the FX and XF correlators, but 
-instead directly forms images from the electric field measurements.
+that can lower the computational burden by directly performing a spatial Fast
+Fourier Transform \citep[FFT;][]{coo65} on the electric fields measured by each 
+antenna in the array at each time step, removing the cross-correlation step. 
+This relieves the computational scaling from the harsh $\Nant^2$ to the more 
+gentle envelope of $\sim\Ngrid\log_2\Ngrid$, where $\Ngrid$ is the number of 
+grid points in the Fourier transform \citep[e.g.][]{mor11,teg09,teg10}. This 
+architecture is often referred to as a ``direct imaging'' correlator because it 
+eliminates the intermediate cross-correlation data products of the FX and XF 
+correlators, but instead directly forms images from the electric field 
+measurements.
 
 Direct imaging correlators have begun to be explored on deployed arrays including
 the Basic Element for SKA Training II (BEST-2) array \citep{fos14}, the Omniscope
@@ -360,7 +361,7 @@ implementing the MOFF imaging algorithm it also includes visibility based imagin
 using the software holography technique and a simulator for generating electric 
 fields from a sky model. 
 
-\subsection{Data Flow}
+% \subsection{Data Flow}
 
 EPIC can accept dual-polarization inputs and produce images of all four 
 instrumental cross-polarizations. Currently two data input formats exist for 
@@ -569,127 +570,8 @@ before imaging because the repeated cost of spatial FFT can be avoided. Since
 this averaging has been performed already on the visibilities over an integration 
 timescale, the imaging step has to be performed only once per integration cycle. 
 
-\subsection{Software Architecture}\label{sec:software-modules}
-
-EPIC is built using object oriented programming in Python and is built on
-carefully crafted modules which closely represent real-life entities in radio 
-interferometer arrays and observations. The essential modules along with their
-key attributes and methods are illustrated in Fig.~\ref{fig:software-modules}.
-These modules are described below.
-
-\begin{figure*}
-  \includegraphics[width=\linewidth]{EPIC-modules}
-  % \includegraphics[width=\linewidth]{EPIC-modules.eps}
-  \caption{Software architecture of EPIC with core modules, their essential
-    attributes and functions. The antenna module forms the fundamental building 
-    block. It consists of electric field time-series and spectra and the 
-    F-engine that performs a temporal FFT to obtain electric field spectra from 
-    the time-series. The interferometer module is made of a pair of antenna 
-    modules. Its main function is the X-engine (FX or XF) to produce visibility 
-    spectra. The antenna array module is made of all individual antenna modules
-    as its components and contains collective properties about the antenna 
-    subsystems. Its core function is the creation of antenna-to-grid mapping, 
-    gridded aperture weights and electric fields. The interferometer array 
-    module is very similar in principle to the antenna array module except it 
-    operates on cross-correlations and produces gridded visibilities. The image 
-    module takes gridded electric fields or visibilities and performs a 
-    two-dimensional spatial FFT (and squares the intermediate image in case 
-    of the former) to produce output images. Broadly, the MOFF algorithm is 
-    implemented by modules below the horizontal dashed line while the visibility 
-    based imaging uses modules above the line. The exact processing pathway 
-    implementing the MOFF algorithm is shown in bolded modules.}
-  \label{fig:software-modules}
-\end{figure*}
-
-\subsubsection{Antenna Module}
-
-The antenna module is a fundamental building block upon which all the other 
-modules are built. There is one antenna module per antenna each having 
-attributes -- the propagated electric field time-series, $E(t)$, and spectrum 
-$\widetilde{E}(f)$ for both polarizations. The most important function inside 
-this module is the F-engine that Fourier transforms time-series electric field 
-data into spectra. 
-
-The other function (not shown in the figure) is to update the data as new data 
-streams in. This can also be parallelized. Another important attribute
-(not shown in figure) are antenna flags for each polarization appropriate for 
-the data stream being held by the module. 
-
-\subsubsection{Interferometer Module}
-
-The interferometer module holds the attributes and functions pertaining to
-a pair of antennas and represents the cross-correlation information obtained
-from the pair. Its primary attributes are the two antenna modules. It also
-contains four cross-polarized visibility time-series (even for the FX 
-correlator for diagnostic purposes) and spectra. 
-
-The critical component of the interferometer module is the X-engine. This is 
-essentially a software analog of hardware correlators of real telescope 
-systems. The X-engine can be toggled between two states of operation, 
-namely, the FX and XF modes. The FX mode obtains the electric field spectra, 
-$\widetilde{E}(f)$ from the individual antenna modules inside this module and 
-multiplies the two to obtain visibility spectra, $\widetilde{V}(f)$. On the 
-other hand, the XF mode cross-correlates the electric field time-series from 
-its Antenna modules to obtain the visibilities as a function of lags, 
-$\widetilde{V}_t(t)$, which is then Fourier transformed to obtain 
-$\widetilde{V}(f)$. Both modules can operate on dual-polarizations to obtain 
-all four cross-polarizations.
-
-The other attributes (not shown in figure) are the flags applicable for each
-cross-polarization for the current data stream. Similar to the antenna module,
-it has an update function that can update the visibilities $\widetilde{V}_t(t)$ 
-or $\widetilde{V}(f)$ directly rather than through the electric fields of its 
-component antennas. This functionality is to allow EPIC to operate while 
-attached to the backend of traditional correlator systems. This feature is not 
-utilized for purposes of this paper.
-
-This module forms the fundamental unit for the interferometer array module 
-(to be discussed below) and in general for visibility based correlator and 
-imaging systems. 
-
-\subsubsection{Antenna Array Module}
-
-The antenna array module consists of all the antenna modules as its attributes
-and represents the collective properties of its component antennas. By virtue of 
-holding each antenna data independently in their respective modules, the F-engine 
-for the entire array can be distributed to the F-engines of the component 
-antenna modules thus achieving a highly parallelized F-engine while emulating 
-real telescope systems.
-
-The primary attributes held by this module are the antenna aperture 
-illumination weights and electric fields projected on the grid using the 
-gridding convolution method described above and implemented by the gridding 
-function in this module. Significant parts of the antenna-to-grid mapping and 
-gridding convolution are parallelizable across antennas and frequencies.
-
-Individual antenna flags are carried over as additional weights to be applied
-to the gridded aperture illumination and electric fields. A series of data 
-streams can be stacked up to take advantage of the array optimization available 
-in Python. This module is also equipped to manage dual-polarization. 
-
-\subsubsection{Interferometer Array Module}
-
-Similar to the antenna array module, the interferometer array module consists of
-individual interferometer modules. It can parallelize the correlator operations
-by distributing the X-operation over the X-engines of its component 
-interferometer modules. The interferometer-to-grid mapping and gridding 
-convolution are very similar in nature to that of the antenna array module. 
-Flag-based grid weights, stacking and ability to handle all four 
-cross-polarizations are built into this module. 
-
-\subsubsection{Image Module}
-
-The image module is built as a general purpose module that can switch between 
-operating on gridded electric fields or visibilities. At its heart, it consists
-of a two-dimensional spatial FFT where the padding can be specified by the user 
-to control the resolution in the output images. In case of MOFF imaging, there 
-is an additional step of squaring the holographic electric field images. 
-
-Besides its core functions of spatial Fourier transform and squaring, it can 
-stack, accumulate and average images, and optionally remove the antenna
-auto-correlations centered around the zero-spacing pixel in the $uv$ plane. 
-It also handles all four cross-polarization products. Currently, it supports 
-writing data out in standard FITS format. 
+A high level software architecture of the EPIC package is described in the 
+appendix \S\ref{sec:software-modules} for the interested reader.
 
 \section{Verification}\label{sec:verify}
 
@@ -946,12 +828,11 @@ becoming less compact in the measurement plane and can result in a costlier
 gridding process.
 
 The number of complex multiplications and additions in the spatial Fourier 
-transform implemented via Fast Fourier Transform \citep[FFT;][]{coo65} is 
-$\approx \beta\,(4\Ngrid)\log_2(4\Ngrid)$ where $\Ngrid$ is the number of 
-pixels on the grid, the factor 4 accounts for increase in number of pixels as a 
-result of zero-padding before spatial Fourier transform, and $\beta$ is a 
-constant that depends on the implementation of twiddle FFT algorithms 
-\citep{bri74}. In our study, we set $\beta=5$, a 
+transform implemented via FFT is $\approx \beta\,(4\Ngrid)\log_2(4\Ngrid)$ 
+where $\Ngrid$ is the number of pixels on the grid, the factor 4 accounts for 
+increase in number of pixels as a result of zero-padding before spatial Fourier 
+transform, and $\beta$ is a constant that depends on the implementation of 
+twiddle FFT algorithms \citep{bri74}. In our study, we set $\beta=5$, a 
 value\footnote{http://www.fftw.org/speed/method.html} much more conservative 
 than was indicated in \citet{mor11}. We set the number of complex 
 multiplications in the X-engine in visibility based imaging to 
@@ -1264,7 +1145,129 @@ of the University Radio Observatory program.
 
 %%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
 
-% \appendix
+\appendix
+
+\section{Software Architecture}\label{sec:software-modules}
+
+EPIC is built using object oriented programming in Python and is built on
+carefully crafted modules which closely represent real-life entities in radio 
+interferometer arrays and observations. The essential modules along with their
+key attributes and methods are illustrated in Fig.~\ref{fig:software-modules}.
+These modules are described below.
+
+\begin{figure*}
+  \includegraphics[width=\linewidth]{EPIC-modules}
+  % \includegraphics[width=\linewidth]{EPIC-modules.eps}
+  \caption{Software architecture of EPIC with core modules, their essential
+    attributes and functions. The antenna module forms the fundamental building 
+    block. It consists of electric field time-series and spectra and the 
+    F-engine that performs a temporal FFT to obtain electric field spectra from 
+    the time-series. The interferometer module is made of a pair of antenna 
+    modules. Its main function is the X-engine (FX or XF) to produce visibility 
+    spectra. The antenna array module is made of all individual antenna modules
+    as its components and contains collective properties about the antenna 
+    subsystems. Its core function is the creation of antenna-to-grid mapping, 
+    gridded aperture weights and electric fields. The interferometer array 
+    module is very similar in principle to the antenna array module except it 
+    operates on cross-correlations and produces gridded visibilities. The image 
+    module takes gridded electric fields or visibilities and performs a 
+    two-dimensional spatial FFT (and squares the intermediate image in case 
+    of the former) to produce output images. Broadly, the MOFF algorithm is 
+    implemented by modules below the horizontal dashed line while the visibility 
+    based imaging uses modules above the line. The exact processing pathway 
+    implementing the MOFF algorithm is shown in bolded modules.}
+  \label{fig:software-modules}
+\end{figure*}
+
+\subsection{Antenna Module}
+
+The antenna module is a fundamental building block upon which all the other 
+modules are built. There is one antenna module per antenna each having 
+attributes -- the propagated electric field time-series, $E(t)$, and spectrum 
+$\widetilde{E}(f)$ for both polarizations. The most important function inside 
+this module is the F-engine that Fourier transforms time-series electric field 
+data into spectra. 
+
+The other function (not shown in the figure) is to update the data as new data 
+streams in. This can also be parallelized. Another important attribute
+(not shown in figure) are antenna flags for each polarization appropriate for 
+the data stream being held by the module. 
+
+\subsection{Interferometer Module}
+
+The interferometer module holds the attributes and functions pertaining to
+a pair of antennas and represents the cross-correlation information obtained
+from the pair. Its primary attributes are the two antenna modules. It also
+contains four cross-polarized visibility time-series (even for the FX 
+correlator for diagnostic purposes) and spectra. 
+
+The critical component of the interferometer module is the X-engine. This is 
+essentially a software analog of hardware correlators of real telescope 
+systems. The X-engine can be toggled between two states of operation, 
+namely, the FX and XF modes. The FX mode obtains the electric field spectra, 
+$\widetilde{E}(f)$ from the individual antenna modules inside this module and 
+multiplies the two to obtain visibility spectra, $\widetilde{V}(f)$. On the 
+other hand, the XF mode cross-correlates the electric field time-series from 
+its Antenna modules to obtain the visibilities as a function of lags, 
+$\widetilde{V}_t(t)$, which is then Fourier transformed to obtain 
+$\widetilde{V}(f)$. Both modules can operate on dual-polarizations to obtain 
+all four cross-polarizations.
+
+The other attributes (not shown in figure) are the flags applicable for each
+cross-polarization for the current data stream. Similar to the antenna module,
+it has an update function that can update the visibilities $\widetilde{V}_t(t)$ 
+or $\widetilde{V}(f)$ directly rather than through the electric fields of its 
+component antennas. This functionality is to allow EPIC to operate while 
+attached to the backend of traditional correlator systems. This feature is not 
+utilized for purposes of this paper.
+
+This module forms the fundamental unit for the interferometer array module 
+(to be discussed below) and in general for visibility based correlator and 
+imaging systems. 
+
+\subsection{Antenna Array Module}
+
+The antenna array module consists of all the antenna modules as its attributes
+and represents the collective properties of its component antennas. By virtue of 
+holding each antenna data independently in their respective modules, the F-engine 
+for the entire array can be distributed to the F-engines of the component 
+antenna modules thus achieving a highly parallelized F-engine while emulating 
+real telescope systems.
+
+The primary attributes held by this module are the antenna aperture 
+illumination weights and electric fields projected on the grid using the 
+gridding convolution method described above and implemented by the gridding 
+function in this module. Significant parts of the antenna-to-grid mapping and 
+gridding convolution are parallelizable across antennas and frequencies.
+
+Individual antenna flags are carried over as additional weights to be applied
+to the gridded aperture illumination and electric fields. A series of data 
+streams can be stacked up to take advantage of the array optimization available 
+in Python. This module is also equipped to manage dual-polarization. 
+
+\subsection{Interferometer Array Module}
+
+Similar to the antenna array module, the interferometer array module consists of
+individual interferometer modules. It can parallelize the correlator operations
+by distributing the X-operation over the X-engines of its component 
+interferometer modules. The interferometer-to-grid mapping and gridding 
+convolution are very similar in nature to that of the antenna array module. 
+Flag-based grid weights, stacking and ability to handle all four 
+cross-polarizations are built into this module. 
+
+\subsection{Image Module}
+
+The image module is built as a general purpose module that can switch between 
+operating on gridded electric fields or visibilities. At its heart, it consists
+of a two-dimensional spatial FFT where the padding can be specified by the user 
+to control the resolution in the output images. In case of MOFF imaging, there 
+is an additional step of squaring the holographic electric field images. 
+
+Besides its core functions of spatial Fourier transform and squaring, it can 
+stack, accumulate and average images, and optionally remove the antenna
+auto-correlations centered around the zero-spacing pixel in the $uv$ plane. 
+It also handles all four cross-polarization products. Currently, it supports 
+writing data out in standard FITS format. 
 
 % \section{Some extra material}
 
