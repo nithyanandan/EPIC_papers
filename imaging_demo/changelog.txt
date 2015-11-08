@@ -1,3 +1,14 @@
+From dca9220 (mnras):
+====================
+
+(*) Remake all figures to not use Type 3 fonts to be
+MNRAS-compatible
+
+In ms.tex,
+
+(*) Use updated figures
+(*) Change use of commented F-engine figure to parallel_F_engine
+
 From 44f7935 (master):
 =====================
 

@@ -36,7 +36,7 @@
 % Don't change these lines unless you know what you are doing
 \usepackage[T1]{fontenc}
 \usepackage{ae,aecompl}
-
+% \pdfminorversion=5
 
 %%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
 
@@ -384,6 +384,7 @@ gridded using an antenna-based gridding convolution function after which it is
 spatially Fourier transformed and squared to obtain an image cube for every time 
 stamp. These images are then time-averaged to obtain the accumulated image 
 $I(f)$ ($\mathbf{I}(\hat{\mathbf{s}})$ in matrix notation).
+
 \begin{figure}
   \includegraphics[width=\columnwidth]{figure1}
   % \includegraphics[width=\columnwidth]{MOFF_flowchart}
@@ -409,6 +410,7 @@ in matrix notation). They are calibrated and time-averaged to obtain
 $\langle \widetilde{V}_\textrm{p}(f)\rangle$ which are then gridded and imaged to 
 obtain the image $I(f)$. The $I(f)$ obtained from both techniques are 
 theoretically identical as explained in \S\ref{sec:math}.
+
 \begin{figure}
   \includegraphics[width=\columnwidth]{figure2}
   % \includegraphics[width=\columnwidth]{FX_flowchart}
@@ -484,8 +486,8 @@ visibility-based imaging pipelines.
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{figure4}
-  % \includegraphics[width=\columnwidth]{F-engine}
-  % \includegraphics[width=\columnwidth]{F-engine.eps}
+  % \includegraphics[width=\columnwidth]{parallel_F_engine}
+  % \includegraphics[width=\columnwidth]{parallel_F_engine.eps}
   \caption{Block diagram of a F-engine. The electric field data streams from
     antennas are Fourier transformed in parallel to generate electric field
     spectra.}
@@ -974,7 +976,7 @@ next-generation radio telescopes, namely, HERA-331 and its future expanded
 versions, SKA1-LC, SKA1-LCD, HIRAX, and CHIME will fall in the regime where MOFF 
 imaging will be desirable. LWA1 and LWA-OV are already very close to the dividing 
 line. Their hypothetical expansions,\footnote{LWA1-x2x1 and LWA1-x4x1.5, and 
-LWA-OVx2x1 and LWA-OVx4x1.5 denote two-fold and four-fold increase in the number 
+LWA-OVx2x1 and LWA-OVx4x1.5 denote two-fold and four-fold increase in number 
 of antennas within a core diameter that is 1 and 1.5 times the current size of 
 100~m and 200~m respectively for LWA1 and LWA-OV.} will be in the computational 
 regime favoured by MOFF. For a fixed baseline length, regions favouring the MOFF 

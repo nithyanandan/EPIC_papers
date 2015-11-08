@@ -1,13 +1,12 @@
 %!PS-Adobe-3.0 EPSF-3.0
-%%Title: /Users/t_nithyanandan/publications/drafts/EPIC_papers/imaging_demo/F-engine.fig
+%%Title: /Users/t_nithyanandan/publications/drafts/EPIC_papers/imaging_demo/parallel_F_engine.fig
 %%Creator: fig2dev Version 3.2 Patchlevel 5d
-%%CreationDate: Sat Nov  7 00:32:46 2015
+%%CreationDate: Sun Nov  8 02:37:30 2015
 %%For: t_nithyanandan@Nithyanandans-MacBook-Pro.local (Nithyanandan Thyagarajan)
-%%BoundingBox: 0 0 103 84
+%%BoundingBox: 0 0 156 106
 %Magnification: 1.0000
 %%EndComments
 %%BeginProlog
-/MyAppDict 100 dict dup begin def
 /$F2psDict 200 dict def
 $F2psDict begin
 $F2psDict /mtrx matrix put
@@ -46,30 +45,6 @@ $F2psDict /mtrx matrix put
 /col31 {1.000 0.840 0.000 srgb} bind def
 
 end
-
-% left30
-<<
- /PatternType 1
- /PaintType 2
- /TilingType 2
- /BBox [-2 -4 10 5]
- /XStep 8
- /YStep 4
- /PaintProc
- {
-  pop
-  newpath
-  .7 setlinewidth
-  -2 -1 moveto
-  12 6 rlineto
-  stroke
- } bind
-
->>
-
-matrix
-makepattern
-/P1 exch def
 
 /cp {closepath} bind def
 /ef {eofill} bind def
@@ -145,8 +120,8 @@ newfontname newfont definefont pop end } def
 
 /pageheader {
 save
-newpath 0 84 moveto 0 0 lineto 103 0 lineto 103 84 lineto closepath clip newpath
--3.6 90.7 translate
+newpath 0 106 moveto 0 0 lineto 156 0 lineto 156 106 lineto closepath clip newpath
+0.9 117.7 translate
 1 -1 scale
 $F2psBegin
 10 setmiterlimit
@@ -164,146 +139,152 @@ pageheader
 %
 % 
 % here starts figure with depth 50
+/Times-Roman-iso ff 200.00 scf sf
+825 375 m
+gs 1 -1 sc (F-engine) col0 sh gr
 /Times-Roman-iso ff 133.33 scf sf
-1500 450 m
-gs 1 -1 sc (~) col0 sh gr
-/Times-Roman-iso ff 100.00 scf sf
-825 525 m
-gs 1 -1 sc (FFT) col0 sh gr
-/Times-Roman-iso ff 116.67 scf sf
-75 525 m
-gs 1 -1 sc (E \(t\)) col0 sh gr
-/Times-Roman-iso ff 83.33 scf sf
-150 600 m
+150 750 m
 gs 1 -1 sc (1) col0 sh gr
-/Times-Roman-iso ff 83.33 scf sf
-1575 600 m
-gs 1 -1 sc (1) col0 sh gr
-/Times-Roman-iso ff 116.67 scf sf
-1500 525 m
+/Times-Roman-iso ff 166.67 scf sf
+2175 675 m
 gs 1 -1 sc (E \(f\)) col0 sh gr
+/Times-Roman-iso ff 133.33 scf sf
+2250 750 m
+gs 1 -1 sc (1) col0 sh gr
+/Times-Roman-iso ff 200.00 scf sf
+2175 525 m
+gs 1 -1 sc (~) col0 sh gr
 % Polyline
 0 slj
 0 slc
 7.500 slw
-gs  clippath
-614 555 m 765 555 l 765 495 l 614 495 l 614 495 l 734 525 l 614 555 l cp
-eoclip
-n 375 525 m
- 750 525 l gs col0 s gr gr
-
-% arrowhead
-n 614 555 m 734 525 l 614 495 l 614 555 l  cp gs 0.00 setgray ef gr  col0 s
-% Polyline
-gs  clippath
-1289 555 m 1440 555 l 1440 495 l 1289 495 l 1289 495 l 1409 525 l 1289 555 l cp
-eoclip
-n 1050 525 m
- 1425 525 l gs col0 s gr gr
-
-% arrowhead
-n 1289 555 m 1409 525 l 1289 495 l 1289 555 l  cp gs 0.00 setgray ef gr  col0 s
-% Polyline
-n 750 675 m 1050 675 l 1050 900 l 750 900 l
+n 900 600 m 1575 600 l 1575 900 l 900 900 l
  cp gs col0 s gr 
-/Times-Roman-iso ff 100.00 scf sf
-825 825 m
-gs 1 -1 sc (FFT) col0 sh gr
-/Times-Roman-iso ff 116.67 scf sf
-75 825 m
+/Times-Roman-iso ff 200.00 scf sf
+975 825 m
+gs 1 -1 sc (FFT\( \)) col0 sh gr
+% Polyline
+gs  clippath
+764 780 m 915 780 l 915 720 l 764 720 l 764 720 l 884 750 l 764 780 l cp
+eoclip
+n 225 750 m
+ 900 750 l gs col0 s gr gr
+
+% arrowhead
+n 764 780 m 884 750 l 764 720 l 764 780 l  cp gs 0.00 setgray ef gr  col0 s
+% Polyline
+gs  clippath
+2114 780 m 2265 780 l 2265 720 l 2114 720 l 2114 720 l 2234 750 l 2114 780 l cp
+eoclip
+n 1575 750 m
+ 2250 750 l gs col0 s gr gr
+
+% arrowhead
+n 2114 780 m 2234 750 l 2114 720 l 2114 780 l  cp gs 0.00 setgray ef gr  col0 s
+/Times-Roman-iso ff 166.67 scf sf
+75 1050 m
 gs 1 -1 sc (E \(t\)) col0 sh gr
-/Times-Roman-iso ff 83.33 scf sf
-150 900 m
+/Times-Roman-iso ff 133.33 scf sf
+150 1125 m
 gs 1 -1 sc (2) col0 sh gr
-/Times-Roman-iso ff 83.33 scf sf
-1575 900 m
-gs 1 -1 sc (2) col0 sh gr
-/Times-Roman-iso ff 116.67 scf sf
-1500 825 m
-gs 1 -1 sc (E \(f\)) col0 sh gr
 % Polyline
-gs  clippath
-614 855 m 765 855 l 765 795 l 614 795 l 614 795 l 734 825 l 614 855 l cp
-eoclip
-n 375 825 m
- 750 825 l gs col0 s gr gr
-
-% arrowhead
-n 614 855 m 734 825 l 614 795 l 614 855 l  cp gs 0.00 setgray ef gr  col0 s
-% Polyline
-gs  clippath
-1289 855 m 1440 855 l 1440 795 l 1289 795 l 1289 795 l 1409 825 l 1289 855 l cp
-eoclip
-n 1050 825 m
- 1425 825 l gs col0 s gr gr
-
-% arrowhead
-n 1289 855 m 1409 825 l 1289 795 l 1289 855 l  cp gs 0.00 setgray ef gr  col0 s
-% Polyline
-n 750 1200 m 1050 1200 l 1050 1425 l 750 1425 l
+n 900 975 m 1575 975 l 1575 1275 l 900 1275 l
  cp gs col0 s gr 
-/Times-Roman-iso ff 100.00 scf sf
-825 1350 m
-gs 1 -1 sc (FFT) col0 sh gr
-/Times-Roman-iso ff 116.67 scf sf
-75 1350 m
-gs 1 -1 sc (E \(t\)) col0 sh gr
-/Times-Roman-iso ff 83.33 scf sf
-150 1425 m
-gs 1 -1 sc (N) col0 sh gr
-/Times-Roman-iso ff 116.67 scf sf
-1500 1350 m
+/Times-Roman-iso ff 200.00 scf sf
+975 1200 m
+gs 1 -1 sc (FFT\( \)) col0 sh gr
+% Polyline
+gs  clippath
+764 1155 m 915 1155 l 915 1095 l 764 1095 l 764 1095 l 884 1125 l 764 1155 l cp
+eoclip
+n 225 1125 m
+ 900 1125 l gs col0 s gr gr
+
+% arrowhead
+n 764 1155 m 884 1125 l 764 1095 l 764 1155 l  cp gs 0.00 setgray ef gr  col0 s
+% Polyline
+gs  clippath
+2114 1155 m 2265 1155 l 2265 1095 l 2114 1095 l 2114 1095 l 2234 1125 l 2114 1155 l cp
+eoclip
+n 1575 1125 m
+ 2250 1125 l gs col0 s gr gr
+
+% arrowhead
+n 2114 1155 m 2234 1125 l 2114 1095 l 2114 1155 l  cp gs 0.00 setgray ef gr  col0 s
+/Times-Roman-iso ff 200.00 scf sf
+2175 900 m
+gs 1 -1 sc (~) col0 sh gr
+/Times-Roman-iso ff 166.67 scf sf
+2175 1050 m
 gs 1 -1 sc (E \(f\)) col0 sh gr
-/Times-Roman-iso ff 83.33 scf sf
-1575 1425 m
+/Times-Roman-iso ff 133.33 scf sf
+2250 1125 m
+gs 1 -1 sc (2) col0 sh gr
+% Polyline
+n 900 1575 m 1575 1575 l 1575 1875 l 900 1875 l
+ cp gs col0 s gr 
+/Times-Roman-iso ff 200.00 scf sf
+975 1800 m
+gs 1 -1 sc (FFT\( \)) col0 sh gr
+% Polyline
+gs  clippath
+764 1755 m 915 1755 l 915 1695 l 764 1695 l 764 1695 l 884 1725 l 764 1755 l cp
+eoclip
+n 225 1725 m
+ 900 1725 l gs col0 s gr gr
+
+% arrowhead
+n 764 1755 m 884 1725 l 764 1695 l 764 1755 l  cp gs 0.00 setgray ef gr  col0 s
+% Polyline
+gs  clippath
+2114 1755 m 2265 1755 l 2265 1695 l 2114 1695 l 2114 1695 l 2234 1725 l 2114 1755 l cp
+eoclip
+n 1575 1725 m
+ 2250 1725 l gs col0 s gr gr
+
+% arrowhead
+n 2114 1755 m 2234 1725 l 2114 1695 l 2114 1755 l  cp gs 0.00 setgray ef gr  col0 s
+/Times-Roman-iso ff 166.67 scf sf
+0 1650 m
+gs 1 -1 sc (E \(t\)) col0 sh gr
+/Times-Roman-iso ff 133.33 scf sf
+75 1725 m
 gs 1 -1 sc (N) col0 sh gr
+/Times-Roman-iso ff 133.33 scf sf
+150 1800 m
+gs 1 -1 sc (a) col0 sh gr
+/Times-Roman-iso ff 200.00 scf sf
+2250 1500 m
+gs 1 -1 sc (~) col0 sh gr
+/Times-Roman-iso ff 166.67 scf sf
+2250 1650 m
+gs 1 -1 sc (E \(f\)) col0 sh gr
+/Times-Roman-iso ff 133.33 scf sf
+2325 1725 m
+gs 1 -1 sc (N) col0 sh gr
+/Times-Roman-iso ff 133.33 scf sf
+2400 1800 m
+gs 1 -1 sc (a) col0 sh gr
 % Polyline
-gs  clippath
-614 1380 m 765 1380 l 765 1320 l 614 1320 l 614 1320 l 734 1350 l 614 1380 l cp
-eoclip
-n 375 1350 m
- 750 1350 l gs col0 s gr gr
-
-% arrowhead
-n 614 1380 m 734 1350 l 614 1320 l 614 1380 l  cp gs 0.00 setgray ef gr  col0 s
-% Polyline
-gs  clippath
-1289 1380 m 1440 1380 l 1440 1320 l 1289 1320 l 1289 1320 l 1409 1350 l 1289 1380 l cp
-eoclip
-n 1050 1350 m
- 1425 1350 l gs col0 s gr gr
-
-% arrowhead
-n 1289 1380 m 1409 1350 l 1289 1320 l 1289 1380 l  cp gs 0.00 setgray ef gr  col0 s
+n 600 450 m 1800 450 l 1800 1950 l 600 1950 l
+ cp gs col0 s gr 
 % Polyline
  [15 45] 45 sd
-n 900 975 m
- 900 1125 l 
-% Fill with pattern background color
-gs /DeviceRGB setcolorspace 0.00 0.00 0.00 setcolor fill gr
-
-% Fill with pattern pen color
-gs /DeviceRGB setcolorspace 0.00 0.00 0.00 P1 setpattern fill gr
-
-gs col0 s gr  [] 0 sd
+n 1200 1275 m
+ 1200 1575 l gs col0 s gr  [] 0 sd
 % Polyline
-n 525 300 m 1125 300 l 1125 1500 l 525 1500 l
- cp gs col0 s gr 
-/Times-Roman-iso ff 133.33 scf sf
-600 225 m
-gs 1 -1 sc (F-engine) col0 sh gr
-/Times-Roman-iso ff 133.33 scf sf
-1500 1275 m
-gs 1 -1 sc (~) col0 sh gr
-/Times-Roman-iso ff 133.33 scf sf
-1500 750 m
-gs 1 -1 sc (~) col0 sh gr
+ [15 45] 45 sd
+n 450 1275 m
+ 450 1575 l gs col0 s gr  [] 0 sd
 % Polyline
-n 750 375 m 1050 375 l 1050 600 l 750 600 l
- cp gs col0 s gr 
+ [15 45] 45 sd
+n 1950 1275 m
+ 1950 1575 l gs col0 s gr  [] 0 sd
+/Times-Roman-iso ff 166.67 scf sf
+75 675 m
+gs 1 -1 sc (E \(t\)) col0 sh gr
 % here ends figure;
 pagefooter
 showpage
 %%Trailer
-end
 %EOF
