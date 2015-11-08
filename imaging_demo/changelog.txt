@@ -1,4 +1,14 @@
-From 2bc22fc (review):
+From 44f7935 (master):
+=====================
+
+(*) Rename figures to figure*.eps in git
+
+In ms.tex,
+
+(*) Rename figures to figure*.eps
+(*) Use MNRAS style file and epic.bib in the current directory
+
+From 2bc22fc (master):
 =====================
 
 In ms.tex,

@@ -21,7 +21,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Basic setup. Most papers should leave these options alone.
-\documentclass[a4paper,fleqn,usenatbib]{../mnras}
+% \documentclass[a4paper,fleqn,usenatbib]{../mnras}
+\documentclass[a4paper,fleqn,usenatbib]{mnras}
 
 % MNRAS is set in Times font. If you don't have this installed (most LaTeX
 % installations will be fine) or prefer the old Computer Modern fonts, comment
@@ -384,7 +385,8 @@ spatially Fourier transformed and squared to obtain an image cube for every time
 stamp. These images are then time-averaged to obtain the accumulated image 
 $I(f)$ ($\mathbf{I}(\hat{\mathbf{s}})$ in matrix notation).
 \begin{figure}
-  \includegraphics[width=\columnwidth]{MOFF_flowchart}
+  \includegraphics[width=\columnwidth]{figure1}
+  % \includegraphics[width=\columnwidth]{MOFF_flowchart}
   % \includegraphics[width=\columnwidth]{MOFF_flowchart.eps}
   \caption{A flowchart of MOFF imaging in EPIC. The propagated electric fields
     shown on the left are measured as time-series $E_1(t)\ldots E_\textrm{N}(t)$
@@ -408,7 +410,8 @@ $\langle \widetilde{V}_\textrm{p}(f)\rangle$ which are then gridded and imaged t
 obtain the image $I(f)$. The $I(f)$ obtained from both techniques are 
 theoretically identical as explained in \S\ref{sec:math}.
 \begin{figure}
-  \includegraphics[width=\columnwidth]{FX_flowchart}
+  \includegraphics[width=\columnwidth]{figure2}
+  % \includegraphics[width=\columnwidth]{FX_flowchart}
   % \includegraphics[width=\columnwidth]{FX_flowchart.eps}
   \caption{A flowchart of visibility-based software holographic imaging in EPIC. 
     The FX process flow shares the F-engine with the MOFF process. Following the 
@@ -457,7 +460,8 @@ antenna's footprint. This sparse matrix is stored in a Compressed Sparse Row
 matrix and the grid containing the mapped aperture footprints of the antennas.
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{a2g_mapping}
+  \includegraphics[width=\columnwidth]{figure3}
+  % \includegraphics[width=\columnwidth]{a2g_mapping}
   % \includegraphics[width=\columnwidth]{a2g_mapping.eps}
   \caption{Block diagram of an antenna-to-grid mapping. A sparse block-diagonal
     matrix of total size $\Ngrid\times \Nant$ is created where each
@@ -479,7 +483,8 @@ Fig.~\ref{fig:f-engine}. The output is then fed to either MOFF or
 visibility-based imaging pipelines.
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{F-engine}
+  \includegraphics[width=\columnwidth]{figure4}
+  % \includegraphics[width=\columnwidth]{F-engine}
   % \includegraphics[width=\columnwidth]{F-engine.eps}
   \caption{Block diagram of a F-engine. The electric field data streams from
     antennas are Fourier transformed in parallel to generate electric field
@@ -609,7 +614,8 @@ shows the estimated weights from antenna auto-correlations in the $uv$-plane
 is simply the directional antenna power response. 
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{autocorr_uvwts_pbeam}
+  \includegraphics[width=\columnwidth]{figure5}
+  % \includegraphics[width=\columnwidth]{autocorr_uvwts_pbeam}
   % \includegraphics[width=\columnwidth]{autocorr_uvwts_pbeam.png}
   \caption{The auto-correlation of weights of a square shaped antenna aperture
     in the $uv$ plane (left) and the corresponding directional antenna power 
@@ -650,7 +656,8 @@ Their fluxes are modulated by a multiplicative power pattern corresponding to
 that of a uniform square aperture. 
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{MOFF_FX_comparison_10_random_source_positions_4_iterations_test_aperture_zoomed}
+  \includegraphics[width=\columnwidth]{figure6}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_10_random_source_positions_4_iterations_test_aperture_zoomed}
   % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_10_random_source_positions_4_iterations_test_aperture_zoomed.eps}
   \caption{Dirty images (top) and synthesized beams (bottom) obtained from 
     simulated data using EPIC implementation of antenna-based MOFF algorithm 
@@ -704,7 +711,8 @@ aperture. This is a general solution applicable even in case of heterogeneous
 antenna arrays and is under active development for EPIC.
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{MOFF_FX_comparison_uvwts_test_aperture_zero_spacing_removed}
+  \includegraphics[width=\columnwidth]{figure7}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_uvwts_test_aperture_zero_spacing_removed}
   % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_uvwts_test_aperture_zero_spacing_removed.eps}
   \caption{Comparison of $uv$ plane antenna power response with MOFF (left) and 
     visibility-based imaging (right). The zero-spacing footprint from the $uv$ 
@@ -726,7 +734,8 @@ difference map (black) are plotted in percentage units relative to the peak
 pattern (red; to be read using the scale on the right) is plotted for reference. 
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{diff_psf_MOFF-FX_test_aperture}
+  \includegraphics[width=\columnwidth]{figure8}
+  % \includegraphics[width=\columnwidth]{diff_psf_MOFF-FX_test_aperture}
   % \includegraphics[width=\columnwidth]{diff_psf_MOFF-FX_test_aperture.eps}
   \caption{Map of difference between the synthesized beams obtained with the 
     two methods (left) and radial statistics of the synthesized beams and 
@@ -778,7 +787,8 @@ proof-of-concept demonstration, we see Cyg~A and Cas~A prominently as annotated,
 thus validating the functionality of EPIC.
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{LWA_MOFF_bandavg_image_4_iterations_analytic_aperture}
+  \includegraphics[width=\columnwidth]{figure9}
+  % \includegraphics[width=\columnwidth]{LWA_MOFF_bandavg_image_4_iterations_analytic_aperture}
   % \includegraphics[width=\columnwidth]{LWA_MOFF_bandavg_image_4_iterations_analytic_aperture.eps}
   \caption{Image from LWA TBN data obtained with MOFF imaging using EPIC 
     package after averaging over 20~ms and $\approx 80$~kHz. The x- and y-axes
@@ -910,7 +920,8 @@ instruments such as MWA and LOFAR lie in parameter space favouring
 visibility-based imaging. 
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{MOFF_FX_computations_fov_gridding_annotated}
+  \includegraphics[width=\columnwidth]{figure10}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_computations_fov_gridding_annotated}
   % \includegraphics[width=\columnwidth]{MOFF_FX_computations_fov_gridding_annotated.eps}
   \caption{Current and planned instruments in parameter space of
     number of complex multiplies and adds with MOFF and FX. The solid line
@@ -971,7 +982,8 @@ algorithm tend to be towards large $\Nant$ indicating large-N dense array
 layouts with smaller antenna elements are best suited for deploying EPIC.
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended}
+  \includegraphics[width=\columnwidth]{figure11}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended}
   % \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended.eps}
   \caption{Current and planned instruments in parameter space of
     baseline length and number of antennas with MOFF and FX. Line styles of 
@@ -1143,7 +1155,8 @@ of the University Radio Observatory program.
 %%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
 
 \bibliographystyle{mnras}
-\bibliography{../epic} 
+\bibliography{epic} 
+% \bibliography{../epic} 
 % \input{ms.bbl}
 
 %%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
@@ -1159,7 +1172,8 @@ key attributes and methods are illustrated in Fig.~\ref{fig:software-modules}.
 These modules are described below.
 
 \begin{figure*}
-  \includegraphics[width=\linewidth]{EPIC-modules}
+  \includegraphics[width=\linewidth]{figureA1}
+  % \includegraphics[width=\linewidth]{EPIC-modules}
   % \includegraphics[width=\linewidth]{EPIC-modules.eps}
   \caption{Software architecture of EPIC with core modules, their essential
     attributes and functions. The antenna module forms the fundamental building 
