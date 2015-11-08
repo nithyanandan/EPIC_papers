@@ -1,3 +1,8 @@
+From b8e3bc0 (arxiv) + 2add9d8 (mnras):
+======================================
+
+Merge mnras branch on to arxiv branch
+
 From ae5ce63 (arxiv):
 ====================
 
@@ -5,6 +10,104 @@ From ae5ce63 (arxiv):
 MNRAS-1.0
 (*) Remove all figure files from git tracking
 (*) In this commit, ms.tex will not compile
+
+From dca9220 (mnras):
+====================
+
+(*) Remake all figures to not use Type 3 fonts to be
+MNRAS-compatible
+
+In ms.tex,
+
+(*) Use updated figures
+(*) Change use of commented F-engine figure to parallel_F_engine
+
+From 44f7935 (master):
+=====================
+
+(*) Rename figures to figure*.eps in git
+
+In ms.tex,
+
+(*) Rename figures to figure*.eps
+(*) Use MNRAS style file and epic.bib in the current directory
+
+From 2bc22fc (master):
+=====================
+
+In ms.tex,
+
+(*) Minor changes mentioning about noise in simulations
+(*) Minor changes in section 4.2 heading
+(*) Other minor changes
+
+From cb584b3 (review):
+=====================
+
+In ms.tex,
+
+(*) Move section 3.2 (software architecture) to appendix
+(*) Remove section 3.1 heading "Data flow"
+(*) Add a sentence at end of section 3 to refer the interested reader
+to the appendix
+(*) Update abstract
+(*) Few minor changes
+
+From a25a02a (review):
+=====================
+
+Update EPIC-modules figure
+
+From 1e9f59c (review):
+=====================
+
+Update MOFF and FX flowcharts, F-engine
+
+In ms.tex,
+
+(*) Minor changes throughout
+
+From 137f5a4 (review):
+=====================
+
+(*) Update figure 12 (layouts in parameter space)
+
+In ms.tex,
+
+(*) Update sections 4, 5 and 6 with suggested changes
+
+From 3b460d9 (review):
+=====================
+
+In ms.tex,
+
+(*) Update section 3 with suggested changes
+
+From b7d9d50 (review):
+=====================
+
+In ms.tex,
+
+(*) Update section 2 with suggested changes
+
+From a01e819 (master):
+=====================
+
+In ms.tex,
+
+(*) Update section 1 with changes suggested by Adam
+
+From b5cac02 (master) + ae5ce63 (arXiv):
+=======================================
+
+Merge changes from the arXiv branch onto master branch
+
+From 70146f3 (master):
+=====================
+
+In ms.tex,
+
+(*) Update abstract with suggestions from Adam
 
 From f6809de (arxiv):
 ====================
