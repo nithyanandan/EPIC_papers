@@ -1,3 +1,11 @@
+From ae5ce63 (arxiv):
+====================
+
+(*) This is in preparation for a merge with branch mnras at tag
+MNRAS-1.0
+(*) Remove all figure files from git tracking
+(*) In this commit, ms.tex will not compile
+
 From f6809de (arxiv):
 ====================
 
