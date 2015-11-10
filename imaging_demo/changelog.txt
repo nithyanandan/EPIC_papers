@@ -1,3 +1,96 @@
+From cb584b3 (review):
+=====================
+
+In ms.tex,
+
+(*) Move section 3.2 (software architecture) to appendix
+(*) Remove section 3.1 heading "Data flow"
+(*) Add a sentence at end of section 3 to refer the interested reader
+to the appendix
+(*) Update abstract
+(*) Few minor changes
+
+From a25a02a (review):
+=====================
+
+Update EPIC-modules figure
+
+From 1e9f59c (review):
+=====================
+
+Update MOFF and FX flowcharts, F-engine
+
+In ms.tex,
+
+(*) Minor changes throughout
+
+From 137f5a4 (review):
+=====================
+
+(*) Update figure 12 (layouts in parameter space)
+
+In ms.tex,
+
+(*) Update sections 4, 5 and 6 with suggested changes
+
+From 3b460d9 (review):
+=====================
+
+In ms.tex,
+
+(*) Update section 3 with suggested changes
+
+From b7d9d50 (review):
+=====================
+
+In ms.tex,
+
+(*) Update section 2 with suggested changes
+
+From a01e819 (master):
+=====================
+
+In ms.tex,
+
+(*) Update section 1 with changes suggested by Adam
+
+From b5cac02 (master) + ae5ce63 (arXiv):
+=======================================
+
+Merge changes from the arXiv branch onto master branch
+
+From 70146f3 (master):
+=====================
+
+In ms.tex,
+
+(*) Update abstract with suggestions from Adam
+
+From f6809de (arxiv):
+====================
+
+In ms.tex,
+
+(*) Mention calibration scales as number of calibrators as well as
+number of antennas
+(*) Correct the collecting area of HIRAX in the table
+(*) Change caption of figure 9 to left and right instead of top and
+bottom
+(*) Update caption of figure 7
+
+From 70146f3 (arxiv):
+====================
+
+In ms.tex,
+
+(*) Change including .bib file to including .bbl file
+(*) Remove commented lines
+(*) Remove figure filename extensions
+(*) Comment out \usepackage{newtxtext,newtxmath} to be compatible
+with arXiv submission
+(*) Change fontsize of first table to scriptsize to fit the column
+width
+
 From cadd827 (master):
 =====================
 
