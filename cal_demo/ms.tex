@@ -51,6 +51,18 @@
 % Please keep new commands to a minimum, and use \newcommand not \def to avoid
 % overwriting existing commands. Example:
 %\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+\newcommand{\s}{\hat{\mathbf{s}}} % s-hat for sine-projected direction
+\newcommand{\spix}{\hat{\mathbf{s}}_{\mathrm{pix}}}
+\newcommand{\Cna}{\mathcal{C}^{(n)}_a}
+\newcommand{\ri}{\mathbf{r}_i}
+\newcommand{\ra}{\mathbf{r}_a}
+\newcommand{\rb}{\mathbf{r}_b}
+\newcommand{\Nant}{N_{\mathrm{ant}}}
+\newcommand{\beamr}{\widetilde{W}}
+\newcommand{\beamtheta}{W}
+\newcommand{\Er}[1]{\widetilde{E}_{#1}}
+\newcommand{\Erest}[1]{\hat{\widetilde{E}}_{#1}}
+\newcommand{\V}{\widetilde{V}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -108,6 +120,47 @@ Motivate problem of calibrating direct imagers. Reference Nithyas paper. \citep{
 \section{Mathematical Framework}
 
 Introduce notation, describe measurement equation.
+
+
+\begin{equation}
+\mathcal{C}^n(a,\spix,f) \equiv \left<E_a(f) E'^*(\spix,f)\right>_t
+\end{equation}
+$\mathcal{C}^n(a,\spix,f) \rightarrow \Cna$
+
+\begin{equation}
+\Er{a} = g_a E^T_a
+\end{equation}
+\begin{align}
+\hat{E}(\spix) & = \frac{1}{\Nant} \sum_i e^{2\pi i \spix \cdot \ri} \Erest{i} \\
+& = \frac{1}{\Nant} \sum_i e^{2\pi i \spix \cdot \ri} \sum_b \beamr_b(\ri-\rb) \Erest{b} \\
+& = \frac{1}{\Nant} \sum_i e^{2\pi i \spix \cdot \ri} \sum_b \beamr_b(\ri-\rb) h^{(n)}_b g_b\Er{b}^T
+\end{align}
+We can then play a trick to transform the beam.
+\begin{align}
+\hat{E}(\spix) & = \frac{1}{\Nant} \sum_b h^{(n)}_b g_b\Er{b}^T e^{2\pi i \spix \cdot \rb}\sum_i \beamr_b(\ri-\rb)e^{2\pi i \spix \cdot (\ri-\rb)}\\
+& = \frac{1}{\Nant} \sum_b h^{(n)}_b g_b\Er{b}^T e^{2\pi i \spix \cdot \rb}\beamtheta_b(\spix)
+\end{align}
+
+Plugging in, we get,
+\begin{align}
+\Cna & = \left<\Er{a} \hat{E}^*(\spix)\right>_t \\ 
+& = \left<g_a \Er{a}^T \frac{1}{\Nant} \sum_b h^{*(n)}_b g^*_b\Er{b}^{*T} e^{-2\pi i \spix \cdot \rb} \beamtheta^*_b(\spix)\right>_t \\
+\end{align}
+Pulling time independent pieces out.
+\begin{align}
+\Cna & = \frac{g_a}{\Nant} \sum_b h^{*(n)}_b g^*_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \left<\Er{a}^T \Er{b}^{*T} \right>_t \\
+& = \frac{g_a}{\Nant} \sum_b h^{*(n)}_b g^*_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab}
+\end{align}
+Solve for $g^{(n+1)}_a$.
+\begin{equation}
+g^{(n+1)}_a = \Cna \Nant \left[ \sum_b h^{*(n)}_b g^{*(n)}_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab} \right]^{-1}
+\end{equation}
+
+In the case where $h_b = 1/g_b$, this simplifies slightly.
+\begin{equation}
+g^{(n+1)}_a = \Cna \Nant \left[ \sum_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab} \right]^{-1}
+\end{equation}
+
 
 \section{Simulation}
 
