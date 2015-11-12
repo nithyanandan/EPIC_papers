@@ -20,18 +20,19 @@
 
 %%%%% CUSTOM COMMANDS %%%%%
 
-\newcommand{\s}{\hat{\mathbf{s}}} % s-hat for sine-projected direction
-\newcommand{\spix}{\hat{\mathbf{s}}_{\mathrm{pix}}}
-\newcommand{\Cna}{\mathcal{C}^{(n)}_a}
-\newcommand{\ri}{\mathbf{r}_i}
-\newcommand{\ra}{\mathbf{r}_a}
-\newcommand{\rb}{\mathbf{r}_b}
-\newcommand{\Nant}{N_{\mathrm{ant}}}
-\newcommand{\beamr}{\widetilde{W}}
-\newcommand{\beamtheta}{W}
-\newcommand{\Er}[1]{\widetilde{E}_{#1}}
-\newcommand{\Erest}[1]{\hat{\widetilde{E}}_{#1}}
-\newcommand{\V}{\widetilde{V}}
+\newcommand{\Nant}{\ensuremath{N_{\mathrm{ant}}}}
+\newcommand{\Ng}{\ensuremath{N_{\mathrm{g}}}}
+\newcommand{\s}{\ensuremath{\hat{\mathbf{s}}}} % s-hat for sine-projected direction
+\newcommand{\spix}{\ensuremath{\hat{\mathbf{s}}_{\mathrm{pix}}}}
+\newcommand{\Cna}{\ensuremath{\mathcal{C}^{(n)}_a}}
+\newcommand{\ri}{\ensuremath{\mathbf{r}_i}}
+\newcommand{\ra}{\ensuremath{\mathbf{r}_a}}
+\newcommand{\rb}{\ensuremath{\mathbf{r}_b}}
+\newcommand{\beamr}{\ensuremath{\widetilde{W}}}
+\newcommand{\beamtheta}{\ensuremath{W}}
+\newcommand{\Er}[1]{\ensuremath{\widetilde{E}_{#1}}}
+\newcommand{\Erest}[1]{\ensuremath{\hat{\widetilde{E}}_{#1}}}
+\newcommand{\V}{\ensuremath{\widetilde{V}}}
 
 %%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
 
@@ -78,15 +79,23 @@ instrumentation: interferometers -- techniques: image processing -- techniques: 
 %%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
 
 \section{Introduction}
-The field of radio astronomy is undergoing a paradigm shift toward interferometers consisting of hundreds to thousands of small, widefield antennas. This shift is necessary to match the survey speeds required for both precision cosmology experiments, and searches for fast radio transients. Many arrays with this design are already built or under construction including \cite{XXX}. 
+In order to satisfy the survey speeds required for precision cosmology as well as searches for fast radio transients, radio astronomy is undergoing a paradigm shift toward interferometers consisting of hundreds to thousands of small, widefield antennas. Many arrays with this design are already built or under construction including the Hydrogen Epoch of Reionization Array\footnote{http://reionization.org} (HERA), the Murchison Widefield Array (MWA;\citealt{tin13,bow13}), the Precision Array for Probing the Epoch of Reionization (PAPER; \citealt{par10}), the LOw Frequency ARray (LOFAR;\citealt{van13}), the Canadian Hydrogen Intensity Mapping Experiment (CHIME,\citealt{ban14}), the Long Wavelength Array (LWA, \citealt{ell13}), and the low frequency Square Kilometer Array (SKA1-Low \citealt{mel13}).
+
+Traditional radio correlators cross-multiply the voltage signals from all pairs of antennas, and the computation scales as the number of antennas squared, $\mathcal{O}(\Nant^2)$ \citep{bun04}. As the number of elements in future arrays grows, the computational cost will become prohibitively expensive, and exploring efficient correlator schemes is essential to enable next generation instruments \citep{lon00}. Meanwhile, radio transient monitoring requires access to high time and frequency resolution data. For example, Fast Radio Bursts (FRBs) are highly unexplored at low frequencies (< 1 GHz), but are expected to occur on timescales $\Delta t \sim$ 1--10~ms \citep{tho13}. Recording the full visibility matrix for $\Nant \gtrsim 10^3$ arrays at this timescale leads to extremely high data write rates. 
+
+Direct imaging correlators are a new variety of radio correlator which aim to alleviate both the computational strain of forming $\Nant^2$ correlations and the high data throughput associated with short timescale science. This is done by performing a spatial fast Fourier transform (FFT) to image the antenna voltages, then squaring and averaging in time. This process scales as $\mathcal{O}(\Ng \log_2 \Ng)$, where \Ng~is the number of grid points in the FFT \citep{mor11, teg09, teg10}. For certain classes of telescopes, significantly those envisioned for next generation cosmology experiments, this scaling is a large improvement over the $\Nant^2$ scaling of traditional methods. Furthermore, because images are generated online, the native output bandwidth will be lowered (assuming $\Ng < \Nant^2$), and has the potential to be lowered even further with online transient processing.
+
+A handful of prototype direct imaging correlators have been tested on arrays including the Basic Element for SKA Training II (BEST-2) array \citep{fos14}, the Omniscope \citep{zhe14}, and an earlier pulsar timing experiment at GHz frequencies \citep{oto94, dai00}. Each of these are examples of so-called FFT correlators -- a subclass of direct imaging correlators which rely on identical antennas with restricted placement, which allows the FFT to be performed without gridding. We recently released the E-field Parallel Imaging Correlator \citep[EPIC;][]{thy15c}, which is a software implementation of the Modular Optimal Frequency Fourier \citep[MOFF;][]{mor11} imaging algorithm. This architecture leverages the software holography/A-transpose framework to grid electric field data streams before performing the spatial FFT, allowing for an optimal map without placing constraints on array layout or requiring identical antennas \citep{mor09,bha08,teg97a}.
+
+A challenge common to all direct imaging algorithms is calibration of the antenna gains. Traditionally, pair-wise visibilities are written to disk and used to calibrate offline. However, a direct imaging correlator mixes the signals from all antennas before averaging and writing to disk, making calibration a requirement at the front end. Previous solutions have involved applying calibration solutions generated from a parallel FX correlator \citep{zhe14, fos14}, or integrating a dedicated FX correlator which periodically formed the full visibility matrix to solve for gains \citep{wij09,dev09}. While these solutions were sufficient to enable the exploration of FFT correlators and beamformers, they will not scale to future arrays with $\Nant \gtrsim 10^3$.
+
+Here we present the E-field Parallel Imaging Calibration (EPICal) algorithm -- a novel solution to the calibration problem, which can be integrated into direct imaging correlators and scales only as the number of antennas, $\mathcal{O}(\Nant)$. This method uses a correlation of the uncalibrated antenna signal stream with an output image pixel from the backend of the correlator to solve for the complex gains of the antennas. In the limit of a simple sky, the algorithm reduces to the self-cal algorithm, and even in a complex limit can be shown to be equivalent to visibility-based solutions. An example implementation of the algorithm is available with the EPIC software package\footnote{http://github.com/nithyanandan/EPIC}
+We establish the mathematical framework and derive the calibration algorithm in \S \ref{sec:math}. We then demonstrate the algorithm in simulations in \S \ref{sec:sim}, and apply to a sample LWA data set in \S \ref{sec:data}. Then we discuss the noise properties of the resulting gain solutions in \S \ref{sec:noise}. Finally we conclude and discuss potential extensions to the algorithm in \S \ref{sec:discussion}.
+
+\section{Mathematical Framework}\label{sec:math}
+We begin by establishing the mathematical framework for the calibration problem. We derive the calibration solutions for the MOFF algorithm (adopting the notation of \citealt{thy15c}), but note the result is easily extended to FFT correlator algorithms by removing the gridding step.
 
 
-
-
-
-Motivate problem of calibrating direct imagers. Reference Nithyas paper. \citep{mor11}
-
-\section{Mathematical Framework}
 
 Introduce notation, describe measurement equation.
 
@@ -131,16 +140,60 @@ g^{(n+1)}_a = \Cna \Nant \left[ \sum_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \c
 \end{equation}
 
 
-\section{Simulation}
+\section{Simulation}\label{sec:sim}
 
 Describe simulation
 
-\section{Verification}
+\section{Application to LWA data}\label{sec:data}
+Apply to LWA data.
+
+\section{Noise analysis}\label{sec:noise}
 
 Connect to either cramer-rao or FX solutions in some way
 
+Assume we did form visibilities with some integration time. Assuming the noise on each visibility, $\sigma_{ab}$, is independent, we can write the likelihood function of measuring $V_{ab}$ given the true value, the gains, and the noise.
+\begin{equation}
+\mathcal{L}(V_{ab};\mathbf{g}) = \frac{1}{2\pi \sigma_{ab}^2}\exp\left[-\frac{\left|V_{ab} - g_a g_b^* V_{ab}^T\right|^2}{2\sigma_{ab}^2}\right]
+\end{equation}
+Then the likelihood of the set of all visibilities will be,
+\begin{equation}
+\mathcal{L}(\mathbf{V};\mathbf{g}) = \prod_a \prod_{b > a} \mathcal{L}(V_{ab};\mathbf{g})
+\end{equation}
+The Fischer information matrix for the set of gain parameters is
+\begin{equation}
+\mathbf{F}^g_{ij} = \left<\left. \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_i} \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_j}\right|_\mathbf{g}\right>.
+\end{equation}
+We next evaluate the derivate of the log-likelihood.
+\begin{equation}
+\frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_i} = 
+\sum_{a \ne i} \frac{g_a^* V_{ai}^{T*} (V_{ai} - g_a g_i^* V_{ai}^T)}{2 \sigma_{ai}^2}
+\end{equation}
 
-\section{Conclusions}
+\textcolor{red}{This part of the argument needs serious work!} In order to find the Cram\'er-Rao lower bound on the variance of the complex parameter, $g_i$, we consider the term of the Fischer matrix where the first derivative is taken with respect to $g_i$, and the second with $g_i^*$. The result is
+\begin{align}
+\mathbf{F}^g_{ii} = & \left<\left[ \sum_{a \ne i} \frac{g_a^* V_{ai}^{T*} (V_{ai} - g_a g_i^* V_{ai}^T)}{2 \sigma_{ai}^2} \right] \right. \times \nonumber \\
+& \left. \left[ \sum_{b \ne i} \frac{g_b V_{bi}^{T} (V_{bi}^* - g_b^* g_i V_{bi}^{T*})}{2 \sigma_{bi}^2} \right] \right> \nonumber \\
+= &\sum_{a\ne i} \sum_{b \ne i} \frac{g_a^* g_b V_{ai}^{T*} V_{bi}^T}{4 \sigma_{ai}^2 \sigma_{bi}^2} \left< V_{ai}V_{bi}^* - g_i g_b^* V_{ai}V_{bi}^{T*}\nonumber \right.\\
+&\left. - g_a g_i^* V_{ai}^T V_{bi}^* + g_a g_b^* |g_i|^2 V_{ai}^T V_{bi}^{T*}\right>
+\label{eq:Fischer_before_expect}
+\end{align}
+
+The expected values are easy to evaluate. Each visibility will average to the ``true" value times the respective gains. The term with two visibilities will include a noise term.
+\begin{equation}
+\left<V_{ai}V_{bi}^*\right> = |g_i|^2 g_a g_b^* V_{ai}^T V_{bi}^{T*} + \sigma_{ai}^2 \delta_{ab}
+\end{equation}
+Here $\delta_{ab}$ is the Kronecker delta selecting the term where $a=b$ and the noise correlates. Plugging in the expectation values, equation \ref{eq:Fischer_before_expect} simplifies greatly to
+\begin{equation}
+\mathbf{F}^g_{ii} = \sum_{a \ne i} \frac{\left|g_a V_{ia}^T \right|^2}{4\sigma_{ai}^2}
+\end{equation}
+
+Finally we relate our result to the theoretical best uncertainty we can place on our unknown gain parameter using the Cram\'er-Rao lower bound.
+\begin{equation}\label{eq:cramer_rao}
+\sigma_{g_i}^2 \ge \left[ \mathbf{F}^g_{ii} \right]^{-1} = \left[ \sum_{a \ne i} \frac{\left|g_a V_{ia}^T \right|^2}{4\sigma_{ai}^2} \right]^{-1}
+\end{equation}
+
+\section{Discussion}\label{sec:discussion}
+
 \section*{Acknowledgements}
 This work has been supported by the National Science Foundation through award AST-1206552.
 

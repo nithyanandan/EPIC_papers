@@ -17,9 +17,121 @@
   {mn@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter \expandafter \csname
   mn@eprint@\@tempb\endcsname \expandafter{\@tempc}}}
 
+\bibitem[\protect\citeauthoryear{{Bandura} et~al.,}{{Bandura}
+  et~al.}{2014}]{ban14}
+{Bandura} K.,  et~al., 2014, in Society of Photo-Optical Instrumentation
+  Engineers (SPIE) Conference Series. p.~22 (\mn@eprint {arXiv} {1406.2288}),
+  \mn@doi{10.1117/12.2054950}
+
+\bibitem[\protect\citeauthoryear{{Bhatnagar, S.}, {Cornwell, T. J.}, {Golap,
+  K.}  \& {Uson, J. M.}}{{Bhatnagar, S.} et~al.}{2008}]{bha08}
+{Bhatnagar, S.} {Cornwell, T. J.} {Golap, K.}  {Uson, J. M.} 2008, \mn@doi
+  [A\&A] {10.1051/0004-6361:20079284}, 487, 419
+
+\bibitem[\protect\citeauthoryear{{Bowman} et~al.,}{{Bowman}
+  et~al.}{2013}]{bow13}
+{Bowman} J.~D.,  et~al., 2013, \mn@doi [\pasa] {10.1017/pas.2013.009}, \href
+  {http://adsabs.harvard.edu/abs/2013PASA...30...31B} {30, 31}
+
+\bibitem[\protect\citeauthoryear{{Bunton}}{{Bunton}}{2004}]{bun04}
+{Bunton} J.~D.,  2004, \mn@doi [Experimental Astronomy]
+  {10.1007/s10686-005-5661-5}, \href
+  {http://adsabs.harvard.edu/abs/2004ExA....17..251B} {17, 251}
+
+\bibitem[\protect\citeauthoryear{Daishido et~al.,}{Daishido
+  et~al.}{2000}]{dai00}
+Daishido T.,  et~al., 2000, \mn@doi [Proc. SPIE] {10.1117/12.390458}, 4015, 73
+
+\bibitem[\protect\citeauthoryear{{Ellingson} et~al.,}{{Ellingson}
+  et~al.}{2013}]{ell13}
+{Ellingson} S.~W.,  et~al., 2013, \mn@doi [IEEE Transactions on Antennas and
+  Propagation] {10.1109/TAP.2013.2242826}, \href
+  {http://adsabs.harvard.edu/abs/2013ITAP...61.2540E} {61, 2540}
+
+\bibitem[\protect\citeauthoryear{Foster, Hickish, Magro, Price  \&
+  Zarb~Adami}{Foster et~al.}{2014}]{fos14}
+Foster G.,  Hickish J.,  Magro A.,  Price D.,   Zarb~Adami K.,  2014, \mn@doi
+  [Monthly Notices of the Royal Astronomical Society] {10.1093/mnras/stu188},
+  439, 3180
+
+\bibitem[\protect\citeauthoryear{{Lonsdale}, {Doeleman}, {Cappallo}, {Hewitt}
+  \& {Whitney}}{{Lonsdale} et~al.}{2000}]{lon00}
+{Lonsdale} C.~J.,  {Doeleman} S.~S.,  {Cappallo} R.~J.,  {Hewitt} J.~N.,
+  {Whitney} A.~R.,  2000, in {Butcher} H.~R.,  ed.,  Society of Photo-Optical
+  Instrumentation Engineers (SPIE) Conference Series Vol. 4015, Radio
+  Telescopes. pp 126--134
+
+\bibitem[\protect\citeauthoryear{{Mellema} et~al.,}{{Mellema}
+  et~al.}{2013}]{mel13}
+{Mellema} G.,  et~al., 2013, \mn@doi [Experimental Astronomy]
+  {10.1007/s10686-013-9334-5}, \href
+  {http://adsabs.harvard.edu/abs/2013ExA....36..235M} {36, 235}
+
 \bibitem[\protect\citeauthoryear{{Morales}}{{Morales}}{2011}]{mor11}
 {Morales} M.~F.,  2011, \mn@doi [\pasp] {10.1086/663092}, \href
   {http://adsabs.harvard.edu/abs/2011PASP..123.1265M} {123, 1265}
+
+\bibitem[\protect\citeauthoryear{{Morales} \& {Matejek}}{{Morales} \&
+  {Matejek}}{2009}]{mor09}
+{Morales} M.~F.,  {Matejek} M.,  2009, \mn@doi [\mnras]
+  {10.1111/j.1365-2966.2009.15537.x}, \href
+  {http://adsabs.harvard.edu/abs/2009MNRAS.400.1814M} {400, 1814}
+
+\bibitem[\protect\citeauthoryear{{Otobe} et~al.,}{{Otobe} et~al.}{1994}]{oto94}
+{Otobe} E.,  et~al., 1994, \pasj, \href
+  {http://adsabs.harvard.edu/abs/1994PASJ...46..503O} {46, 503}
+
+\bibitem[\protect\citeauthoryear{Parsons et~al.,}{Parsons et~al.}{2010}]{par10}
+Parsons A.~R.,  et~al., 2010, The Astronomical Journal, 139, 1468
+
+\bibitem[\protect\citeauthoryear{{Tegmark}}{{Tegmark}}{1997}]{teg97a}
+{Tegmark} M.,  1997, \mn@doi [\apjl] {10.1086/310631}, \href
+  {http://adsabs.harvard.edu/abs/1997ApJ...480L..87T} {480, L87}
+
+\bibitem[\protect\citeauthoryear{{Tegmark} \& {Zaldarriaga}}{{Tegmark} \&
+  {Zaldarriaga}}{2009}]{teg09}
+{Tegmark} M.,  {Zaldarriaga} M.,  2009, \mn@doi [\prd]
+  {10.1103/PhysRevD.79.083530}, \href
+  {http://adsabs.harvard.edu/abs/2009PhRvD..79h3530T} {79, 083530}
+
+\bibitem[\protect\citeauthoryear{Tegmark \& Zaldarriaga}{Tegmark \&
+  Zaldarriaga}{2010}]{teg10}
+Tegmark M.,  Zaldarriaga M.,  2010, \mn@doi [Phys. Rev. D]
+  {10.1103/PhysRevD.82.103501}, 82, 103501
+
+\bibitem[\protect\citeauthoryear{{Thornton} et~al.,}{{Thornton}
+  et~al.}{2013}]{tho13}
+{Thornton} D.,  et~al., 2013, \mn@doi [Science] {10.1126/science.1236789},
+  \href {http://adsabs.harvard.edu/abs/2013Sci...341...53T} {341, 53}
+
+\bibitem[\protect\citeauthoryear{{Thyagarajan}, {Beardsley}, {Bowman}  \&
+  {Morales}}{{Thyagarajan} et~al.}{2015}]{thy15c}
+{Thyagarajan} N.,  {Beardsley} A.~P.,  {Bowman} J.~D.,   {Morales} M.~F.,
+  2015, {arXiv:1510.08318}
+
+\bibitem[\protect\citeauthoryear{Tingay et~al.,}{Tingay et~al.}{2013}]{tin13}
+Tingay S.~J.,  et~al., 2013, \mn@doi [PASA - Publications of the Astronomical
+  Society of Australia] {10.1017/pasa.2012.007}, 30
+
+\bibitem[\protect\citeauthoryear{Wijnholds \& van~der Veen}{Wijnholds \&
+  van~der Veen}{2009}]{wij09}
+Wijnholds S.,  van~der Veen A.-J.,  2009, \mn@doi [Signal Processing, IEEE
+  Transactions on] {10.1109/TSP.2009.2022894}, 57, 3512
+
+\bibitem[\protect\citeauthoryear{{Zheng} et~al.,}{{Zheng} et~al.}{2014}]{zhe14}
+{Zheng} H.,  et~al., 2014, \mn@doi [\mnras] {10.1093/mnras/stu1773}, \href
+  {http://adsabs.harvard.edu/abs/2014MNRAS.445.1084Z} {445, 1084}
+
+\bibitem[\protect\citeauthoryear{de Vos, Gunst  \& Nijboer}{de~Vos
+  et~al.}{2009}]{dev09}
+de Vos M.,  Gunst A.,   Nijboer R.,  2009, \mn@doi [Proceedings of the IEEE]
+  {10.1109/JPROC.2009.2020509}, 97, 1431
+
+\bibitem[\protect\citeauthoryear{{van Haarlem} et~al.,}{{van Haarlem}
+  et~al.}{2013}]{van13}
+{van Haarlem} M.~P.,  et~al., 2013, \mn@doi [\aap]
+  {10.1051/0004-6361/201220873}, \href
+  {http://adsabs.harvard.edu/abs/2013A%26A...556A...2V} {556, A2}
 
 \makeatother
 \end{thebibliography}
