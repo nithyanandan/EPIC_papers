@@ -38,6 +38,13 @@
   {10.1007/s10686-005-5661-5}, \href
   {http://adsabs.harvard.edu/abs/2004ExA....17..251B} {17, 251}
 
+\bibitem[\protect\citeauthoryear{{Cohen}, {Lane}, {Cotton}, {Kassim}, {Lazio},
+  {Perley}, {Condon}  \& {Erickson}}{{Cohen} et~al.}{2007}]{coh07}
+{Cohen} A.~S.,  {Lane} W.~M.,  {Cotton} W.~D.,  {Kassim} N.~E.,  {Lazio}
+  T.~J.~W.,  {Perley} R.~A.,  {Condon} J.~J.,   {Erickson} W.~C.,  2007,
+  \mn@doi [\aj] {10.1086/520719}, \href
+  {http://adsabs.harvard.edu/abs/2007AJ....134.1245C} {134, 1245}
+
 \bibitem[\protect\citeauthoryear{Daishido et~al.,}{Daishido
   et~al.}{2000}]{dai00}
 Daishido T.,  et~al., 2000, \mn@doi [Proc. SPIE] {10.1117/12.390458}, 4015, 73
@@ -54,6 +61,11 @@ Foster G.,  Hickish J.,  Magro A.,  Price D.,   Zarb~Adami K.,  2014, \mn@doi
   [Monthly Notices of the Royal Astronomical Society] {10.1093/mnras/stu188},
   439, 3180
 
+\bibitem[\protect\citeauthoryear{{Kassim} et~al.,}{{Kassim}
+  et~al.}{2007}]{kas07}
+{Kassim} N.~E.,  et~al., 2007, \mn@doi [\apjs] {10.1086/519022}, \href
+  {http://adsabs.harvard.edu/abs/2007ApJS..172..686K} {172, 686}
+
 \bibitem[\protect\citeauthoryear{{Lonsdale}, {Doeleman}, {Cappallo}, {Hewitt}
   \& {Whitney}}{{Lonsdale} et~al.}{2000}]{lon00}
 {Lonsdale} C.~J.,  {Doeleman} S.~S.,  {Cappallo} R.~J.,  {Hewitt} J.~N.,
@@ -66,6 +78,12 @@ Foster G.,  Hickish J.,  Magro A.,  Price D.,   Zarb~Adami K.,  2014, \mn@doi
 {Mellema} G.,  et~al., 2013, \mn@doi [Experimental Astronomy]
   {10.1007/s10686-013-9334-5}, \href
   {http://adsabs.harvard.edu/abs/2013ExA....36..235M} {36, 235}
+
+\bibitem[\protect\citeauthoryear{Mitchell, Greenhill, Wayth, Sault, Lonsdale,
+  Cappallo, Morales  \& Ord}{Mitchell et~al.}{2008}]{mit08}
+Mitchell D.,  Greenhill L.,  Wayth R.,  Sault R.,  Lonsdale C.,  Cappallo R.,
+  Morales M.,   Ord S.,  2008, \mn@doi [Selected Topics in Signal Processing,
+  IEEE Journal of] {10.1109/JSTSP.2008.2005327}, 2, 707
 
 \bibitem[\protect\citeauthoryear{{Morales}}{{Morales}}{2011}]{mor11}
 {Morales} M.~F.,  2011, \mn@doi [\pasp] {10.1086/663092}, \href

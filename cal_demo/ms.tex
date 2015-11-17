@@ -24,7 +24,7 @@
 \newcommand{\Ng}{\ensuremath{N_{\mathrm{g}}}}
 \newcommand{\s}{\ensuremath{\hat{\mathbf{s}}}} % s-hat for sine-projected direction
 \newcommand{\spix}{\ensuremath{\hat{\mathbf{s}}_{\mathrm{pix}}}}
-\newcommand{\Cna}{\ensuremath{\mathcal{C}^{(n)}_a}}
+\newcommand{\Cna}{\ensuremath{\mathcal{C}^{(n)}_{a,\spix}}}
 \newcommand{\ri}{\ensuremath{\mathbf{r}_i}}
 \newcommand{\ra}{\ensuremath{\mathbf{r}_a}}
 \newcommand{\rb}{\ensuremath{\mathbf{r}_b}}
@@ -33,6 +33,7 @@
 \newcommand{\Er}[1]{\ensuremath{\widetilde{E}_{#1}}}
 \newcommand{\Erest}[1]{\ensuremath{\hat{\widetilde{E}}_{#1}}}
 \newcommand{\V}{\ensuremath{\widetilde{V}}}
+\newcommand{\dif}{\mathrm{d}}
 
 %%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
 
@@ -95,56 +96,85 @@ We establish the mathematical framework and derive the calibration algorithm in 
 \section{Mathematical Framework}\label{sec:math}
 We begin by establishing the mathematical framework for the calibration problem. We derive the calibration solutions for the MOFF algorithm (adopting the notation of \citealt{thy15c}), but note the result is easily extended to FFT correlator algorithms by removing the gridding step.
 
-
-
-Introduce notation, describe measurement equation.
-
-
+The electric field incident on the ground, $\Er{}(\mathbf{r},f,t)$, is related to the sky electric field, $E(\hat{\mathbf{s}},f,t)$, through a Fourier transform.
 \begin{equation}
-\mathcal{C}^n(a,\spix,f) \equiv \left<E_a(f) E'^*(\spix,f)\right>_t
+\Er{}(\mathbf{r},f,t) = \int E(\hat{\mathbf{s}},f,t) e^{-2\pi i \mathbf{r}\cdot \hat{\mathbf{s}}}\, \dif^2 \hat{\mathbf{s}}
 \end{equation}
-$\mathcal{C}^n(a,\spix,f) \rightarrow \Cna$
-
+Here $\hat{\mathbf{s}}$ denotes the sine-projected unit vector for the sky angle, $\mathbf{r}$ is the observer's location (measured in wavelengths relative to an arbitrary origin), and $f$ and $t$ denote the frequency and time dependence, respectively. We will encounter several quantities which we attempt to estimate. We distinguish the ``true" values with a superscript $T$, while the estimates are denoted with a hat. We define the true antenna signal as a convolution of the antenna voltage pattern, $\beamr$, with the electric field on the ground.
 \begin{equation}
-\Er{a} = g_a E^T_a
+\Er{a}^T(f,t) \equiv \int \beamr_a(\mathbf{r}-\ra) \Er{}(\mathbf{r},f,t) \, \dif^2 \mathbf{r}
 \end{equation}
-\begin{align}
-\hat{E}(\spix) & = \frac{1}{\Nant} \sum_i e^{2\pi i \spix \cdot \ri} \Erest{i} \\
-& = \frac{1}{\Nant} \sum_i e^{2\pi i \spix \cdot \ri} \sum_b \beamr_b(\ri-\rb) \Erest{b} \\
-& = \frac{1}{\Nant} \sum_i e^{2\pi i \spix \cdot \ri} \sum_b \beamr_b(\ri-\rb) h^{(n)}_b g_b\Er{b}^T
-\end{align}
-We can then play a trick to transform the beam.
-\begin{align}
-\hat{E}(\spix) & = \frac{1}{\Nant} \sum_b h^{(n)}_b g_b\Er{b}^T e^{2\pi i \spix \cdot \rb}\sum_i \beamr_b(\ri-\rb)e^{2\pi i \spix \cdot (\ri-\rb)}\\
-& = \frac{1}{\Nant} \sum_b h^{(n)}_b g_b\Er{b}^T e^{2\pi i \spix \cdot \rb}\beamtheta_b(\spix)
-\end{align}
+The subscript $a$ labels the antenna, and $\mathbf{r}_a$ is the location of antenna $a$.
 
-Plugging in, we get,
-\begin{align}
-\Cna & = \left<\Er{a} \hat{E}^*(\spix)\right>_t \\ 
-& = \left<g_a \Er{a}^T \frac{1}{\Nant} \sum_b h^{*(n)}_b g^*_b\Er{b}^{*T} e^{-2\pi i \spix \cdot \rb} \beamtheta^*_b(\spix)\right>_t \\
-\end{align}
-Pulling time independent pieces out.
-\begin{align}
-\Cna & = \frac{g_a}{\Nant} \sum_b h^{*(n)}_b g^*_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \left<\Er{a}^T \Er{b}^{*T} \right>_t \\
-& = \frac{g_a}{\Nant} \sum_b h^{*(n)}_b g^*_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab}
-\end{align}
-Solve for $g^{(n+1)}_a$.
+We next model the measured, uncalibrated electric field as a multiplicative complex gain and an additive noise term applied to the true antenna electric field. 
 \begin{equation}
-g^{(n+1)}_a = \Cna \Nant \left[ \sum_b h^{*(n)}_b g^{*(n)}_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab} \right]^{-1}
+\Er{a}(f,t) = g^T_a(f,t) \Er{a}^T(f,t) + \widetilde{n}_a(f,t)
+\end{equation}
+Note that this quantity is neither a true or estimated value. The noise term is strictly receiver noise -- noise introduced by the instrument. Any sky noise is implicitly included in the time dependence of the sky electric field. As the noise of modern low frequency arrays is heavily dominated by sky noise, we will neglect $\widetilde{n}_a$ for now, but will inspect its effects at the end of this section.
+
+The goal of our calibration algorithm will be to estimate the antenna gains. We will assume the gains have no time dependence within the timescale of finding our solutions. \textcolor{red}{cite someone about gain stability}. Furthermore, we will treat each frequency channel independently, and drop the $f$ to simplify notation.
+
+The MOFF algorithm next calls for a calibration. For now we will assume we have formed an estimate of the gains after $n$ iterations of a calibration loop, and can apply these gains. Typically calibration amounts to dividing the measured fields by the complex gain, or multiplying by the complex conjugate of the gain. We will abstain from this choice for now, and instead use a multiplicative factor $h^{(n)}_a$ to represent the application of our $n^{\mathrm{th}}$-loop  estimate of the gain for antenna $a$.
+\begin{equation}
+\hat{\Er{a}} = h^{(n)}_a \Er{a}
 \end{equation}
 
-In the case where $h_b = 1/g_b$, this simplifies slightly.
+A dirty image is next formed by gridding the calibrated fields with the antenna voltage pattern, Fourier transforming, squaring, and averaging in time. The estimated value for a pixel, \spix, can be expressed as
+\begin{equation}
+\hat{I}(\spix) = \left<\left| \frac{1}{\Nant}\sum_i e^{2\pi i \mathbf{r}\cdot \spix} \sum_a \beamr_a(\ri - \ra) h^{(n)}_a g^T_a \Er{a}^T(t) \right|^2 \right>_t.
+\end{equation}
+This is the final output of the MOFF correlator. However, for calibration purposes we will be interested in the electric field image just prior to squaring and averaging.
+\begin{equation}
+\hat{E}(\spix,t) = \frac{1}{\Nant} \sum_i e^{2\pi i \ri \cdot \spix} \sum_a \beamr_a(\ri - \ra) h^{(n)}_a g^T_a \Er{a}^T(t)
+\end{equation}
+We can simplify this expression by exchanging the sums to transform the beam term into sky coordinates.
+\begin{align}\label{eq:epix}
+\hat{E}(\spix,t) & = \frac{1}{\Nant} \sum_a h^{(n)}_a g^T_a\Er{a}^T e^{2\pi i \spix \cdot \ra}\sum_i \beamr_b(\ri-\ra)e^{2\pi i \spix \cdot (\ri-\ra)} \nonumber\\
+& = \frac{1}{\Nant} \sum_a h^{(n)}_a g^T_a\Er{a}^T e^{2\pi i \spix \cdot \ra}\beamtheta_a(\spix)
+\end{align}
+
+Next we move toward the feedback calibration outlined in \citealt{mor11}. The calibration loop described there assumed a simple sky of a single point source, but we aim for a more generalized solution for arbitrarily complex sky models. As such the quantity we wish to inspect is a correlation of the uncalibrated antenna signals input to the correlator with the holographic electric field image output from the correlator. We define the quantity,
+\begin{equation}\label{eq:Cna}
+\Cna \equiv \left<\Er{a}(t) \hat{E}^*(\spix,t)\right>_t,
+\end{equation}
+where the superscript $n$ again represents the quantity formed in the $n^\mathrm{th}$ calibration loop. Naturally, because the right hand side contains the output of the correlator, this will be an iterative process. The following will hold for any chosen pixel, \spix, though we will see it is advantageous to choose a pixel which contains a bright source. 
+
+Plugging equation \ref{eq:epix} into equation \ref{eq:Cna}, we find,
+\begin{align}\label{eq:cna}
+\Cna & = \left<g^T_a \Er{a}^T(t) \frac{1}{\Nant} \sum_b h^{*(n)}_b g^{T*}_b\Er{b}^{T*}(t) e^{-2\pi i \spix \cdot \rb} \beamtheta^*_b(\spix)\right>_t \nonumber \\
+& = \frac{g^T_a}{\Nant} \sum_b h^{*(n)}_b g^{T*}_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \left<\Er{a}^T \Er{b}^{*T} \right>_t \nonumber \\
+& = \frac{g^T_a}{\Nant} \sum_b h^{*(n)}_b g^{T*}_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab}
+\end{align}
+where in the second step we group time-dependent terms, and in the third we define the true visibilities as the correlation between true antenna electric field measurements. It is easy to see from here that the net effect of including the receiver noise term, $\widetilde{n}$
+
+Finally, we estimate our solution by assuming our current estimate of the gains, $\hat{g}^{(n)}_b$ is approximately correct and substitute into the sum for the true gains. We also require model visibilities formed from sky and primary beam models in place of true visibilities.
+\begin{equation}\label{eq:cal_solution}
+\hat{g}^{(n+1)}_a = \Cna \Nant \left[ \sum_b h^{*(n)}_b \hat{g}^{*(n)}_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab} \right]^{-1}
+\end{equation}
+This equation is our prescription for estimating the antenna gains of a direct imaging array. The approach is iterative in nature, and requires a sky model. However, the sky model can be precomputed offline, and the online computation complexity scales only as $\mathcal{O}(\Nant)$ as we form a $\Cna$ for each antenna. In the case where $h_b = 1/g_b$, this simplifies slightly.
 \begin{equation}
 g^{(n+1)}_a = \Cna \Nant \left[ \sum_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab} \right]^{-1}
 \end{equation}
 
+We note an encouraging analogy to the solutions found in \citealt{mit08} (their equation~11). In the case where \spix\, is the central pixel of the image, we see \Cna\, is simply the sum of visibilities involving antenna $a$ in equation~\ref{eq:cna}. This is equivalent to the numerator equation~11 in \citealt{mit08}, in the single polarization case. The denominator then is the sum over modeled visibilities, as in our equation~\ref{eq:cal_solution} (save bookkeeping to track Fourier transform conventions and gain applications). The major difference in our solution is the inclusion of auto-correlations in both sums. If desired, a deployed system could adapt equation~\ref{eq:cal_solution} to remove the auto-correlations. This would require generating these correlations, which again only scale as $\mathcal{O}(\Nant)$, and are generally useful for array diagnostics.
+
+We thus confirm what was shown for the simple-sky case in \citealt{mor11} -- our calibration solutions are equivalent to those derived from visibility data. We will pursue this further in section~\ref{sec:noise}.
+
+We show schematically the process of calibrating a direct imaging correlator in figure~\ref{fig:schematic}.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{figures/schematic.pdf}
+\caption{Caption goes here}
+\label{fig:schematic}
+\end{center}
+\end{figure}
 
 \section{Simulation}\label{sec:sim}
-
-Describe simulation
+We first demonstrate our calibration method through a controlled simulation. 
 
 \section{Application to LWA data}\label{sec:data}
+Reference for Cyg-A: \citealt{coh07}. Ref for Cas-A: \citealt{kas07}.
 Apply to LWA data.
 
 \section{Noise analysis}\label{sec:noise}
