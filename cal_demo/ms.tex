@@ -24,7 +24,7 @@
 \newcommand{\Ng}{\ensuremath{N_{\mathrm{g}}}}
 \newcommand{\s}{\ensuremath{\hat{\mathbf{s}}}} % s-hat for sine-projected direction
 \newcommand{\spix}{\ensuremath{\hat{\mathbf{s}}_{\mathrm{pix}}}}
-\newcommand{\Cna}{\ensuremath{\mathcal{C}^{(n)}_{a,\spix}}}
+\newcommand{\Cna}[1][n]{\ensuremath{\mathcal{C}^{(#1)}_{a,\spix}}}
 \newcommand{\ri}{\ensuremath{\mathbf{r}_i}}
 \newcommand{\ra}{\ensuremath{\mathbf{r}_a}}
 \newcommand{\rb}{\ensuremath{\mathbf{r}_b}}
@@ -34,6 +34,9 @@
 \newcommand{\Erest}[1]{\ensuremath{\hat{\widetilde{E}}_{#1}}}
 \newcommand{\V}{\ensuremath{\widetilde{V}}}
 \newcommand{\dif}{\mathrm{d}}
+\newcommand{\caliter}{50}
+\newcommand{\damp}{\ensuremath{\Delta}}
+\newcommand{\itr}{20}
 
 %%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
 
@@ -107,7 +110,7 @@ Here $\hat{\mathbf{s}}$ denotes the sine-projected unit vector for the sky angle
 The subscript $a$ labels the antenna, and $\mathbf{r}_a$ is the location of antenna $a$.
 
 We next model the measured, uncalibrated electric field as a multiplicative complex gain and an additive noise term applied to the true antenna electric field. 
-\begin{equation}
+\begin{equation}\label{eq:apply_gain}
 \Er{a}(f,t) = g^T_a(f,t) \Er{a}^T(f,t) + \widetilde{n}_a(f,t)
 \end{equation}
 Note that this quantity is neither a true or estimated value. The noise term is strictly receiver noise -- noise introduced by the instrument. Any sky noise is implicitly included in the time dependence of the sky electric field. As the noise of modern low frequency arrays is heavily dominated by sky noise, we will neglect $\widetilde{n}_a$ for now, but will inspect its effects at the end of this section.
@@ -153,25 +156,33 @@ Finally, we estimate our solution by assuming our current estimate of the gains,
 \end{equation}
 This equation is our prescription for estimating the antenna gains of a direct imaging array. The approach is iterative in nature, and requires a sky model. However, the sky model can be precomputed offline, and the online computation complexity scales only as $\mathcal{O}(\Nant)$ as we form a $\Cna$ for each antenna. In the case where $h_b = 1/g_b$, this simplifies slightly.
 \begin{equation}
-g^{(n+1)}_a = \Cna \Nant \left[ \sum_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab} \right]^{-1}
+\hat{g}^{(n+1)}_a = \Cna \Nant \left[ \sum_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab} \right]^{-1}
 \end{equation}
 
-We note an encouraging analogy to the solutions found in \citealt{mit08} (their equation~11). In the case where \spix\, is the central pixel of the image, we see \Cna\, is simply the sum of visibilities involving antenna $a$ in equation~\ref{eq:cna}. This is equivalent to the numerator equation~11 in \citealt{mit08}, in the single polarization case. The denominator then is the sum over modeled visibilities, as in our equation~\ref{eq:cal_solution} (save bookkeeping to track Fourier transform conventions and gain applications). The major difference in our solution is the inclusion of auto-correlations in both sums. If desired, a deployed system could adapt equation~\ref{eq:cal_solution} to remove the auto-correlations. This would require generating these correlations, which again only scale as $\mathcal{O}(\Nant)$, and are generally useful for array diagnostics.
+We note an encouraging analogy to the solutions found in \citealt{mit08} (their equation~11). In the case where \spix~is the central pixel of the image, we see \Cna\, is simply the sum of visibilities involving antenna $a$ in equation~\ref{eq:cna}. This is equivalent to the numerator equation~11 in \citealt{mit08}, in the single polarization case. The denominator then is the sum over modeled visibilities, as in our equation~\ref{eq:cal_solution} (save bookkeeping to track Fourier transform conventions and gain applications). The major difference in our solution is the inclusion of auto-correlations in both sums. If desired, a deployed system could adapt equation~\ref{eq:cal_solution} to remove the auto-correlations. This would require generating these correlations, which again only scale as $\mathcal{O}(\Nant)$, and are generally useful for array diagnostics.
 
 We thus confirm what was shown for the simple-sky case in \citealt{mor11} -- our calibration solutions are equivalent to those derived from visibility data. We will pursue this further in section~\ref{sec:noise}.
 
-We show schematically the process of calibrating a direct imaging correlator in figure~\ref{fig:schematic}.
+We show schematically the process of calibrating a direct imaging correlator in figure~\ref{fig:schematic}. Computationally expensive steps that must be performed ``on-chip" are shown inside the gray box. The uncalibrated antenna signals are tapped out after the F-engine and correlated against the output image pixel of interest. The correlated values are then passed off-chip to estimate the gains using equation~\ref{eq:cal_solution}, and additional fitting if desired. The gains are then passed back to the correlator to update the calibration for subsequent data streams. 
 
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{figures/schematic.pdf}
-\caption{Caption goes here}
+\caption{\textcolor{red}{Caption goes here}}
 \label{fig:schematic}
 \end{center}
 \end{figure}
 
 \section{Simulation}\label{sec:sim}
-We first demonstrate our calibration method through a controlled simulation. 
+We first demonstrate our calibration method through a controlled simulation. The simulation software used is included in the EPIC package, and we follow a procedure based on that described in \citealt{thy15c}, using the same toy-model sky with 10 point sources of flux density 10 Jy at random location. We assume perfect knowledge of the sky to build our model visibilities.
+
+We use 64 frequency channels each 40 kHz, and each timeseries is 25~$\mu$s long. However, because each channel is independent in the calibration loop we only show the central channel here. Using the MWA array layout \citep{bea12}, we select the inner 51 antennas within a square bounding box of 150~m. The antenna voltage pattern used is a 4.4~m square tophat on the ground.
+
+In order to show our ability to recover unknown complex antenna gains, we create a set of random numbers with amplitude $1\pm0.25$, and completely random phase. These are our ``true gains", and we apply them to the frequency-domain simulated antenna electric fields as in equation~\ref{eq:apply_gain}. Our analysis is blind to these values until the end of the process to check accuracy. We start with an initial guess of unity gains.
+
+We next process \caliter~time stamps, creating both a short-term integrated image and \Cna[0] correlations. Unless otherwise specified, the software automatically selects the brightest source in the sky model to choose the correlation pixel. We use our correlation values to update the gains. We found that simply using equation~\ref{eq:cal_solution} resulted in large oscillations in the solutions, which eventually converged. To mitigate this we introduce a tunable damping factor, $0< \damp \leq 1$, which is used to attenuate the gain update, effectively giving the solutions memory of previous iterations. Through experimentation we found $\Delta=0.65$ resulted in the quickest convergence for this simulation.
+
+We continue the calibration loop by updating our gain estimates, dividing the data by the gains, forming images and \Cna correlations to form the next estimate. This process was repeated \itr~times. In figure~\ref{fig:before_image} we show the integrated image created using our initial guess gains and the first \caliter~time steps. Because the gain phases were completely random the image is
 
 \section{Application to LWA data}\label{sec:data}
 Reference for Cyg-A: \citealt{coh07}. Ref for Cas-A: \citealt{kas07}.
