@@ -67,6 +67,10 @@ Foster G.,  Hickish J.,  Magro A.,  Price D.,   Zarb~Adami K.,  2014, \mn@doi
   [Monthly Notices of the Royal Astronomical Society] {10.1093/mnras/stu188},
   439, 3180
 
+\bibitem[\protect\citeauthoryear{Hicks et~al.,}{Hicks et~al.}{2012}]{hic12}
+Hicks B.~C.,  et~al., 2012, Publications of the Astronomical Society of the
+  Pacific, 124, pp. 1090
+
 \bibitem[\protect\citeauthoryear{{Kassim} et~al.,}{{Kassim}
   et~al.}{2007}]{kas07}
 {Kassim} N.~E.,  et~al., 2007, \mn@doi [\apjs] {10.1086/519022}, \href
@@ -145,6 +149,13 @@ Wijnholds S.,  van~der Veen A.-J.,  2009, \mn@doi [Signal Processing, IEEE
 \bibitem[\protect\citeauthoryear{{Zheng} et~al.,}{{Zheng} et~al.}{2014}]{zhe14}
 {Zheng} H.,  et~al., 2014, \mn@doi [\mnras] {10.1093/mnras/stu1773}, \href
   {http://adsabs.harvard.edu/abs/2014MNRAS.445.1084Z} {445, 1084}
+
+\bibitem[\protect\citeauthoryear{{de Oliveira-Costa}, {Tegmark}, {Gaensler},
+  {Jonas}, {Landecker}  \& {Reich}}{{de Oliveira-Costa} et~al.}{2008}]{deo08}
+{de Oliveira-Costa} A.,  {Tegmark} M.,  {Gaensler} B.~M.,  {Jonas} J.,
+  {Landecker} T.~L.,   {Reich} P.,  2008, \mn@doi [\mnras]
+  {10.1111/j.1365-2966.2008.13376.x}, \href
+  {http://adsabs.harvard.edu/abs/2008MNRAS.388..247D} {388, 247}
 
 \bibitem[\protect\citeauthoryear{de Vos, Gunst  \& Nijboer}{de~Vos
   et~al.}{2009}]{dev09}
