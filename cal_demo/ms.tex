@@ -290,23 +290,23 @@ Figure~\ref{fig:data_images} shows the improvement in the images due to our cali
 
 To compare the image qualities quantitatively we compute the dynamic range, defined as the peak of the image over the noise level. We estimate the noise level as the median of the absolute deviation of the image. With this metric we find the calibrated image to have a 55\% dynamic range improvement over the uncalibrated image.
 
-
 \section{Noise analysis}\label{sec:noise}
 
-Connect to either cramer-rao or FX solutions in some way
+Here we study the properties of our calibration solutions with respect to noise in the system. In order to compare to solutions from visibility-based calibration, we first derive the theoretical lower bound of the error in these solutions, given a set of measured visibilities, $\mathbf{V}$. We will do this through the Fischer information formalism and employ the Cram\'er-Rao lower bound 
 
 Assume we did form visibilities with some integration time. Assuming the noise on each visibility, $\sigma_{ab}$, is independent, we can write the likelihood function of measuring $V_{ab}$ given the true value, the gains, and the noise.
 \begin{equation}
 \mathcal{L}(V_{ab};\mathbf{g}) = \frac{1}{2\pi \sigma_{ab}^2}\exp\left[-\frac{\left|V_{ab} - g_a g_b^* V_{ab}^T\right|^2}{2\sigma_{ab}^2}\right]
 \end{equation}
-Then the likelihood of the set of all visibilities will be,
+Then the likelihood of the set of all visibilities is the product of all individual likelihoods.
 \begin{equation}
 \mathcal{L}(\mathbf{V};\mathbf{g}) = \prod_a \prod_{b > a} \mathcal{L}(V_{ab};\mathbf{g})
 \end{equation}
 The Fischer information matrix for the set of gain parameters is
 \begin{equation}
-\mathbf{F}^g_{ij} = \left<\left. \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_i} \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_j}\right|_\mathbf{g}\right>.
+\mathbf{F}^g_{ij} = \left<\left. \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_i} \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_j}\right|_\mathbf{g}\right>,
 \end{equation}
+where the expectation is taken over all possible visibility measurements.
 We next evaluate the derivate of the log-likelihood.
 \begin{equation}
 \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_i} = 
@@ -322,7 +322,7 @@ We next evaluate the derivate of the log-likelihood.
 \label{eq:Fischer_before_expect}
 \end{align}
 
-The expected values are easy to evaluate. Each visibility will average to the ``true" value times the respective gains. The term with two visibilities will include a noise term.
+The expected values are easy to evaluate. Each visibility will average to the ``true" value times the respective gains. The term with two visibilities will include a noise bias on autocorrelation terms.
 \begin{equation}
 \left<V_{ai}V_{bi}^*\right> = |g_i|^2 g_a g_b^* V_{ai}^T V_{bi}^{T*} + \sigma_{ai}^2 \delta_{ab}
 \end{equation}
@@ -335,6 +335,10 @@ Finally we relate our result to the theoretical best uncertainty we can place on
 \begin{equation}\label{eq:cramer_rao}
 \sigma_{g_i}^2 \ge \left[ \mathbf{F}^g_{ii} \right]^{-1} = \left[ \sum_{a \ne i} \frac{\left|g_a V_{ia}^T \right|^2}{4\sigma_{ai}^2} \right]^{-1}
 \end{equation}
+
+We next run a set of EPICal simulations to compare the noisy results to the theoretical lower bound given a set of equivalent visibilities. Each simulation is run with a simple sky of a single point source with flux 1 Jy. We add noise to the system by adding a Gaussian-random complex value to each channelized electric field antenna measurement as in equation~\ref{eq:apply_gain}. The ``true" gains in our simulation are unity, as well as our initial estimate. This emulates a system where the initially volatile gain correction has been suppressed and only noise remains to corrupt our estimation, allowing us to run many simulations on a shorter timescale.
+
+We vary two parameters in our simulations: the amount of noise added to our measurements, and the length of integration in each calibration loop. 
 
 \section{Discussion}\label{sec:discussion}
 
@@ -353,12 +357,12 @@ This work has been supported by the National Science Foundation through award AS
 
 %%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
 
-\appendix
+%\appendix
 
-\section{Some extra material}
+%\section{Some extra material}
 
-If you want to present additional material which would interrupt the flow of the main paper,
-it can be placed in an Appendix which appears after the list of references.
+%If you want to present additional material which would interrupt the flow of the main paper,
+%it can be placed in an Appendix which appears after the list of references.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
