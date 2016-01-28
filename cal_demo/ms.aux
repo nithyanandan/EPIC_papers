@@ -32,54 +32,61 @@
 \citation{thy15c}
 \citation{mor11}
 \citation{mor09,bha08,teg97a}
-\citation{zhe14,fos14}
-\citation{wij09,dev09}
 \newlabel{firstpage}{{}{1}{}{Doc-Start}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
+\citation{zhe14,fos14}
+\citation{wij09,dev09}
 \citation{thy15c}
 \citation{mor11}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Mathematical Framework}{2}{section.2}}
 \newlabel{sec:math}{{2}{2}{Mathematical Framework}{section.2}{}}
 \newlabel{eq:apply_gain}{{3}{2}{Mathematical Framework}{equation.3}{}}
 \newlabel{eq:epix}{{8}{2}{Mathematical Framework}{equation.8}{}}
-\newlabel{eq:Cna}{{9}{2}{Mathematical Framework}{equation.9}{}}
-\newlabel{eq:cna}{{10}{2}{Mathematical Framework}{equation.10}{}}
 \citation{mit08}
 \citation{mor11}
-\citation{bea12}
+\newlabel{eq:Cna}{{9}{3}{Mathematical Framework}{equation.9}{}}
+\newlabel{eq:cna}{{10}{3}{Mathematical Framework}{equation.10}{}}
 \newlabel{eq:cal_solution}{{11}{3}{Mathematical Framework}{equation.11}{}}
 \newlabel{eq:cal_solution_simple}{{12}{3}{Mathematical Framework}{equation.12}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The general data flow of the MOFF correlator, with a feedback calibration loop. A pixel from the (unsquared) image is tapped out and correlated against the input antenna electric field signals to form $\Cna $ coefficients, which are used to estimate the antenna gains. These gain estimates are then fed back into the correlator to be applied to subsequent data, and the process is repeated. The gray box shows operations which must be done at high speed (before averaging in time), which white boxes show operations which can be performed ``off-chip".}}{3}{figure.1}}
 \newlabel{fig:schematic}{{1}{3}{The general data flow of the MOFF correlator, with a feedback calibration loop. A pixel from the (unsquared) image is tapped out and correlated against the input antenna electric field signals to form $\Cna $ coefficients, which are used to estimate the antenna gains. These gain estimates are then fed back into the correlator to be applied to subsequent data, and the process is repeated. The gray box shows operations which must be done at high speed (before averaging in time), which white boxes show operations which can be performed ``off-chip"}{figure.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Simulation}{3}{section.3}}
-\newlabel{sec:sim}{{3}{3}{Simulation}{section.3}{}}
-\citation{thy15c}
-\citation{coh07}
-\citation{kas07}
-\citation{hic12}
+\citation{bea12}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Simulation}{4}{section.3}}
+\newlabel{sec:sim}{{3}{4}{Simulation}{section.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Phase error of gain estimates as a function of iteration for simulated calibration. The gains were initialized with random phases, but the calibration loop was able to recover the correct phases after about 15 iterations. Each line represents an antenna in our 51 MWA antenna sample. }}{4}{figure.2}}
 \newlabel{fig:sim_phase}{{2}{4}{Phase error of gain estimates as a function of iteration for simulated calibration. The gains were initialized with random phases, but the calibration loop was able to recover the correct phases after about 15 iterations. Each line represents an antenna in our 51 MWA antenna sample}{figure.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Gain estimate amplitudes as a function of iteration for simulated calibration. Again, each line represents an antenna in the 51 MWA antenna sample. The gain estimates were initialized randomly, while the true values were unity. After about 15 iterations we see the calibration loop has settled around the correct values, with only noise remaining.}}{4}{figure.3}}
 \newlabel{fig:sim_amp}{{3}{4}{Gain estimate amplitudes as a function of iteration for simulated calibration. Again, each line represents an antenna in the 51 MWA antenna sample. The gain estimates were initialized randomly, while the true values were unity. After about 15 iterations we see the calibration loop has settled around the correct values, with only noise remaining}{figure.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Application to LWA data}{4}{section.4}}
-\newlabel{sec:data}{{4}{4}{Application to LWA data}{section.4}{}}
+\citation{thy15c}
+\citation{coh07}
+\citation{kas07}
+\citation{hic12}
 \citation{thy15c}
 \citation{deo08}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Images formed during simulated calibration. \emph  {Top:} An image generated from a single frequency channel and 10 ms integration after the gain estimates are randomized. As expected with random phases, the image is completely noisy, with the shape of the primary beam evident. \emph  {Bottom:} An image formed after calibration, again with a single frequency channel and 10 ms integration. The ten simulated (and modeled) point sources are easily visible, and highlighted with red circles. }}{5}{figure.4}}
 \newlabel{fig:sim_images}{{4}{5}{Images formed during simulated calibration. \emph {Top:} An image generated from a single frequency channel and 10 ms integration after the gain estimates are randomized. As expected with random phases, the image is completely noisy, with the shape of the primary beam evident. \emph {Bottom:} An image formed after calibration, again with a single frequency channel and 10 ms integration. The ten simulated (and modeled) point sources are easily visible, and highlighted with red circles}{figure.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Gain phase solutions as a function of calibration iteration for an LWA TBN observation. The gain estimates are initialized with zero phase, but quickly span a $2\pi $ range, and settle into relatively flat, albeit noisy, solutions. The majority of phases congregate near zero, which is not surprising given the fairly good quality image produced from uncalibrated data. }}{5}{figure.5}}
-\newlabel{fig:data_phase}{{5}{5}{Gain phase solutions as a function of calibration iteration for an LWA TBN observation. The gain estimates are initialized with zero phase, but quickly span a $2\pi $ range, and settle into relatively flat, albeit noisy, solutions. The majority of phases congregate near zero, which is not surprising given the fairly good quality image produced from uncalibrated data}{figure.5}{}}
-\bibstyle{../mnras}
-\bibdata{../epic}
-\bibcite{ban14}{{1}{2014}{{{Bandura} et~al.}}{{{Bandura} et~al.,}}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Application to LWA data}{5}{section.4}}
+\newlabel{sec:data}{{4}{5}{Application to LWA data}{section.4}{}}
+\citation{kaz13}
+\citation{kay93}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Gain phase solutions as a function of calibration iteration for an LWA TBN observation. The gain estimates are initialized with zero phase, but quickly span a $2\pi $ range, and settle into relatively flat, albeit noisy, solutions. The majority of phases congregate near zero, which is not surprising given the fairly good quality image produced from uncalibrated data. }}{6}{figure.5}}
+\newlabel{fig:data_phase}{{5}{6}{Gain phase solutions as a function of calibration iteration for an LWA TBN observation. The gain estimates are initialized with zero phase, but quickly span a $2\pi $ range, and settle into relatively flat, albeit noisy, solutions. The majority of phases congregate near zero, which is not surprising given the fairly good quality image produced from uncalibrated data}{figure.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Gain amplitudes as a function of calibration iteration for an LWA TBN observation. The gains estimates were initialized with amplitude 0.25 after inspection of the electric field values compared to our model sky. The solutions are noisy, but flat. The range in amplitudes is due to the non-uniformity of cables between the LWA antennas and receivers. }}{6}{figure.6}}
 \newlabel{fig:data_amp}{{6}{6}{Gain amplitudes as a function of calibration iteration for an LWA TBN observation. The gains estimates were initialized with amplitude 0.25 after inspection of the electric field values compared to our model sky. The solutions are noisy, but flat. The range in amplitudes is due to the non-uniformity of cables between the LWA antennas and receivers}{figure.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Noise analysis}{6}{section.5}}
 \newlabel{sec:noise}{{5}{6}{Noise analysis}{section.5}{}}
 \newlabel{eq:Fischer_before_expect}{{21}{6}{Noise analysis}{equation.21}{}}
-\newlabel{eq:cramer_rao}{{24}{6}{Noise analysis}{equation.24}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{6}{section.6}}
-\newlabel{sec:discussion}{{6}{6}{Discussion}{section.6}{}}
+\citation{neb15,vir14,thy15b}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Images produced before (left) and after (middle) calibrating LWA data. These images were produces with 29 kHz bandwidth and 51.2 ms integration. The calibrated image shows significant reduction in sidelobe rumble throughout, while retaining the prominent Cyg\nobreakspace  {}A and Cas\nobreakspace  {}A sources. The galactic plane is also substantially more evident after calibration. For reference, the GSM is shown in the same coordinates and weighted by two factors of the LWA primary beam in the right panel. }}{7}{figure.7}}
+\newlabel{fig:data_images}{{7}{7}{Images produced before (left) and after (middle) calibrating LWA data. These images were produces with 29 kHz bandwidth and 51.2 ms integration. The calibrated image shows significant reduction in sidelobe rumble throughout, while retaining the prominent Cyg~A and Cas~A sources. The galactic plane is also substantially more evident after calibration. For reference, the GSM is shown in the same coordinates and weighted by two factors of the LWA primary beam in the right panel}{figure.7}{}}
+\newlabel{eq:cramer_rao}{{24}{7}{Noise analysis}{equation.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \leavevmode {\color  {red}caption!} }}{7}{figure.8}}
+\newlabel{fig:noise}{{8}{7}{\textcolor {red}{caption!}}{figure.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{7}{section.6}}
+\newlabel{sec:discussion}{{6}{7}{Discussion}{section.6}{}}
+\bibstyle{../mnras}
+\bibdata{../epic}
+\bibcite{ban14}{{1}{2014}{{{Bandura} et~al.}}{{{Bandura} et~al.,}}}
 \bibcite{bea12}{{2}{2012}{{{Beardsley} et~al.}}{{{Beardsley} et~al.,}}}
 \bibcite{bha08}{{3}{2008}{{{Bhatnagar, S.} et~al.}}{{{Bhatnagar, S.}, {Cornwell, T. J.}, {Golap, K.} \& {Uson, J. M.}}}}
 \bibcite{bow13}{{4}{2013}{{{Bowman} et~al.}}{{{Bowman} et~al.,}}}
@@ -90,24 +97,27 @@
 \bibcite{fos14}{{9}{2014}{{Foster et~al.}}{{Foster, Hickish, Magro, Price \& Zarb~Adami}}}
 \bibcite{hic12}{{10}{2012}{{Hicks et~al.}}{{Hicks et~al.,}}}
 \bibcite{kas07}{{11}{2007}{{{Kassim} et~al.}}{{{Kassim} et~al.,}}}
-\bibcite{lon00}{{12}{2000}{{{Lonsdale} et~al.}}{{{Lonsdale}, {Doeleman}, {Cappallo}, {Hewitt} \& {Whitney}}}}
-\bibcite{mel13}{{13}{2013}{{{Mellema} et~al.}}{{{Mellema} et~al.,}}}
-\bibcite{mit08}{{14}{2008}{{Mitchell et~al.}}{{Mitchell, Greenhill, Wayth, Sault, Lonsdale, Cappallo, Morales \& Ord}}}
-\bibcite{mor11}{{15}{2011}{{{Morales}}}{{{Morales}}}}
-\bibcite{mor09}{{16}{2009}{{{Morales} \& {Matejek}}}{{{Morales} \& {Matejek}}}}
-\bibcite{oto94}{{17}{1994}{{{Otobe} et~al.}}{{{Otobe} et~al.,}}}
-\bibcite{par10}{{18}{2010}{{Parsons et~al.}}{{Parsons et~al.,}}}
-\bibcite{teg97a}{{19}{1997}{{{Tegmark}}}{{{Tegmark}}}}
-\bibcite{teg09}{{20}{2009}{{{Tegmark} \& {Zaldarriaga}}}{{{Tegmark} \& {Zaldarriaga}}}}
-\bibcite{teg10}{{21}{2010}{{Tegmark \& Zaldarriaga}}{{Tegmark \& Zaldarriaga}}}
-\bibcite{tho13}{{22}{2013}{{{Thornton} et~al.}}{{{Thornton} et~al.,}}}
-\bibcite{thy15c}{{23}{2015}{{{Thyagarajan} et~al.}}{{{Thyagarajan}, {Beardsley}, {Bowman} \& {Morales}}}}
-\bibcite{tin13}{{24}{2013}{{Tingay et~al.}}{{Tingay et~al.,}}}
-\bibcite{wij09}{{25}{2009}{{Wijnholds \& van~der Veen}}{{Wijnholds \& van~der Veen}}}
-\bibcite{zhe14}{{26}{2014}{{{Zheng} et~al.}}{{{Zheng} et~al.,}}}
-\bibcite{deo08}{{27}{2008}{{{de Oliveira-Costa} et~al.}}{{{de Oliveira-Costa}, {Tegmark}, {Gaensler}, {Jonas}, {Landecker} \& {Reich}}}}
-\bibcite{dev09}{{28}{2009}{{de~Vos et~al.}}{{de Vos, Gunst \& Nijboer}}}
-\bibcite{van13}{{29}{2013}{{{van Haarlem} et~al.}}{{{van Haarlem} et~al.,}}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Images produced before (left) and after (middle) calibrating LWA data. These images were produces with 29 kHz bandwidth and 51.2 ms integration. The calibrated image shows significant reduction in sidelobe rumble throughout, while retaining the prominent Cyg\nobreakspace  {}A and Cas\nobreakspace  {}A sources. The galactic plane is also substantially more evident after calibration. For reference, the GSM is shown in the same coordinates and weighted by two factors of the LWA primary beam in the right panel. }}{7}{figure.7}}
-\newlabel{fig:data_images}{{7}{7}{Images produced before (left) and after (middle) calibrating LWA data. These images were produces with 29 kHz bandwidth and 51.2 ms integration. The calibrated image shows significant reduction in sidelobe rumble throughout, while retaining the prominent Cyg~A and Cas~A sources. The galactic plane is also substantially more evident after calibration. For reference, the GSM is shown in the same coordinates and weighted by two factors of the LWA primary beam in the right panel}{figure.7}{}}
-\newlabel{lastpage}{{6}{7}{Acknowledgements}{section.6}{}}
+\bibcite{kay93}{{12}{1993}{{Kay}}{{Kay}}}
+\bibcite{kaz13}{{13}{2013}{{{Kazemi} et~al.}}{{{Kazemi}, {Yatawatta} \& {Zaroubi}}}}
+\bibcite{lon00}{{14}{2000}{{{Lonsdale} et~al.}}{{{Lonsdale}, {Doeleman}, {Cappallo}, {Hewitt} \& {Whitney}}}}
+\bibcite{mel13}{{15}{2013}{{{Mellema} et~al.}}{{{Mellema} et~al.,}}}
+\bibcite{mit08}{{16}{2008}{{Mitchell et~al.}}{{Mitchell, Greenhill, Wayth, Sault, Lonsdale, Cappallo, Morales \& Ord}}}
+\bibcite{mor11}{{17}{2011}{{{Morales}}}{{{Morales}}}}
+\bibcite{mor09}{{18}{2009}{{{Morales} \& {Matejek}}}{{{Morales} \& {Matejek}}}}
+\bibcite{neb15}{{19}{2015}{{{Neben} et~al.}}{{{Neben} et~al.,}}}
+\bibcite{oto94}{{20}{1994}{{{Otobe} et~al.}}{{{Otobe} et~al.,}}}
+\bibcite{par10}{{21}{2010}{{Parsons et~al.}}{{Parsons et~al.,}}}
+\bibcite{teg97a}{{22}{1997}{{{Tegmark}}}{{{Tegmark}}}}
+\bibcite{teg09}{{23}{2009}{{{Tegmark} \& {Zaldarriaga}}}{{{Tegmark} \& {Zaldarriaga}}}}
+\bibcite{teg10}{{24}{2010}{{Tegmark \& Zaldarriaga}}{{Tegmark \& Zaldarriaga}}}
+\bibcite{tho13}{{25}{2013}{{{Thornton} et~al.}}{{{Thornton} et~al.,}}}
+\bibcite{thy15c}{{26}{2015a}{{{Thyagarajan} et~al.}}{{{Thyagarajan}, {Beardsley}, {Bowman} \& {Morales}}}}
+\bibcite{thy15b}{{27}{2015b}{{{Thyagarajan} et~al.}}{{{Thyagarajan} et~al.,}}}
+\bibcite{tin13}{{28}{2013}{{Tingay et~al.}}{{Tingay et~al.,}}}
+\bibcite{vir14}{{29}{2014}{{Virone et~al.}}{{Virone et~al.,}}}
+\bibcite{wij09}{{30}{2009}{{Wijnholds \& van~der Veen}}{{Wijnholds \& van~der Veen}}}
+\bibcite{zhe14}{{31}{2014}{{{Zheng} et~al.}}{{{Zheng} et~al.,}}}
+\bibcite{deo08}{{32}{2008}{{{de Oliveira-Costa} et~al.}}{{{de Oliveira-Costa}, {Tegmark}, {Gaensler}, {Jonas}, {Landecker} \& {Reich}}}}
+\bibcite{dev09}{{33}{2009}{{de~Vos et~al.}}{{de Vos, Gunst \& Nijboer}}}
+\bibcite{van13}{{34}{2013}{{{van Haarlem} et~al.}}{{{van Haarlem} et~al.,}}}
+\newlabel{lastpage}{{6}{8}{Acknowledgements}{section.6}{}}

@@ -43,7 +43,7 @@
 
 % Title of the paper, and the short title which is used in the headers.
 % Keep the title short and informative.
-\title[E-field Parallel Imaging Calibration]{An Efficient E-field Parallel Imaging Calibration Algorithm for Next-Generation Radio Telescopes}
+\title[EPICal]{The E-field Parallel Imaging Calibration Algorithm for Next-Generation Radio Telescopes}
 
 % The list of authors, and the short list which is used in the headers.
 % If you need two or more lines of authors, add an extra line using \newauthor
@@ -73,7 +73,7 @@ $^{2}$University of Washington, Department of Physics, Seattle, WA 98195, USA\\
 
 % Abstract of the paper
 \begin{abstract}
-Abstract here (250 words)
+We present the E-field Parallel Imaging Calibration (EPICal) algorithm, which addresses the need for a real-time calibration method for direct imaging radio astronomy correlators. Direct imaging involves a spatial fast Fourier transform of antenna voltages, alleviating the harsh $\mathcal{O}(\Nant^2)$ computational scaling to a more gentle $\mathcal{O}(\Nant \log_2 \Nant)$, which can save orders of magnitude in computation cost for next generation arrays consisting of hundreds to thousands of antennas. However, because signals are mixed in the correlator, gain correction must be applied on the front end. We develop the EPICal algorithm to form gain solutions in real time without ever forming visibilities. This method scales as the number of antennas, and produces results equivalent to those from visibilities. Through simulations and application to Long Wavelength Array data we show this algorithm is a feasible solution for next generation instruments.
 \end{abstract}
 
 \begin{keywords}
@@ -84,7 +84,7 @@ instrumentation: interferometers -- techniques: image processing -- techniques: 
 %%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
 
 \section{Introduction}
-In order to satisfy the survey speeds required for precision cosmology as well as searches for fast radio transients, radio astronomy is undergoing a paradigm shift toward interferometers consisting of hundreds to thousands of small, widefield antennas. Many arrays with this design are already built or under construction including the Hydrogen Epoch of Reionization Array\footnote{http://reionization.org} (HERA), the Murchison Widefield Array (MWA;\citealt{tin13,bow13}), the Precision Array for Probing the Epoch of Reionization (PAPER; \citealt{par10}), the LOw Frequency ARray (LOFAR; \citealt{van13}), the Canadian Hydrogen Intensity Mapping Experiment (CHIME,\citealt{ban14}), the Long Wavelength Array (LWA, \citealt{ell13}), and the low frequency Square Kilometer Array (SKA1-Low \citealt{mel13}).
+In order to satisfy the survey speeds required for precision cosmology as well as searches for fast radio transients, radio astronomy is undergoing a paradigm shift toward interferometers consisting of hundreds to thousands of small, widefield antennas. Many arrays with this design are already built or under construction including the Hydrogen Epoch of Reionization Array\footnote{http://reionization.org} (HERA), the Murchison Widefield Array (MWA; \citealt{tin13,bow13}), the Precision Array for Probing the Epoch of Reionization (PAPER; \citealt{par10}), the LOw Frequency ARray (LOFAR; \citealt{van13}), the Canadian Hydrogen Intensity Mapping Experiment (CHIME,\citealt{ban14}), the Long Wavelength Array (LWA, \citealt{ell13}), and the low frequency Square Kilometer Array (SKA1-Low \citealt{mel13}).
 
 Traditional radio correlators cross-multiply the voltage signals from all pairs of antennas, and the computation scales as the number of antennas squared, $\mathcal{O}(\Nant^2)$ \citep{bun04}. As the number of elements in future arrays grows, the computational cost will become prohibitively expensive, and exploring efficient correlator schemes is essential to enable next generation instruments \citep{lon00}. Meanwhile, radio transient monitoring requires access to high time and frequency resolution data. For example, fast radio bursts (FRBs) are highly unexplored at low frequencies (< 1 GHz), but are expected to occur on timescales $\Delta t \sim$ 1--10~ms \citep{tho13}. Recording the full visibility matrix for $\Nant \gtrsim 10^3$ arrays at this timescale leads to extremely high data write rates. 
 
@@ -117,7 +117,7 @@ We next model the measured, uncalibrated electric field as a multiplicative comp
 \end{equation}
 Note that this quantity is neither a true or estimated value. The noise term is strictly receiver noise -- noise introduced by the instrument. Any sky noise is implicitly included in the time dependence of the sky electric field. As the noise of modern low frequency arrays is heavily dominated by sky noise, we will neglect $\widetilde{n}_a$ for now, but will inspect its effects at the end of this section.
 
-The goal of our calibration algorithm will be to estimate the antenna gains. We will assume the gains have no time dependence within the timescale of finding our solutions. \textcolor{red}{cite someone about gain stability}. Furthermore, we will treat each frequency channel independently, and drop the $f$ to simplify notation.
+The goal of our calibration algorithm will be to estimate the antenna gains. We will assume the gains have no time dependence within the timescale of finding our solutions. Furthermore, we will treat each frequency channel independently, and drop the $f$ to simplify notation.
 
 The MOFF algorithm next calls for a calibration. We will assume we have formed an estimate of the gains after $n$ iterations of a calibration loop, and derive an updated $n+1$ estimate. Typically calibration amounts to dividing the measured fields by the gain (in the case of sky noise dominance), or multiplying by the complex conjugate of the gain (receiver noise dominance). We will abstain from this choice for now, and instead use a multiplicative factor $h^{(n)}_a$ to represent the application of our $n^{\mathrm{th}}$-loop estimate of the gain for antenna $a$:
 \begin{equation}
@@ -296,7 +296,7 @@ To compare the image qualities quantitatively we compute the dynamic range, defi
 
 \section{Noise analysis}\label{sec:noise}
 
-Here we study the properties of our calibration solutions with respect to noise in the system. In order to compare to solutions from visibility-based calibration, we first derive the theoretical lower bound of the error in these solutions, given a set of measured visibilities, $\mathbf{V}$. We will do this through the Fischer information formalism and employ the Cram\'er-Rao lower bound 
+Here we study the properties of our calibration solutions with respect to noise in the system. In order to compare to solutions from visibility-based calibration, we first derive the theoretical lower bound of the error in these solutions, given a set of measured visibilities, $\mathbf{V}$. Motivated by the performance analysis seen in \cite{kaz13}, we will do this through the Fischer information formalism and employ the Cram\'er-Rao lower bound. 
 
 Assume we did form visibilities with some integration time. Assuming the noise on each visibility, $\sigma_{ab}$, is independent, we can write the likelihood function of measuring $V_{ab}$ given the true value, the gains, and the noise.
 \begin{equation}
@@ -335,19 +335,58 @@ Here $\delta_{ab}$ is the Kronecker delta selecting the term where $a=b$ and the
 \mathbf{F}^g_{ii} = \sum_{a \ne i} \frac{\left|g_a V_{ia}^T \right|^2}{4\sigma_{ai}^2}
 \end{equation}
 
-Finally we relate our result to the theoretical best uncertainty we can place on our unknown gain parameter using the Cram\'er-Rao lower bound.
+Finally we relate our result to the theoretical best uncertainty we can place on our unknown gain parameter using the Cram\'er-Rao lower bound \cite{kay93}.
 \begin{equation}\label{eq:cramer_rao}
 \sigma_{g_i}^2 \ge \left[ \mathbf{F}^g_{ii} \right]^{-1} = \left[ \sum_{a \ne i} \frac{\left|g_a V_{ia}^T \right|^2}{4\sigma_{ai}^2} \right]^{-1}
 \end{equation}
 
-We next run a set of EPICal simulations to compare the noisy results to the theoretical lower bound given a set of equivalent visibilities. Each simulation is run with a simple sky of a single point source with flux 1 Jy. We add noise to the system by adding a Gaussian-random complex value to each channelized electric field antenna measurement as in equation~\ref{eq:apply_gain}. The ``true" gains in our simulation are unity, as well as our initial estimate. This emulates a system where the initially volatile gain correction has been suppressed and only noise remains to corrupt our estimation, allowing us to run many simulations on a shorter timescale.
+We next run a set of EPICal simulations to compare the noisy results to the theoretical lower bound if we had formed an analogous set of visibilities. Each simulation is run with a simple sky of a single point source with flux 1 Jy. We add noise to the system by adding a Gaussian-random complex value to each channelized electric field antenna measurement as in equation~\ref{eq:apply_gain}. The ``true" gains in our simulation are unity, as well as our initial estimate. This emulates a system where the initially volatile gain correction has been suppressed and only noise remains to corrupt our estimation, allowing us to run many simulations on a shorter timescale.
 
-We vary two parameters in our simulations: the amount of noise added to our measurements, and the length of integration in each calibration loop. 
+We vary two parameters in our simulations: the variance of the complex random noise added to our electric field measurements ($\sigma_0$), and the length of integration in each calibration loop, $t_{\mathrm{cal}}$. The equivalent visibility variance in equation~\ref{eq:cramer_rao} is given by
+\begin{equation}
+\sigma_{ai}^2 = \frac{\sigma_0^2}{B t_{\mathrm{eff}}},
+\end{equation}
+where $B$ is the bandwidth of the simulation, and $t_{\mathrm{eff}}$ is the effective integration time based on the length of our calibration loop and the damping factor.
+\begin{equation}
+t_{\mathrm{eff}} = t_{\mathrm{cal}} \times \frac{1-\damp^2}{(1-\damp)^2}
+\end{equation}
+
+We demonstrate the trend of the gain errors with respect to these parameters in figure~\ref{fig:noise}. For each $\sigma_0$ and $t_{\mathrm{cal}}$ we run the simulation for seven iterations of the calibration loop to allow the noise to fully corrupt our estimates. We then compute the variance of the resulting gains across the antennas. Each color line represents a different amount of input noise, with the dashed line showing the measured variance and the solid line showing the theoretical lower limit from equation~\ref{eq:cramer_rao}. The agreement between the dashed and solid lines demonstrates that not only do we reach an uncertainty consistent with visibility-based solutions, but that we actually reach the theoretical lower limit based on the amount of information contained in an equivalent set of visibility measurements. 
+
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[draft]{figures/noise.pdf}
+\caption{\textcolor{red}{caption!}
+}
+\label{fig:noise}
+\end{center}
+\end{figure}
 
 \section{Discussion}\label{sec:discussion}
+Through simulations and application to real data, we have shown that the EPICal algorithm is a viable solution for calibrating direct imaging arrays in real time. The computation necessary only scales with the number of antenna elements, making it a sub-dominant cost factor when designing the correlator. This strategy will enable fast read-out and arrays with many thousands of antennas, which will be necessary for future radio transient and cosmology experiments respectively.
+
+There remain many avenues of future work before EPICal can be deployed on an instrument. Here we name a few potential considerations for further study. These topics can be thought of as extensions to the white ``estimate gains" box in figure~\ref{fig:schematic}, which can be performed at a much lower cadence than the actual correlations.
+
+\textbf{Fitting gain models.} With some knowledge of the instrumental bandpass, the signal-to-noise of the gain solutions can be greatly improved by fitting a model to the per-frequency solutions derived here. We used this method at a rudimentary level in our demonstration to LWA data by assuming the gains were constant over a narrow bandwidth. One could easily improve on this by extending the bandwidth and fitting for a low order polynomial in phase and amplitude. Additionally, with knowledge of the poly-phase filters applied to the data stream, we could include channels closer to the edge of the band.
+
+\textbf{Improving sky model.} In this work we used a perfect sky model (for simulation), or a very simple sky model (for LWA data). In principle the images produced by the EPIC correlator can be used to improve the sky model used in calibration -- similar to a major loop in self-calibration. This can be especially useful for compact, widefield arrays which require a model of both compact and diffuse sources over a large patch of sky. In addition to requiring the sky model, the calibration also requires this model to be attenuated by the primary beam, which can be difficult to measure at the precision necessary \citep[e.g.][]{neb15,vir14,thy15b}. However, the direct imaging correlator provides exactly the model necessary in real time, and can be iterated over to improve these images and the gain solutions.
+
+\textbf{Dynamic parameters.} In our controlled experiments we fine tuned a number of parameters based on our testing (e.g. damping factor, integration time, frequency averaging). A deployed system will require robust determination of these parameters to operate continuously. The specifics will be heavily dependent on the stability of the instrument, the frequency of observation, and the sky. For example, a stable instrument may be able to use short integrations to determine a rough estimate of the gains before switching to much longer integration (on order seconds to minutes) to highly increase signal to noise. At low frequencies or high sky resolution, the dynamics of the ionosphere are important, and will likely drive the limit of time integration allowed.
+
+\textbf{Direction dependent gains.} Even below the timescale of a dynamic ionosphere, a widefield instrument may require direction dependent gains to account for a varying thickness ionospheric sheet. The holographic mapping framework used by the MOFF algorithm, and in turn the EPIC and EPICal software can naturally account for direction dependence through and updated model of the antenna voltage pattern. This can be achieved by first forming complex gain estimates toward multiple directions on the sky by selecting several pixels and independently following the EPICal algorithm for each. These solutions can then be used to fit a beam model on the sky (analogous to the gain model fitting mentioned above), and updating the antenna voltage pattern. This updated pattern would then feed into the gridding step of the correlator, allowing the imager to convolve the signals with the effective beam pattern in the ground plane. Because this method requires multiple pixel correlations, the scaling now becomes $\mathcal{O}(\Nant N_{\mathrm{pix}})$, which will typically be much lower than the $\mathcal{O}(\Ng \log_2 \Ng)$ of the correlator itself. 
+
+The work here will serve as a foundation for further development. We have shown that the EPICal algorithm produces reliable calibration solutions, and have identified several aspects to increase the scope. With next generation instruments in the planning and development stages, EPICal is poised to greatly contribute to their success.
 
 \section*{Acknowledgements}
-This work has been supported by the National Science Foundation through award AST-1206552.
+This work has been supported by the National Science Foundation through award AST-1206552. 
+We thank Danny Jacobs for his valuable inputs, and Greg Taylor for providing us with LWA data. 
+Construction of the LWA has been supported by the Office of Naval Research under 
+Contract N00014-07-C-0147. Support for operations and continuing development of 
+the LWA1 is provided by the National Science Foundation under grant AST-1139974 
+of the University Radio Observatory program.
+
 
 
 %%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
