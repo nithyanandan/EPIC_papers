@@ -294,75 +294,96 @@ Figure~\ref{fig:data_images} shows the improvement in the images due to our cali
 
 To compare the image qualities quantitatively we compute the dynamic range, defined as the peak of the image over the noise level. We estimate the noise level as the median of the absolute deviation of the image. With this metric we find the calibrated image to have a 55\% dynamic range improvement over the uncalibrated image.
 
-\section{Noise analysis}\label{sec:noise}
+\section{Noise trends}\label{sec:noise}
+Here we study the properties of our calibration solutions with respect to noise in the system, and compare to solutions found from visibilities. For this comparison we run a suite of simulations varying the receiver noise and integration times, while forming $\Cna$ correlations for EPICal gain solutions, and simultaneously forming visibilities from the same E-field streams to find visibility-based gain solutions.
 
-Here we study the properties of our calibration solutions with respect to noise in the system. In order to compare to solutions from visibility-based calibration, we first derive the theoretical lower bound of the error in these solutions, given a set of measured visibilities, $\mathbf{V}$. Motivated by the performance analysis seen in \cite{kaz13}, we will do this through the Fischer information formalism and employ the Cram\'er-Rao lower bound. 
+We use a simulated sky consisting of a 5 Jy calibrator source, and 10 other random sources with apparent flux densities 0.2 to 0.5 Jy (total sky power of about 8 Jy). While we generate these other sources randomly, we keep them fixed for each run. Again, we use the MWA core layout (51 antennas), and a 4.4~m square tophat antenna voltage pattern. We simulate 64 frequency channels. Because our calibration loop is frequency independent, each channel can be treated as a separate trial of the simulation, and is used to better estimate the statistics.
 
-Assume we did form visibilities with some integration time. Assuming the noise on each visibility, $\sigma_{ab}$, is independent, we can write the likelihood function of measuring $V_{ab}$ given the true value, the gains, and the noise.
-\begin{equation}
-\mathcal{L}(V_{ab};\mathbf{g}) = \frac{1}{2\pi \sigma_{ab}^2}\exp\left[-\frac{\left|V_{ab} - g_a g_b^* V_{ab}^T\right|^2}{2\sigma_{ab}^2}\right]
-\end{equation}
-Then the likelihood of the set of all visibilities is the product of all individual likelihoods.
-\begin{equation}
-\mathcal{L}(\mathbf{V};\mathbf{g}) = \prod_a \prod_{b > a} \mathcal{L}(V_{ab};\mathbf{g})
-\end{equation}
-The Fischer information matrix for the set of gain parameters is
-\begin{equation}
-\mathbf{F}^g_{ij} = \left<\left. \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_i} \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_j}\right|_\mathbf{g}\right>,
-\end{equation}
-where the expectation is taken over all possible visibility measurements.
-We next evaluate the derivate of the log-likelihood.
-\begin{equation}
-\frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_i} = 
-\sum_{a \ne i} \frac{g_a^* V_{ai}^{T*} (V_{ai} - g_a g_i^* V_{ai}^T)}{2 \sigma_{ai}^2}
+To simulate receiver noise, we add a gaussian distributed complex random number to each antenna electric field measurement at each time stamp according to equation~\ref{eq:apply_gain}. The level of the receiver noise, $\sigma_r = \left<\left|\widetilde{n}_a(f,t)\right|^2\right>$, is varied in different simulation runs. 
+
+We initialize our gain estimates with the true values (unity), and allow the estimate to be corrupted by the noise through one iteration of the calibration loop. In order to allow the noise to fully corrupt the gains we use a small damping factor, $\damp=0.05$. Using a factor of zero leads to non-convergent results. We therefore use the same damping factor for the visibility-based solutions for a fair comparison. We then observe the error in the gain estimates introduced by the noise.
+\begin{equation}\label{eq:gain_error}
+\sigma_g = \left[\frac{1}{N_f \Nant} \sum_f \sum_a \frac{\left|g'_a(f)-g^T_a(f)\right|^2}{\left|g^T_a(f)\right|^2}\right]^{1/2}
 \end{equation}
 
-In order to find the Cram\'er-Rao lower bound on the variance of the complex parameter, $g_i$, we consider the term of the Fischer matrix where the first derivative is taken with respect to $g_i$, and the second with $g_i^*$. The result is
-\begin{align}
-\mathbf{F}^g_{ii} = & \left<\left[ \sum_{a \ne i} \frac{g_a^* V_{ai}^{T*} (V_{ai} - g_a g_i^* V_{ai}^T)}{2 \sigma_{ai}^2} \right] \right. \times \nonumber \\
-& \left. \left[ \sum_{b \ne i} \frac{g_b V_{bi}^{T} (V_{bi}^* - g_b^* g_i V_{bi}^{T*})}{2 \sigma_{bi}^2} \right] \right> \nonumber \\
-= &\sum_{a\ne i} \sum_{b \ne i} \frac{g_a^* g_b V_{ai}^{T*} V_{bi}^T}{4 \sigma_{ai}^2 \sigma_{bi}^2} \left< V_{ai}V_{bi}^* - g_i g_b^* V_{ai}V_{bi}^{T*}\nonumber \right.\\
-&\left. - g_a g_i^* V_{ai}^T V_{bi}^* + g_a g_b^* |g_i|^2 V_{ai}^T V_{bi}^{T*}\right>
-\label{eq:Fischer_before_expect}
-\end{align}
-
-The expected values are easy to evaluate. Each visibility will average to the ``true" value times the respective gains. The term with two visibilities will include a noise bias on autocorrelation terms.
-\begin{equation}
-\left<V_{ai}V_{bi}^*\right> = |g_i|^2 g_a g_b^* V_{ai}^T V_{bi}^{T*} + \sigma_{ai}^2 \delta_{ab}
+We simultaneously form simulated visibilities by correlating all pairs of antenna E-field measurements (including the receiver noise). At the end of the calibration loop we find the visibility-based gain estimates by minimizing
+\begin{equation}\label{eq:vis_cal}
+\chi^2 = \sum_a\sum_{b\ne a} \left|\V_{ab}-g_a g_b^* \V^T_{ab}\right|^2.
 \end{equation}
-Here $\delta_{ab}$ is the Kronecker delta selecting the term where $a=b$ and the noise correlates. Plugging in the expectation values, equation \ref{eq:Fischer_before_expect} simplifies greatly to
-\begin{equation}
-\mathbf{F}^g_{ii} = \sum_{a \ne i} \frac{\left|g_a V_{ia}^T \right|^2}{4\sigma_{ai}^2}
-\end{equation}
-
-Finally we relate our result to the theoretical best uncertainty we can place on our unknown gain parameter using the Cram\'er-Rao lower bound \cite{kay93}.
-\begin{equation}\label{eq:cramer_rao}
-\sigma_{g_i}^2 \ge \left[ \mathbf{F}^g_{ii} \right]^{-1} = \left[ \sum_{a \ne i} \frac{\left|g_a V_{ia}^T \right|^2}{4\sigma_{ai}^2} \right]^{-1}
-\end{equation}
-
-We next run a set of EPICal simulations to compare the noisy results to the theoretical lower bound if we had formed an analogous set of visibilities. Each simulation is run with a simple sky of a single point source with flux 1 Jy. We add noise to the system by adding a Gaussian-random complex value to each channelized electric field antenna measurement as in equation~\ref{eq:apply_gain}. The ``true" gains in our simulation are unity, as well as our initial estimate. This emulates a system where the initially volatile gain correction has been suppressed and only noise remains to corrupt our estimation, allowing us to run many simulations on a shorter timescale.
-
-We vary two parameters in our simulations: the variance of the complex random noise added to our electric field measurements ($\sigma_0$), and the length of integration in each calibration loop, $t_{\mathrm{cal}}$. The equivalent visibility variance in equation~\ref{eq:cramer_rao} is given by
-\begin{equation}
-\sigma_{ai}^2 = \frac{\sigma_0^2}{B t_{\mathrm{eff}}},
-\end{equation}
-where $B$ is the bandwidth of the simulation, and $t_{\mathrm{eff}}$ is the effective integration time based on the length of our calibration loop and the damping factor.
-\begin{equation}
-t_{\mathrm{eff}} = t_{\mathrm{cal}} \times \frac{1-\damp^2}{(1-\damp)^2}
-\end{equation}
-
-We demonstrate the trend of the gain errors with respect to these parameters in figure~\ref{fig:noise}. For each $\sigma_0$ and $t_{\mathrm{cal}}$ we run the simulation for seven iterations of the calibration loop to allow the noise to fully corrupt our estimates. We then compute the variance of the resulting gains across the antennas. Each color line represents a different amount of input noise, with the dashed line showing the measured variance and the solid line showing the theoretical lower limit from equation~\ref{eq:cramer_rao}. The agreement between the dashed and solid lines demonstrates that not only do we reach an uncertainty consistent with visibility-based solutions, but that we actually reach the theoretical lower limit based on the amount of information contained in an equivalent set of visibility measurements. 
-
-
+The error of the visibility-based gains is estimated in the same way as in equation~\ref{eq:gain_error}.
 
 \begin{figure}
 \begin{center}
-\includegraphics[draft]{figures/noise.pdf}
-\caption{\textcolor{red}{caption!}
+\includegraphics[width=\columnwidth]{figures/cal_paper_noise_med_sky.pdf}
+\caption{Gain estimate errors as a function of integration time and receiver noise (line color). The solid lines represent the error on the EPICal derived gain estimates, while the dashed lines represent the error on the visibility based estimates. On average the EPICal error is 1.5\% higher than visibilities, and at worst it was 3.5\% higher.
 }
 \label{fig:noise}
 \end{center}
 \end{figure}
+
+%\section{Noise analysis}\label{sec:noise_old}
+%\textcolor{red}{This section will most likely disappear in favor of the Noise Trends section.}
+%
+%Here we study the properties of our calibration solutions with respect to noise in the system. In order to compare to solutions from visibility-based calibration, we first derive the theoretical lower bound of the error in these solutions, given a set of measured visibilities, $\mathbf{V}$. Motivated by the performance analysis seen in \cite{kaz13}, we will do this through the Fischer information formalism and employ the Cram\'er-Rao lower bound. 
+%
+%Assume we did form visibilities with some integration time. Assuming the noise on each visibility, $\sigma_{ab}$, is independent, we can write the likelihood function of measuring $V_{ab}$ given the true value, the gains, and the noise.
+%\begin{equation}
+%\mathcal{L}(V_{ab};\mathbf{g}) = \frac{1}{2\pi \sigma_{ab}^2}\exp\left[-\frac{\left|V_{ab} - g_a g_b^* V_{ab}^T\right|^2}{2\sigma_{ab}^2}\right]
+%\end{equation}
+%Then the likelihood of the set of all visibilities is the product of all individual likelihoods.
+%\begin{equation}
+%\mathcal{L}(\mathbf{V};\mathbf{g}) = \prod_a \prod_{b > a} \mathcal{L}(V_{ab};\mathbf{g})
+%\end{equation}
+%The Fischer information matrix for the set of gain parameters is
+%\begin{equation}
+%\mathbf{F}^g_{ij} = \left<\left. \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_i} \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_j}\right|_\mathbf{g}\right>,
+%\end{equation}
+%where the expectation is taken over all possible visibility measurements.
+%We next evaluate the derivate of the log-likelihood.
+%\begin{equation}
+%\frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_i} = 
+%\sum_{a \ne i} \frac{g_a^* V_{ai}^{T*} (V_{ai} - g_a g_i^* V_{ai}^T)}{2 \sigma_{ai}^2}
+%\end{equation}
+%
+%In order to find the Cram\'er-Rao lower bound on the variance of the complex parameter, $g_i$, we consider the term of the Fischer matrix where the first derivative is taken with respect to $g_i$, and the second with $g_i^*$. The result is
+%\begin{align}
+%\mathbf{F}^g_{ii} = & \left<\left[ \sum_{a \ne i} \frac{g_a^* V_{ai}^{T*} (V_{ai} - g_a g_i^* V_{ai}^T)}{2 \sigma_{ai}^2} \right] \right. \times \nonumber \\
+%& \left. \left[ \sum_{b \ne i} \frac{g_b V_{bi}^{T} (V_{bi}^* - g_b^* g_i V_{bi}^{T*})}{2 \sigma_{bi}^2} \right] \right> \nonumber \\
+%= &\sum_{a\ne i} \sum_{b \ne i} \frac{g_a^* g_b V_{ai}^{T*} V_{bi}^T}{4 \sigma_{ai}^2 \sigma_{bi}^2} \left< V_{ai}V_{bi}^* - g_i g_b^* V_{ai}V_{bi}^{T*}\nonumber \right.\\
+%&\left. - g_a g_i^* V_{ai}^T V_{bi}^* + g_a g_b^* |g_i|^2 V_{ai}^T V_{bi}^{T*}\right>
+%\label{eq:Fischer_before_expect}
+%\end{align}
+%
+%The expected values are easy to evaluate. Each visibility will average to the ``true" value times the respective gains. The term with two visibilities will include a noise bias on autocorrelation terms.
+%\begin{equation}
+%\left<V_{ai}V_{bi}^*\right> = |g_i|^2 g_a g_b^* V_{ai}^T V_{bi}^{T*} + \sigma_{ai}^2 \delta_{ab}
+%\end{equation}
+%Here $\delta_{ab}$ is the Kronecker delta selecting the term where $a=b$ and the noise correlates. Plugging in the expectation values, equation \ref{eq:Fischer_before_expect} simplifies greatly to
+%\begin{equation}
+%\mathbf{F}^g_{ii} = \sum_{a \ne i} \frac{\left|g_a V_{ia}^T \right|^2}{4\sigma_{ai}^2}
+%\end{equation}
+%
+%Finally we relate our result to the theoretical best uncertainty we can place on our unknown gain parameter using the Cram\'er-Rao lower bound \cite{kay93}.
+%\begin{equation}\label{eq:cramer_rao}
+%\sigma_{g_i}^2 \ge \left[ \mathbf{F}^g_{ii} \right]^{-1} = \left[ \sum_{a \ne i} \frac{\left|g_a V_{ia}^T \right|^2}{4\sigma_{ai}^2} \right]^{-1}
+%\end{equation}
+%
+%We next run a set of EPICal simulations to compare the noisy results to the theoretical lower bound if we had formed an analogous set of visibilities. Each simulation is run with a simple sky of a single point source with flux 1 Jy. We add noise to the system by adding a Gaussian-random complex value to each channelized electric field antenna measurement as in equation~\ref{eq:apply_gain}. The ``true" gains in our simulation are unity, as well as our initial estimate. This emulates a system where the initially volatile gain correction has been suppressed and only noise remains to corrupt our estimation, allowing us to run many simulations on a shorter timescale.
+%
+%We vary two parameters in our simulations: the variance of the complex random noise added to our electric field measurements ($\sigma_0$), and the length of integration in each calibration loop, $t_{\mathrm{cal}}$. The equivalent visibility variance in equation~\ref{eq:cramer_rao} is given by
+%\begin{equation}
+%\sigma_{ai}^2 = \frac{\sigma_0^2}{B t_{\mathrm{eff}}},
+%\end{equation}
+%where $B$ is the bandwidth of the simulation, and $t_{\mathrm{eff}}$ is the effective integration time based on the length of our calibration loop and the damping factor.
+%\begin{equation}
+%t_{\mathrm{eff}} = t_{\mathrm{cal}} \times \frac{1+\damp}{1-\damp}
+%\end{equation}
+%
+%We demonstrate the trend of the gain errors with respect to these parameters in figure~\ref{fig:noise}. For each $\sigma_0$ and $t_{\mathrm{cal}}$ we run the simulation for seven iterations of the calibration loop to allow the noise to fully corrupt our estimates. We then compute the variance of the resulting gains across the antennas. Each color line represents a different amount of input noise, with the dashed line showing the measured variance and the solid line showing the theoretical lower limit from equation~\ref{eq:cramer_rao}. The agreement between the dashed and solid lines demonstrates that not only do we reach an uncertainty consistent with visibility-based solutions, but that we actually reach the theoretical lower limit based on the amount of information contained in an equivalent set of visibility measurements. 
+%
+%
+
+
 
 \section{Discussion}\label{sec:discussion}
 Through simulations and application to real data, we have shown that the EPICal algorithm is a viable solution for calibrating direct imaging arrays in real time. The computation necessary only scales with the number of antenna elements, making it a sub-dominant cost factor when designing the correlator. This strategy will enable fast read-out and arrays with many thousands of antennas, which will be necessary for future radio transient and cosmology experiments respectively.

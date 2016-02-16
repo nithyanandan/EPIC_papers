@@ -67,23 +67,21 @@
 \newlabel{fig:sim_images}{{4}{5}{Images formed during simulated calibration. \emph {Top:} An image generated from a single frequency channel and 10 ms integration after the gain estimates are randomized. As expected with random phases, the image is completely noisy, with the shape of the primary beam evident. \emph {Bottom:} An image formed after calibration, again with a single frequency channel and 10 ms integration. The ten simulated (and modeled) point sources are easily visible, and highlighted with red circles}{figure.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Application to LWA data}{5}{section.4}}
 \newlabel{sec:data}{{4}{5}{Application to LWA data}{section.4}{}}
-\citation{kaz13}
-\citation{kay93}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Gain phase solutions as a function of calibration iteration for an LWA TBN observation. The gain estimates are initialized with zero phase, but quickly span a $2\pi $ range, and settle into relatively flat, albeit noisy, solutions. The majority of phases congregate near zero, which is not surprising given the fairly good quality image produced from uncalibrated data. }}{6}{figure.5}}
 \newlabel{fig:data_phase}{{5}{6}{Gain phase solutions as a function of calibration iteration for an LWA TBN observation. The gain estimates are initialized with zero phase, but quickly span a $2\pi $ range, and settle into relatively flat, albeit noisy, solutions. The majority of phases congregate near zero, which is not surprising given the fairly good quality image produced from uncalibrated data}{figure.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Gain amplitudes as a function of calibration iteration for an LWA TBN observation. The gains estimates were initialized with amplitude 0.25 after inspection of the electric field values compared to our model sky. The solutions are noisy, but flat. The range in amplitudes is due to the non-uniformity of cables between the LWA antennas and receivers. }}{6}{figure.6}}
 \newlabel{fig:data_amp}{{6}{6}{Gain amplitudes as a function of calibration iteration for an LWA TBN observation. The gains estimates were initialized with amplitude 0.25 after inspection of the electric field values compared to our model sky. The solutions are noisy, but flat. The range in amplitudes is due to the non-uniformity of cables between the LWA antennas and receivers}{figure.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Noise analysis}{6}{section.5}}
-\newlabel{sec:noise}{{5}{6}{Noise analysis}{section.5}{}}
-\newlabel{eq:Fischer_before_expect}{{21}{6}{Noise analysis}{equation.21}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Noise trends}{6}{section.5}}
+\newlabel{sec:noise}{{5}{6}{Noise trends}{section.5}{}}
+\newlabel{eq:gain_error}{{17}{6}{Noise trends}{equation.17}{}}
+\newlabel{eq:vis_cal}{{18}{6}{Noise trends}{equation.18}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{6}{section.6}}
+\newlabel{sec:discussion}{{6}{6}{Discussion}{section.6}{}}
 \citation{neb15,vir14,thy15b}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Images produced before (left) and after (middle) calibrating LWA data. These images were produces with 29 kHz bandwidth and 51.2 ms integration. The calibrated image shows significant reduction in sidelobe rumble throughout, while retaining the prominent Cyg\nobreakspace  {}A and Cas\nobreakspace  {}A sources. The galactic plane is also substantially more evident after calibration. For reference, the GSM is shown in the same coordinates and weighted by two factors of the LWA primary beam in the right panel. }}{7}{figure.7}}
 \newlabel{fig:data_images}{{7}{7}{Images produced before (left) and after (middle) calibrating LWA data. These images were produces with 29 kHz bandwidth and 51.2 ms integration. The calibrated image shows significant reduction in sidelobe rumble throughout, while retaining the prominent Cyg~A and Cas~A sources. The galactic plane is also substantially more evident after calibration. For reference, the GSM is shown in the same coordinates and weighted by two factors of the LWA primary beam in the right panel}{figure.7}{}}
-\newlabel{eq:cramer_rao}{{24}{7}{Noise analysis}{equation.24}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \leavevmode {\color  {red}caption!} }}{7}{figure.8}}
-\newlabel{fig:noise}{{8}{7}{\textcolor {red}{caption!}}{figure.8}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{7}{section.6}}
-\newlabel{sec:discussion}{{6}{7}{Discussion}{section.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Gain estimate errors as a function of integration time and receiver noise (line color). The solid lines represent the error on the EPICal derived gain estimates, while the dashed lines represent the error on the visibility based estimates. On average the EPICal error is 1.5\% higher than visibilities, and at worst it was 3.5\% higher. }}{7}{figure.8}}
+\newlabel{fig:noise}{{8}{7}{Gain estimate errors as a function of integration time and receiver noise (line color). The solid lines represent the error on the EPICal derived gain estimates, while the dashed lines represent the error on the visibility based estimates. On average the EPICal error is 1.5\% higher than visibilities, and at worst it was 3.5\% higher}{figure.8}{}}
 \bibstyle{../mnras}
 \bibdata{../epic}
 \bibcite{ban14}{{1}{2014}{{{Bandura} et~al.}}{{{Bandura} et~al.,}}}
