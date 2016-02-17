@@ -75,7 +75,7 @@ $^{2}$University of Washington, Department of Physics, Seattle, WA 98195, USA\\
 
 % Abstract of the paper
 \begin{abstract}
-We present the E-field Parallel Imaging Calibration (EPICal) algorithm, which addresses the need for a real-time calibration method for direct imaging radio astronomy correlators. Direct imaging involves a spatial fast Fourier transform of antenna voltages, alleviating the harsh $\mathcal{O}(\Nant^2)$ computational scaling to a more gentle $\mathcal{O}(\Nant \log_2 \Nant)$, which can save orders of magnitude in computation cost for next generation arrays consisting of hundreds to thousands of antennas. However, because signals are mixed in the correlator, gain correction must be applied on the front end. We develop the EPICal algorithm to form gain solutions in real time without ever forming visibilities. This method scales as the number of antennas, and produces results equivalent to those from visibilities. Through simulations and application to Long Wavelength Array data we show this algorithm is a feasible solution for next generation instruments.
+We present the E-field Parallel Imaging Calibration (EPICal) algorithm, which addresses the need for a real-time calibration method for direct imaging radio astronomy correlators. Direct imaging involves a spatial fast Fourier transform of antenna voltages, alleviating the harsh $\mathcal{O}(\Nant^2)$ computational scaling to a more gentle $\mathcal{O}(\Nant \log_2 \Nant)$, which can save orders of magnitude in computation cost for next generation arrays consisting of hundreds to thousands of antennas. However, because signals are mixed in the correlator, gain correction must be applied on the front end. We develop the EPICal algorithm to form gain solutions in real time without ever forming visibilities. This method scales as the number of antennas, and produces results comparable to those from visibilities. Through simulations and application to Long Wavelength Array data we show this algorithm is a feasible solution for next generation instruments.
 \end{abstract}
 
 \begin{keywords}
@@ -303,7 +303,7 @@ We use a simulated sky consisting of a 5 Jy calibrator source, and 10 other rand
 
 To simulate receiver noise, we add a gaussian distributed complex random number to each antenna electric field measurement at each time stamp according to equation~\ref{eq:apply_gain}. The level of the receiver noise, $\sigma_r = \left<\left|\widetilde{n}_a(f,t)\right|^2\right>$, is varied in different simulation runs. 
 
-We initialize our gain estimates with the true values (unity), and allow the estimate to be corrupted by the noise through one iteration of the calibration loop. In order to allow the noise to fully corrupt the gains we use a small damping factor, $\damp=0.05$. Using a factor of zero leads to non-convergent results. We therefore use the same damping factor for the visibility-based solutions for a fair comparison. We then observe the error in the gain estimates introduced by the noise.
+We initialize our gain estimates with the true values (unity), and allow the estimate to be corrupted by the noise through one iteration of the calibration loop. Ideally we would use a damping factor of zero to allow for the noise to fully corrupt the gains. However, we found that a zero damping factor resulted in non-convergent results, so we adopted a factor, $\damp=0.05$. For a fair comparison, we use the same factor for the visibility-based solutions. We then observe the error in the gain estimates introduced by the noise.
 \begin{equation}\label{eq:gain_error}
 \sigma_g = \left[\frac{1}{N_f \Nant} \sum_f \sum_a \frac{\left|g'_a(f)-g^T_a(f)\right|^2}{\left|g^T_a(f)\right|^2}\right]^{1/2}
 \end{equation}
@@ -314,6 +314,8 @@ We simultaneously form simulated visibilities by correlating all pairs of antenn
 \end{equation}
 The error of the visibility-based gains is estimated in the same way as in equation~\ref{eq:gain_error}.
 
+The results of our simulations are shown in figure~\ref{fig:noise}. The gain errors from our EPICal method is shown with solid lines, each color representing different levels of receiver noise. Each data point represents a separate simulation run (independent realization of the noise). The general trends are consistent with expectations -- decreasing as the square root of integration time, and increasing with receiver noise. The lowest receiver noise level (1.0 Jy) is significantly below the sky noise contribution (about 8 Jy), so the black line is not as low, compared to the red, as one would expect from receiver noise consideration alone.
+
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{figures/cal_paper_noise_med_sky.pdf}
@@ -323,7 +325,9 @@ The error of the visibility-based gains is estimated in the same way as in equat
 \end{center}
 \end{figure}
 
-\textcolor{red}{Complex sky (23.2 Jy total sky power) -- EPICal 20.2\% higher error. Difference was floating point precision for the simple sky (single point source)}
+The dashed lines in figure~\ref{fig:noise} represent the errors from the visibility-based calibration. Each data point corresponds to the same simulation run as the corresponding EPICal point (same realization of noise). Generally we see the visibility-based calibration achieves slightly lower noise solutions. On average the EPICal errors are 1.5\% higher, and at the worst is 3.5\% higher. 
+
+We repeated this process for two extremes -- a simple sky model of a single point source, and a more complicated sky with 50 sources. In the simple sky case, we found the EPICal and visibility gain estimates to be identical to floating point precision, as expected from our discussion in section~\ref{sec:math}. In the more complicated sky case (about 23 Jy total sky power), we saw the EPICal gains exhibit errors 20\% higher than the visibility derived gains. The trend of higher EPICal errors with more complicated skies is due to the single correlated pixel not containing the full signal to noise of the data. This reaffirms our intuition that using a pixel with a bright source is ideal, but will still not match visibilities for complicated skies. We suggest additional strategies for improving this signal to noise in the following section.
 
 %\section{Noise analysis}\label{sec:noise_old}
 %\textcolor{red}{This section will most likely disappear in favor of the Noise Trends section.}
