@@ -121,31 +121,25 @@ Note that this quantity is neither a true or estimated value, but rather the raw
 
 The goal of our calibration algorithm will be to estimate the antenna gains, $g_a$. We will assume the gains have no time dependence within the timescale of finding our solutions. Furthermore, we will treat each frequency channel independently, and drop the $f$ to simplify notation.
 
-The MOFF algorithm next calls for a calibration. We will assume we have formed an estimate of the gains after $n$ iterations of a calibration loop, and derive an updated estimate for the ($n+1$)$^{\mathrm{th}}$ iteration. How the calibration gain is applied can depend on the dominant source of the noise in the measurement. If the noise is dominated by sky fluctuations, the noise level is affected by the antenna gains so dividing by the complex gains will flatten the noise across antennas. However, if the noise is dominated in the receiver (after the complex gain factor of equation~\ref{eq:apply_gain}), a lower amplitude gain results in lower signal to noise for that antenna. Therefore, one should multiply by the conjugate of the gain to down weight {\bf it} appropriately while removing the phase acquired. We will abstain from this choice for now, and instead use a multiplicative factor $h^{(n)}_a$ to represent the application of our $n^{\mathrm{th}}$-loop estimate of the gain for antenna $a$:
+The MOFF algorithm next calls for a calibration. We will assume we have formed an estimate of the gains after $n$ iterations of a calibration loop. We then correct the incoming electric field data stream using this current estimate.
 \begin{equation}
-\Erest{a} = h^{(n)}_a \Er{a}
+\Erest{a} = \Er{a}/ g^{(n)}_a,
 \end{equation}
-where,
-\begin{equation}
-h^{(n)}_a=\begin{cases}
-1/g^{(n)}_a, & \mbox{sky noise dominated} \\ 
-g^{*(n)}_a, & \mbox{receiver noise dominated}.
-\end{cases}
-\end{equation}
+These corrected fields will be used in the EPIC pipeline to derive an updated estimate for the ($n+1$)$^{\mathrm{th}}$ iteration. 
 
 A dirty image is next formed by gridding the calibrated fields with the antenna voltage pattern, Fourier transforming, squaring, and averaging in time. The estimated value for a pixel, $\s_i$, can be expressed as
 \begin{equation}
-I'(\s_i) = \left<\left| \frac{1}{\Nant}\sum_i e^{2\pi i \mathbf{r}\cdot \s_i} \sum_a \beamr_a(\ri - \ra) h^{(n)}_a g^T_a \Er{a}^T(t) \right|^2 \right>_t.
+I'(\s_i) = \left<\left| \frac{1}{\Nant}\sum_i e^{2\pi i \mathbf{r}\cdot \s_i} \sum_a \beamr_a(\ri - \ra) \frac{g^T_a}{g^{(n)}_a} \Er{a}^T(t) \right|^2 \right>_t.
 \end{equation}
 This is the final output of the MOFF correlator. However, for calibration purposes we will be interested in the electric field image just prior to squaring and averaging.
 \begin{equation}
-\Ethetaest (\s_i,t) = \frac{1}{\Nant} \sum_i e^{2\pi i \ri \cdot \s_i} \sum_a \beamr_a(\ri - \ra) h^{(n)}_a g^T_a \Er{a}^T(t)
+\Ethetaest (\s_i,t) = \frac{1}{\Nant} \sum_i e^{2\pi i \ri \cdot \s_i} \sum_a \beamr_a(\ri - \ra) \frac{g^T_a}{g^{(n)}_a} \Er{a}^T(t)
 \end{equation}
 We can simplify this expression by exchanging the sums to transform the beam term into sky coordinates.
 \begin{align}\label{eq:epix}
-\Ethetaest(\s_i,t) & = \frac{1}{\Nant} \sum_a h^{(n)}_a g^T_a\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra} \nonumber \\ 
-  & \qquad\qquad \sum_i \beamr_b(\ri-\ra)e^{2\pi i \s_i \cdot (\ri-\ra)} \nonumber\\
-& = \frac{1}{\Nant} \sum_a h^{(n)}_a g^T_a\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra}\beamtheta_a(\s_i)
+\Ethetaest(\s_i,t) & = \frac{1}{\Nant} \sum_a \frac{g^T_a}{g^{(n)}_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra} \nonumber \\
+  & \qquad\times \sum_i \beamr_b(\ri-\ra)e^{2\pi i \s_i \cdot (\ri-\ra)} \nonumber\\
+& = \frac{1}{\Nant} \sum_a \frac{ g^T_a}{g^{(n)}_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra}\beamtheta_a(\s_i)
 \end{align}
 
 Next we move toward the feedback calibration outlined in \citealt{mor11}. There it was suggested to form a correlation of the uncalibrated antenna measurements with an image pixel from the output of the correlator. This is a statistically stationary quantity, which can be related to the sum of visibilities involving the antenna used in the correlation -- exactly the sum needed to calibrate a simple sky of a single point source. However, we aim for a more generalized solution for arbitrarily complex sky models. We therefore study the full expression for the antenna-pixel correlation,
@@ -156,20 +150,17 @@ where the superscript $n$ again represents the quantity formed in the $n^\mathrm
 
 Plugging equation \ref{eq:epix} into equation \ref{eq:Cna}, we find,
 \begin{align}\label{eq:cna}
-\Cna & = \left<g^T_a \Er{a}^T(t) \frac{1}{\Nant} \sum_b h^{*(n)}_b g^{T*}_b\Er{b}^{T*}(t) e^{-2\pi i \spix \cdot \rb} \beamtheta^*_b(\spix)\right>_t \nonumber \\
-& = \frac{g^T_a}{\Nant} \sum_b h^{*(n)}_b g^{T*}_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \left<\Er{a}^T \Er{b}^{*T} \right>_t \nonumber \\
-& = \frac{g^T_a}{\Nant} \sum_b h^{*(n)}_b g^{T*}_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab}
+\Cna & = \left<g^T_a \Er{a}^T(t) \frac{1}{\Nant} \sum_b \frac{g^{T*}_b}{g^{*(n)}_b}\Er{b}^{T*}(t) e^{-2\pi i \spix \cdot \rb} \beamtheta^*_b(\spix)\right>_t \nonumber \\
+& = \frac{g^T_a}{\Nant} \sum_b \frac{g^{T*}_b}{g^{*(n)}_b} \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \left<\Er{a}^T \Er{b}^{*T} \right>_t \nonumber \\
+& = \frac{g^T_a}{\Nant} \sum_b \frac{g^{T*}_b}{g^{*(n)}_b} \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab}
 \end{align}
 where in the second step we group time-dependent terms, and in the third we define the true visibilities as the correlation between true antenna electric field measurements. It is easy to see from here that the net effect of including the receiver noise term, $\widetilde{n}_a(f,t)$, will result in added noise on the true visibilities, including a bias on the auto-correlation terms. In principle a bias can result on any visibility from any noise correlations between antennas, but the implementation included in the EPIC software package restricts the noise term to include only the auto-correlation noise bias, and assumes baseline dependent noise has zero mean.
 
 Finally, we find an update to our gain solution by assuming our current estimate of the gains, $g^{(n)}_b$, is approximately correct and substitute into the sum for the true gains. We also require model visibilities formed from sky and primary beam models in place of true visibilities.
 \begin{equation}\label{eq:cal_solution}
-g'^{(n+1)}_a = \Cna \Nant \left[ \sum_b h^{*(n)}_b g^{*(n)}_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab} \right]^{-1}
-\end{equation}
-This equation is our prescription for estimating the antenna gains of a direct imaging array. The approach is iterative in nature, and requires a sky model. However, the sky model can be precomputed offline, and the online computation complexity scales only as $\mathcal{O}(\Nant)$ as we form a $\Cna$ for each antenna. In the case where $h_b = 1/g_b$ (typical calibration procedure for sky-noise dominated systems), this simplifies slightly.
-\begin{equation}\label{eq:cal_solution_simple}
 g'^{(n+1)}_a = \Cna \Nant \left[ \sum_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab} \right]^{-1}
 \end{equation}
+This equation is our prescription for estimating the antenna gains of a direct imaging array. The approach is iterative in nature, and requires a sky model. However, the sky model can be precomputed offline, and the online computation complexity scales only as $\mathcal{O}(\Nant)$ as we form a $\Cna$ for each antenna. 
 
 While testing we found equation~\ref{eq:cal_solution} resulted in oscillatory gain solutions as it was iterated, as is often the case in iterative minimization methods. To mitigate this we introduce a damping factor, $0 \leq \damp <1$, which is used to attenuate the gain update, effectively giving the solutions memory of previous iterations.
 \begin{equation}
@@ -189,19 +180,19 @@ We show schematically the process of calibrating a direct imaging correlator in 
 
 An important feature to note is that, like the MOFF-generated images themselves, equations~\ref{eq:cal_solution} and~\ref{eq:cal_solution_simple} include the antenna auto-correlations (the sum is over \emph{all} $b$, not excluding $a$). It can be difficult to perfectly model the noise bias from auto-correlations, which can often times be far brighter than the visibilities themselves. It can therefore be beneficial to subtract this term directly from \Cna, and exclude the $b=a$ term in the sum.
 \begin{equation}
-\Cna \rightarrow \Cna - \frac{1}{\Nant} h^{*(n)}_a\beamtheta^*_a(\spix) e^{-2\pi i \spix \cdot \ra} \left<|\Er{a}|^2\right>_t
+\Cna \rightarrow \Cna - \frac{1}{\Nant\, g^{*(n)}_a} \beamtheta^*_a(\spix) e^{-2\pi i \spix \cdot \ra} \left<|\Er{a}|^2\right>_t
 \end{equation}
 This requires generating these correlations, which again only scale as $\mathcal{O}(\Nant)$, and are generally useful for array diagnostics. ({\bf What happened to the $g_a^T$ term outside the sum? And why did you drop $\hat{\mathbf{s}}_0$ in $W_a^*$}?)
 
 We conclude this section by connecting our calibration expression to that found in a visibility framework. In the limit of a single bright calibrating source at phase center, we can greatly simplify equations~\ref{eq:cna} and~\ref{eq:cal_solution}. We will assume the beams are normalized such that $\beamtheta(0)=1$. We can further drop the exponential phase terms because $\spix=0$. We then absorb the true gains and gain corrections into the true visibilities in equation~\ref{eq:cna} to express as a sum of measured visibilities.
 \begin{equation}
-\mathcal{C}^{(n)}_{a,0} \rightarrow \frac{1}{\Nant}\sum_b h^{*(n)}_b \V_{ab}
+\mathcal{C}^{(n)}_{a,0} \rightarrow \frac{1}{\Nant}\sum_b \frac{1}{g^{*(n)}_b} \V_{ab}
 \end{equation}
 ({\bf It is not clear what happened to the $g$ terms.})
 
 We next plug this expression into equation~\ref{eq:cal_solution} to find our simplified calibration solution for a single bright point source. Because our sky is a single bright point source, the model visibilities are simply the flux of the source, $S_{\mathrm{src}}$.
 \begin{equation}
-g'^{(n+1)}_a \rightarrow \left[\sum_b h^{*(n)}_b \V_{ab}\right] \times \left[S_{\mathrm{src}}\sum_b h^{*(n)}_b g^{*(n)}_b\right]^{-1}
+g'^{(n+1)}_a \rightarrow \frac{\sum_b  \V_{ab}/g^{*(n)}_b}{\Nant S_{\mathrm{src}}}
 \end{equation}
 This is simply a gain-weighted sum of the measured visibilities over the flux of the source, which is indeed the limiting result from a visibility approach, for example seen in \citealt{mit08}. The ability to recover the equivalent expression despite not actually forming the visibilities is a result of the fact that only sums over visibilities come into the FX solution, as was described in \citealt{mor11}. We have confirmed the limiting case equivalence here, and will explore the more general case in more detail in \S~\ref{sec:noise}.
 
