@@ -98,51 +98,115 @@ A challenge common to all direct imaging algorithms is calibration of the antenn
 
 Here we present the E-field Parallel Imaging Calibration (EPICal) algorithm -- a novel solution to the calibration problem, which can be integrated into direct imaging correlators and scales only as the number of antennas, $\mathcal{O}(\Nant)$. This method uses a correlation of the uncalibrated antenna signal stream with an output image pixel from the backend of the correlator to solve for the complex gains of the antennas. Because the calibration must be applied before gridding and imaging, our solution requires an iterative approach where the data from one time series is used to update the gains which are applied to the following time series. An example implementation of the algorithm is available with the EPIC software package\footnote{http://github.com/nithyanandan/EPIC}.
 
-We establish the mathematical framework and derive the calibration algorithm in \S \ref{sec:math}. We then demonstrate the algorithm in simulations in \S \ref{sec:sim}, and apply to a sample LWA data set in \S \ref{sec:data}. Then we discuss the noise properties of the resulting gain solutions in \S \ref{sec:noise}. Finally we conclude and discuss potential extensions to the algorithm in \S \ref{sec:discussion}.
+We review the MOFF algorithm and derive the calibration algorithm in \S \ref{sec:math}. We then demonstrate the algorithm in simulations in \S \ref{sec:sim}, and apply to a sample LWA data set in \S \ref{sec:data}. Then we discuss the noise properties of the resulting gain solutions in \S \ref{sec:noise}. Finally we conclude and discuss potential extensions to the algorithm in \S \ref{sec:discussion}.
 
 \section{Mathematical Framework}\label{sec:math}
-We begin by establishing the mathematical framework for the calibration problem. We derive the calibration solutions for the MOFF algorithm (adopting the notation of \citealt{thy15c}), but note the result is easily extended to FFT correlator algorithms by removing the gridding step.
+\subsection{Review of the MOFF algorithm}
+We begin by reviewing the data flow of the MOFF algorithm, highlighting aspects relevant to the calibration. The interested reader is encouraged to refer to \citealt{mor11} for a more thorough discussion. Figure~\ref{fig:moff_flow} is reproduced from \citealt{thy15c} to illustrate the various steps of the algorithm.
 
-The electric field incident on the ground, $\Er{}(\mathbf{r},f,t)$, is related to the sky electric field, $E(\hat{\mathbf{s}},f,t)$, through a Fourier transform.
-\begin{equation}
-\Er{}(\mathbf{r},f,t) = \int E(\hat{\mathbf{s}},f,t) e^{-2\pi i \mathbf{r}\cdot \hat{\mathbf{s}}}\, \dif^2 \hat{\mathbf{s}}
-\end{equation}
-Here $\hat{\mathbf{s}}$ denotes the sine-projected unit vector for the sky angle, $\mathbf{r}$ is the observer's location (measured in wavelengths relative to an arbitrary origin), and $f$ and $t$ denote the frequency and time dependence, respectively. We will encounter several quantities which we attempt to estimate. We distinguish the ``true" values with a superscript $T$, while the estimates are denoted with a prime. We define the true antenna signal as a convolution of the antenna voltage pattern, $\beamr$, with the electric field on the ground.
-\begin{equation}
-\Er{a}^T(f,t) \equiv \int \beamr_a(\mathbf{r}-\ra) \Er{}(\mathbf{r},f,t) \, \dif^2 \mathbf{r}
-\end{equation}
-The subscript $a$ labels the antenna, and $\mathbf{r}_a$ is the location of antenna $a$.
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{figures/MOFF_flowchart.pdf}
+\caption{Data flow for the MOFF algorithm, reproduced from \citealt{thy15c}. The time ordered electric fields are collected by the antenna elements then frequency transformed in the F-engine. The calibration is applied, then the electric field measurements are gridded using the antenna voltage patterns. The imager performs a spatial 2D FFT on the gridded data before squaring and averaging. The accumulated images are then written to disk.}
+\label{fig:moff_flow}
+\end{center}
+\end{figure}
 
-We next model the measured, uncalibrated electric field as a multiplicative complex gain and an additive noise term applied to the true antenna electric field. 
+The electric field incident on the ground, $\Er{}(\mathbf{r},t)$, is related to the sky electric field, $E(\hat{\mathbf{s}},t)$, through a Fourier transform.
+\begin{equation}
+\Er{}(\mathbf{r},t) = \int E(\hat{\mathbf{s}},t) e^{-2\pi i \mathbf{r}\cdot \hat{\mathbf{s}}}\, \dif^2 \hat{\mathbf{s}}
+\end{equation}
+Here $\hat{\mathbf{s}}$ denotes the sine-projected unit vector for the sky angle, $\mathbf{r}$ is the observer's location (measured in wavelengths relative to an arbitrary origin). We will encounter several quantities which we attempt to estimate. We distinguish the ``true'' values with a superscript $T$, while the estimated quantities are denoted with a prime. We define the true antenna signal as a convolution of the antenna voltage pattern, \beamr, with the electric field on the ground.
+\begin{equation}
+\Er{a}^T(t) \equiv \int \beamr_a(\mathbf{r}-\ra) \Er{}(\mathbf{r},t) \, \dif^2 \mathbf{r}
+\end{equation}
+The subscript $a$ labels the antenna, and $\mathbf{r}_a$ is the location of antenna $a$. 
+
+The first step of the MOFF algorithm is identical to the F-engine of a traditional FX correlator where the electric fields are Fourier transformed to frequency channels, $\Er{a}^T(f,t)$. Even after transforming along the time axis, we retain the time dependence of the signal to represent a stream of spectra.
+
+Thus far we have assumed the antennas deliver the true electric field signals. Here we introduce a multiplicative complex gain as well as an additive noise term which corrupt the measured signals.
 \begin{equation}\label{eq:apply_gain}
 \Er{a}(f,t) = g^T_a(f,t) \Er{a}^T(f,t) + \widetilde{n}_a(f,t)
 \end{equation}
-Note that this quantity is neither a true or estimated value, but rather the raw electric field signal corrupted by the complex gain before we attempt to estimate the true value. The noise term is strictly receiver noise -- noise introduced by the instrument. Any sky noise is implicitly included in the time dependence of the sky electric field. As the noise of modern low frequency arrays is heavily dominated by sky noise, we will neglect $\widetilde{n}_a$ for now, but will inspect its effects at the end of this section.
+Note that this quantity is neither a true or estimated value, but rather the raw electric field signal corrupted by the complex gain before we attempt to estimate the true value. The noise term is strictly receiver noise -- noise introduced by the instrument. Any sky noise is implicitly included in the time dependence of the sky electric field. We will neglect $\widetilde{n}_a$ for now, but will inspect its effects at the end of this section. Each subsequent step treats each frequency channel independently, so we will drop the $f$ to simplify notation. 
 
-The goal of our calibration algorithm will be to estimate the antenna gains, $g_a$. We will assume the gains have no time dependence within the timescale of finding our solutions. Furthermore, we will treat each frequency channel independently, and drop the $f$ to simplify notation.
+The MOFF algorithm next calls for a calibration. The goal of our new calibration method will be to form an estimate of the gains, $g'_a$. For now we will assume we have formed an estimate to proceed with the MOFF pipeline. We correct the incoming electric field data stream using our current estimate of the gains.
+\begin{equation}
+\Erest{a}(t) = \Er{a}(t)/ g'_a
+\end{equation}
 
-The MOFF algorithm next calls for a calibration. We will assume we have formed an estimate of the gains after $n$ iterations of a calibration loop. We then correct the incoming electric field data stream using this current estimate.
-\begin{equation}
-\Erest{a} = \Er{a}/ g^{(n)}_a,
-\end{equation}
-These corrected fields will be used in the EPIC pipeline to derive an updated estimate for the ($n+1$)$^{\mathrm{th}}$ iteration. 
+The next step is to grid the antenna signals. MOFF uses the antenna patterns as the gridding kernel according to the software holography/A-transpose technique \citep{mor09,bha08}. This achieves both an optimal map \citep{teg97b} and places the data on a regular grid. Unlike traditional correlators which grid visibilities, the MOFF grids the electric fields directly. This operation must be performed for every time step, before any averaging of the data.
 
-A dirty image is next formed by gridding the calibrated fields with the antenna voltage pattern, Fourier transforming, squaring, and averaging in time. The estimated value for a pixel, $\s_i$, can be expressed as
+After gridding, the imaging portion of the MOFF performs a 2D spatial FFT to form instantaneous electric field images of the sky. The pipeline up to this point can be summarized through the following equation.
 \begin{equation}
-I'(\s_i) = \left<\left| \frac{1}{\Nant}\sum_i e^{2\pi i \mathbf{r}\cdot \s_i} \sum_a \beamr_a(\ri - \ra) \frac{g^T_a}{g^{(n)}_a} \Er{a}^T(t) \right|^2 \right>_t.
+\Ethetaest (\s_i,t) = \underbrace{\frac{1}{\Nant} \sum_i e^{2\pi i \ri \cdot \s_i}}_{\mathrm{2D\;FFT}} 
+\underbrace{\sum_a \beamr_a(\ri - \ra)}_{\mathrm{Gridding}}
+\underbrace{ \frac{g^T_a}{g'_a} \Er{a}^T(t)}_{\mathrm{Calibration}}
 \end{equation}
-This is the final output of the MOFF correlator. However, for calibration purposes we will be interested in the electric field image just prior to squaring and averaging.
-\begin{equation}
-\Ethetaest (\s_i,t) = \frac{1}{\Nant} \sum_i e^{2\pi i \ri \cdot \s_i} \sum_a \beamr_a(\ri - \ra) \frac{g^T_a}{g^{(n)}_a} \Er{a}^T(t)
-\end{equation}
-We can simplify this expression by exchanging the sums to transform the beam term into sky coordinates.
+The sum over antennas uses the voltage pattern to grid the calibrated electric fields onto regular gridpoint, $i$. The sum over $i$ denotes the 2D FFT to sky coordinates, resulting in an estimate for the instantaneous electric field image. We can simplify this expression by exchanging the sums to transform the beam term into sky coordinates.
 \begin{align}\label{eq:epix}
-\Ethetaest(\s_i,t) & = \frac{1}{\Nant} \sum_a \frac{g^T_a}{g^{(n)}_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra} \nonumber \\
+\Ethetaest(\s_i,t) & = \frac{1}{\Nant} \sum_a \frac{g^T_a}{g'_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra} \nonumber \\
   & \qquad\times \sum_i \beamr_b(\ri-\ra)e^{2\pi i \s_i \cdot (\ri-\ra)} \nonumber\\
-& = \frac{1}{\Nant} \sum_a \frac{ g^T_a}{g^{(n)}_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra}\beamtheta_a(\s_i)
+& = \frac{1}{\Nant} \sum_a \frac{ g^T_a}{g'_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra}\beamtheta_a(\s_i)
 \end{align}
+In this form we see that the effect of gridding with the antenna voltage pattern is to attenuate the image by a factor of the antenna sky response, $\beamtheta_a(\s_i)$.
 
-Next we move toward the feedback calibration outlined in \citealt{mor11}. There it was suggested to form a correlation of the uncalibrated antenna measurements with an image pixel from the output of the correlator. This is a statistically stationary quantity, which can be related to the sum of visibilities involving the antenna used in the correlation -- exactly the sum needed to calibrate a simple sky of a single point source. However, we aim for a more generalized solution for arbitrarily complex sky models. We therefore study the full expression for the antenna-pixel correlation,
+Finally, the images are squared and averaged in time to reduce output bandwidth, then written to disk. While operations have been reordered, the resulting image is equivalent to one produced by gridding and imaging visibilities. By shifting from cross-correlation of all pairs of antennas to a spatial FFT, the computational cost is significantly lowered for certain classes of compact arrays. The output bandwidth is also greatly reduced as visibilities are exchanged for gridded images. A full exploration of these scalings was presented in \citealt{thy15c}.
+
+\subsection{Derivation of calibration}
+We saw above that the MOFF algorithm (in general any direct imaging architecture) mixes the signal from all antennas coherently, and thus requires the calibration to be applied in real time at the front end of the correlator. Furthermore, visibilities are never formed, which are traditionally the basic measurement used to form calibration solutions. Here we derive an alternative method to estimate the antenna gains in real time, using the data products of the MOFF. 
+
+Because the gains must be estimated in real time, we will need to use a finite stream of data to form and estimate which will be applied to the subsequent stream of data. Therefore the process of finding a solution is an iterative one. We will use parenthetical superscripts to denote the calibration loop number. For example, we will assume we have already formed an estimate from $n$ loops, $g^{(n)}_a$. We will use these estimates to calibrate the next stream of data in order to form an updated estimate, $g^{(n+1)}_a$.
+
+
+
+%%%%%%
+%%%%%%
+
+%We begin by establishing the mathematical framework for the calibration problem. We derive the calibration solutions for the MOFF algorithm (adopting the notation of \citealt{thy15c}), but note the result is easily extended to FFT correlator algorithms by removing the gridding step.
+%
+%The electric field incident on the ground, $\Er{}(\mathbf{r},f,t)$, is related to the sky electric field, $E(\hat{\mathbf{s}},f,t)$, through a Fourier transform.
+%\begin{equation}
+%\Er{}(\mathbf{r},f,t) = \int E(\hat{\mathbf{s}},f,t) e^{-2\pi i \mathbf{r}\cdot \hat{\mathbf{s}}}\, \dif^2 \hat{\mathbf{s}}
+%\end{equation}
+%Here $\hat{\mathbf{s}}$ denotes the sine-projected unit vector for the sky angle, $\mathbf{r}$ is the observer's location (measured in wavelengths relative to an arbitrary origin), and $f$ and $t$ denote the frequency and time dependence, respectively. We will encounter several quantities which we attempt to estimate. We distinguish the ``true" values with a superscript $T$, while the estimates are denoted with a prime. We define the true antenna signal as a convolution of the antenna voltage pattern, $\beamr$, with the electric field on the ground.
+%\begin{equation}
+%\Er{a}^T(f,t) \equiv \int \beamr_a(\mathbf{r}-\ra) \Er{}(\mathbf{r},f,t) \, \dif^2 \mathbf{r}
+%\end{equation}
+%The subscript $a$ labels the antenna, and $\mathbf{r}_a$ is the location of antenna $a$.
+%
+%We next model the measured, uncalibrated electric field as a multiplicative complex gain and an additive noise term applied to the true antenna electric field. 
+%\begin{equation}\label{eq:apply_gain}
+%\Er{a}(f,t) = g^T_a(f,t) \Er{a}^T(f,t) + \widetilde{n}_a(f,t)
+%\end{equation}
+%Note that this quantity is neither a true or estimated value, but rather the raw electric field signal corrupted by the complex gain before we attempt to estimate the true value. The noise term is strictly receiver noise -- noise introduced by the instrument. Any sky noise is implicitly included in the time dependence of the sky electric field. As the noise of modern low frequency arrays is heavily dominated by sky noise, we will neglect $\widetilde{n}_a$ for now, but will inspect its effects at the end of this section.
+%
+%The goal of our calibration algorithm will be to estimate the antenna gains, $g_a$. We will assume the gains have no time dependence within the timescale of finding our solutions. Furthermore, we will treat each frequency channel independently, and drop the $f$ to simplify notation.
+%
+%The MOFF algorithm next calls for a calibration. We will assume we have formed an estimate of the gains after $n$ iterations of a calibration loop. We then correct the incoming electric field data stream using this current estimate.
+%\begin{equation}
+%\Erest{a} = \Er{a}/ g^{(n)}_a,
+%\end{equation}
+%These corrected fields will be used in the EPIC pipeline to derive an updated estimate for the ($n+1$)$^{\mathrm{th}}$ iteration. 
+%
+%A dirty image is next formed by gridding the calibrated fields with the antenna voltage pattern, Fourier transforming, squaring, and averaging in time. The estimated value for a pixel, $\s_i$, can be expressed as
+%\begin{equation}
+%I'(\s_i) = \left<\left| \frac{1}{\Nant}\sum_i e^{2\pi i \mathbf{r}\cdot \s_i} \sum_a \beamr_a(\ri - \ra) \frac{g^T_a}{g^{(n)}_a} \Er{a}^T(t) \right|^2 \right>_t.
+%\end{equation}
+%This is the final output of the MOFF correlator. However, for calibration purposes we will be interested in the electric field image just prior to squaring and averaging.
+%\begin{equation}
+%\Ethetaest (\s_i,t) = \frac{1}{\Nant} \sum_i e^{2\pi i \ri \cdot \s_i} \sum_a \beamr_a(\ri - \ra) \frac{g^T_a}{g^{(n)}_a} \Er{a}^T(t)
+%\end{equation}
+%We can simplify this expression by exchanging the sums to transform the beam term into sky coordinates.
+%\begin{align}\label{eq:epix}
+%\Ethetaest(\s_i,t) & = \frac{1}{\Nant} \sum_a \frac{g^T_a}{g^{(n)}_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra} \nonumber \\
+%  & \qquad\times \sum_i \beamr_b(\ri-\ra)e^{2\pi i \s_i \cdot (\ri-\ra)} \nonumber\\
+%& = \frac{1}{\Nant} \sum_a \frac{ g^T_a}{g^{(n)}_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra}\beamtheta_a(\s_i)
+%\end{align}
+
+%%%%
+%%%%
+As a starting point, we consider the feedback calibration outlined in \citealt{mor11}. There it was suggested to form a correlation of the uncalibrated antenna measurements with an image pixel from the output of the correlator. This is a statistically stationary quantity, which can be related to the sum of visibilities involving the antenna used in the correlation -- exactly the sum needed to calibrate a simple sky of a single point source. However, we aim for a more generalized solution for arbitrarily complex sky models. We therefore study the full expression for the antenna-pixel correlation,
 \begin{equation}\label{eq:Cna}
 \Cna \equiv \left<\Er{a}(t) E'^*(\spix,t)\right>_t,
 \end{equation}
@@ -156,17 +220,11 @@ Plugging equation \ref{eq:epix} into equation \ref{eq:Cna}, we find,
 \end{align}
 where in the second step we group time-dependent terms, and in the third we define the true visibilities as the correlation between true antenna electric field measurements. It is easy to see from here that the net effect of including the receiver noise term, $\widetilde{n}_a(f,t)$, will result in added noise on the true visibilities, including a bias on the auto-correlation terms. In principle a bias can result on any visibility from any noise correlations between antennas, but the implementation included in the EPIC software package restricts the noise term to include only the auto-correlation noise bias, and assumes baseline dependent noise has zero mean.
 
-Finally, we find an update to our gain solution by assuming our current estimate of the gains, $g^{(n)}_b$, is approximately correct and substitute into the sum for the true gains. We also require model visibilities formed from sky and primary beam models in place of true visibilities.
+The next step is to use this antenna-pixel correlation to update our gain solution. We will model the right hand side of equation~\ref{eq:cna} by assuming our current gain estimates are approximately correct, $g^{(n)}_b\approx g^T_b$, and replacing the true visibilities with a set of model visibilities, $\V'_{ab}$. These model visibilities rely an knowledge of the sky, and should be precomputed offline. We can then solve equation~\ref{eq:cna} for $g^T_a$ to achieve an updated estimate.
 \begin{equation}\label{eq:cal_solution}
-g'^{(n+1)}_a = \Cna \Nant \left[ \sum_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab} \right]^{-1}
+g'^{(n+1)}_a = \Cna \Nant \left[ \sum_b \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V'_{ab} \right]^{-1}
 \end{equation}
-This equation is our prescription for estimating the antenna gains of a direct imaging array. The approach is iterative in nature, and requires a sky model. However, the sky model can be precomputed offline, and the online computation complexity scales only as $\mathcal{O}(\Nant)$ as we form a $\Cna$ for each antenna. 
-
-While testing we found equation~\ref{eq:cal_solution} resulted in oscillatory gain solutions as it was iterated, as is often the case in iterative minimization methods. To mitigate this we introduce a damping factor, $0 \leq \damp <1$, which is used to attenuate the gain update, effectively giving the solutions memory of previous iterations.
-\begin{equation}
-g^{(n+1)}_a = (1-\damp) g'^{(n+1)}_a + \damp g^{(n)}_a
-\end{equation}
-We found that while equation~\ref{eq:cal_solution} does indeed converge on good solutions, the process is made faster by tuning the damping factor. While $g'^{(n+1)}_a$ is the best estimate of the gains after the $n^{\textrm{th}}$ iteration, the damped version, $g^{(n+1)}_a$, is actually used in the iterative calibration loop. Once the loop converges the damped version is essentially a weighted average over the past several iterations, giving it a longer effective integration time. 
+This equation is our prescription for estimating the antenna gains of a direct imaging array. The online computation complexity scales as $\mathcal{O}(\Nant)$ as we form a $\Cna$ for each antenna. 
 
 We show schematically the process of calibrating a direct imaging correlator in figure~\ref{fig:schematic}. Computationally expensive steps that must be performed ``on-chip" are shown inside the gray box. The uncalibrated antenna signals are tapped out after the F-engine and correlated against the output image pixel of interest (i.e., equation~\ref{eq:Cna} is ``on-chip''). The correlated values are then passed off-chip to estimate the gains using equation~\ref{eq:cal_solution}, and additional fitting if desired. The gains are then passed back to the correlator to update the calibration for subsequent integration intervals. 
 
@@ -178,7 +236,13 @@ We show schematically the process of calibrating a direct imaging correlator in 
 \end{center}
 \end{figure}
 
-An important feature to note is that, like the MOFF-generated images themselves, equations~\ref{eq:cal_solution} and~\ref{eq:cal_solution_simple} include the antenna auto-correlations (the sum is over \emph{all} $b$, not excluding $a$). It can be difficult to perfectly model the noise bias from auto-correlations, which can often times be far brighter than the visibilities themselves. It can therefore be beneficial to subtract this term directly from \Cna, and exclude the $b=a$ term in the sum.
+While testing we found equation~\ref{eq:cal_solution} resulted in oscillatory gain solutions as it was iterated, as is often the case in iterative minimization methods. To mitigate this we introduce a damping factor, $0 \leq \damp <1$, which is used to attenuate the gain update, effectively giving the solutions memory of previous iterations.
+\begin{equation}
+g^{(n+1)}_a = (1-\damp) g'^{(n+1)}_a + \damp g^{(n)}_a
+\end{equation}
+We found that while equation~\ref{eq:cal_solution} does indeed converge on good solutions, the process is made faster by tuning the damping factor. While $g'^{(n+1)}_a$ is the best estimate of the gains after the $n^{\textrm{th}}$ iteration, the damped version, $g^{(n+1)}_a$, is actually used in the iterative calibration loop. Once the loop converges the damped version is essentially a weighted average over the past several iterations, giving it a longer effective integration time. 
+
+An important feature to note is that, like the MOFF-generated images themselves, equation~\ref{eq:cal_solution} includes the antenna auto-correlations (the sum is over \emph{all} $b$, not excluding $a$). It can be difficult to perfectly model the noise bias from auto-correlations, which can often times be far brighter than the visibilities themselves. It can therefore be beneficial to subtract this term directly from \Cna, and exclude the $b=a$ term in the sum.
 \begin{equation}
 \Cna \rightarrow \Cna - \frac{1}{\Nant\, g^{*(n)}_a} \beamtheta^*_a(\spix) e^{-2\pi i \spix \cdot \ra} \left<|\Er{a}|^2\right>_t
 \end{equation}
@@ -196,6 +260,8 @@ g'^{(n+1)}_a \rightarrow \frac{\sum_b  \V_{ab}/g^{*(n)}_b}{\Nant S_{\mathrm{src}
 \end{equation}
 This is simply a gain-weighted sum of the measured visibilities over the flux of the source, which is indeed the limiting result from a visibility approach, for example seen in \citealt{mit08}. The ability to recover the equivalent expression despite not actually forming the visibilities is a result of the fact that only sums over visibilities come into the FX solution, as was described in \citealt{mor11}. We have confirmed the limiting case equivalence here, and will explore the more general case in more detail in \S~\ref{sec:noise}.
 
+%%%%%
+%%%%%
 
 \section{Simulation}\label{sec:sim}
 We first demonstrate our calibration method through a controlled simulation. A complex gain is created for each antenna with random phase and amplitude, which is used to corrupt the simulated data stream, then we attempt to recover the gains using our calibration routine. The simulation software used is included in the EPIC package.
