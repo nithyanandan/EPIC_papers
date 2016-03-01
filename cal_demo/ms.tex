@@ -246,13 +246,12 @@ An important feature to note is that, like the MOFF-generated images themselves,
 \begin{equation}
 \Cna \rightarrow \Cna - \frac{1}{\Nant\, g^{*(n)}_a} \beamtheta^*_a(\spix) e^{-2\pi i \spix \cdot \ra} \left<|\Er{a}|^2\right>_t
 \end{equation}
-This requires generating these correlations, which again only scale as $\mathcal{O}(\Nant)$, and are generally useful for array diagnostics. ({\bf What happened to the $g_a^T$ term outside the sum? And why did you drop $\hat{\mathbf{s}}_0$ in $W_a^*$}?)
+We have absorbed $g_a^T$ into the electric field so that the correlation is now simply the autocorrelation of the uncalibrated antenna measurement. This requires generating these correlations, which again only scale as $\mathcal{O}(\Nant)$, and are generally useful for array diagnostics.
 
-We conclude this section by connecting our calibration expression to that found in a visibility framework. In the limit of a single bright calibrating source at phase center, we can greatly simplify equations~\ref{eq:cna} and~\ref{eq:cal_solution}. We will assume the beams are normalized such that $\beamtheta(0)=1$. We can further drop the exponential phase terms because $\spix=0$. We then absorb the true gains and gain corrections into the true visibilities in equation~\ref{eq:cna} to express as a sum of measured visibilities.
+We conclude this section by connecting our calibration expression to that found in a visibility framework. In the limit of a single bright calibrating source at phase center, we can greatly simplify equations~\ref{eq:cna} and~\ref{eq:cal_solution}. We will assume the beams are normalized such that $\beamtheta(0)=1$. We can further drop the exponential phase terms because $\spix=0$. We then absorb the true gains into the true visibilities in equation~\ref{eq:cna} to express as a sum of measured, uncalibrated, visibilities.
 \begin{equation}
 \mathcal{C}^{(n)}_{a,0} \rightarrow \frac{1}{\Nant}\sum_b \frac{1}{g^{*(n)}_b} \V_{ab}
 \end{equation}
-({\bf It is not clear what happened to the $g$ terms.})
 
 We next plug this expression into equation~\ref{eq:cal_solution} to find our simplified calibration solution for a single bright point source. Because our sky is a single bright point source, the model visibilities are simply the flux of the source, $S_{\mathrm{src}}$.
 \begin{equation}
