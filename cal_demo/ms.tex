@@ -17,6 +17,7 @@
 \usepackage{amsmath}	% Advanced maths commands
 \usepackage{amssymb}	% Extra maths symbols
 \usepackage{color}
+\usepackage{enumerate}
 
 %%%%% CUSTOM COMMANDS %%%%%
 
@@ -38,6 +39,8 @@
 \newcommand{\caliter}{400}
 \newcommand{\damp}{\ensuremath{\gamma}}
 \newcommand{\itr}{20}
+\newcommand{\tcal}{\ensuremath{t_{\mathrm{cal}}}}
+\newcommand{\teff}{\ensuremath{t_{\mathrm{eff}}}}
 
 %%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
 
@@ -357,118 +360,64 @@ Figure~\ref{fig:data_images} shows the improvement in the images due to our cali
 
 To compare the image qualities quantitatively we compute the dynamic range, defined as the peak of the image over the noise level. We estimate the noise level as the median of the absolute deviation of the image, a robust statistic. With this metric we find the calibrated image to have a 55\% dynamic range improvement over the uncalibrated image.
 
-\section{Noise trends}\label{sec:noise}
-Here we study the properties of our calibration solutions with respect to noise in the system, and compare to solutions found from visibilities. For this comparison we run a suite of simulations varying the receiver noise and integration times, while forming antenna-pixel correlations, $\Cna$, for EPICal gain solutions, and simultaneously forming visibilities from the same E-field streams to find visibility-based gain solutions.
+\section{Noise trends and error analysis}\label{sec:noise}
+Now we return to simulations to study the effect of noise in our system, and the consequences of an incomplete sky model. We run a suite of simulations varying the receiver noise and integration times, while forming antenna-pixel correlations, $\Cna$, for EPICal gain solutions, and simultaneously forming visibilities from the same E-field streams to find visibility-based gain solutions for comparison. 
 
-We use a simulated sky consisting of a 5 Jy calibrator source, and 10 other random sources with apparent flux densities 0.2 to 0.5 Jy (total sky power $\approx$~8 Jy). We generated these sources randomly, but kept them fixed for each run. As in section~\ref{sec:sim}, we use the MWA core layout (51 antennas), and a 4.4~m square tophat antenna voltage pattern. We simulate 64 frequency channels each of width 40~kHz. Because our calibration loop treats frequency channels independently, each channel can be treated as a separate trial of the simulation, and is used to better estimate the statistics.
+We use a simulated sky consisting of a 5~Jy calibrator source, and 49 other random sources with apparent flux densities 0.2 to 0.5 Jy (total sky power $\approx$ 23 Jy). We generated these sources randomly, but kept them fixed for each run. As in section~\ref{sec:sim}, we use the MWA core layout (51 antennas), and a 4.4~m square tophat antenna voltage pattern. We simulate 64 frequency channels each of width 40~kHz. Because our calibration loop treats frequency channels independently, each channel can be treated as a separate trial of the simulation, and is used to better estimate the statistics.
 
-To simulate receiver noise, we add a gaussian distributed complex random number to each antenna electric field measurement at each time stamp according to equation~\ref{eq:apply_gain}. The level of the receiver noise, $\sigma_r = \left<\left|\widetilde{n}_a(f,t)\right|^2\right>$, is varied in different simulation runs. 
+To simulate receiver noise, we add a gaussian distributed complex random number to each antenna electric field measurement at each time stamp according to equation~\ref{eq:apply_gain}. The level of the receiver noise, $\sigma_r = \left<\left|\widetilde{n}_a(f,t)\right|^2\right>$, is varied in different simulation runs. We include two limiting cases, where the receiver noise power is subdominant to the sky power ($\sigma_r = 10.0$~Jy), and where the receiver dominates the noise ($\sigma_r=100.0$~Jy).
 
-We initialize our gain estimates with the true values (${g^{(0)}_a=g^T_a=1}$), and allow the estimate to be corrupted by the noise through one iteration of the calibration loop. Ideally we would use a damping factor of zero to allow for the noise to fully corrupt the gains. However, we found that a zero damping factor resulted in non-convergent results ({\bf this statement makes me nervous and makes it sound these results may not be robust. It sounds like a higher $\damp$ is just delaying the divergence.}), so we adopted a small factor, $\damp=0.05$. For a fair comparison, we use the same factor for the visibility-based solutions. We then observe the error in the gain estimates introduced by the noise,
+For each simulation run we find gain solutions using four methods:
+\begin{enumerate}[i.]
+\item EPICal, using a full sky model
+\item EPICal, using a single point source model
+\item Visibility-based, using a full sky model
+\item Visibility-based, using a single point source model.
+\end{enumerate}
+In the cases where we use the full sky model, the model visibilities, $\V'_{ab}$ used in the calibration loop are created using all point sources in the simulated sky. For the single point source model, we only allow the calibration loop to be privy to the bright calibrator source. While we vary the model used for calibration, the simulated ``true sky'' remains fixed with all 50 point sources.
+
+For the EPICal calibration loops, we initialize our gain estimates with the true values (${g^{(0)}_a=g^T_a=1}$), and allow the estimate to be corrupted by the noise through ten iterations of the calibration loop. We adopt a damping factor $\damp=0.35$. Because EPICal updates the gain estimate at each calibration loop, \tcal, but retains a memory of previous iterations through the damping factor, the total integration time is not straightforward. We define an effective integration time by considering the relative weights of each previous $\Cna$ contributing to the current $g^{(n)}_a$ estimate, each with integration time \tcal. In the limit $n\rightarrow \infty$, the geometric series converges to an effective integration time of
+\begin{equation}
+\teff = \tcal \times \frac{1+\damp}{1-\damp}.
+\end{equation}
+With the damping factor we adopted here, $\teff \approx 2.1 \times \tcal$. 
+
+We simultaneously form simulated visibilities by correlating all pairs of antenna E-field measurements (including the receiver noise). The E-fields are correlated for a duration equal to the effective integration time of the EPICal loop for comparison. We then find the visibility-based gain estimates by minimizing
+\begin{equation}\label{eq:vis_cal}
+\chi^2 = \sum_a\sum_{b\ne a} \left|\V_{ab}-g_a g_b^* \V'_{ab}\right|^2,
+\end{equation}
+using both versions of the model visibilities described above.
+
+ For each version of calibration, we observe the error in the gain estimates averaging over both antennas and frequency channels,
 \begin{equation}\label{eq:gain_error}
 \sigma_g = \left[\frac{1}{N_f \Nant} \sum_f \sum_a \frac{\left|g'_a(f)-g^T_a(f)\right|^2}{\left|g^T_a(f)\right|^2}\right]^{1/2}.
 \end{equation}
-({\bf Here is my major concern. I feel these statistics should be estimated after making sure gains have converged after few loops, otherwise these statistics may not be accurate. Since you do not form images, I don't think it should take very long.})
 
-We simultaneously form simulated visibilities by correlating all pairs of antenna E-field measurements (including the receiver noise). At the end of the calibration loop we find the visibility-based gain estimates by minimizing
-\begin{equation}\label{eq:vis_cal}
-\chi^2 = \sum_a\sum_{b\ne a} \left|\V_{ab}-g_a g_b^* \V^T_{ab}\right|^2.
-\end{equation}
-The error of the visibility-based gains is estimated in the same way as in equation~\ref{eq:gain_error}. ({\bf How is $\widetilde{V}_{ab}$ defined? As the average of all visibilities between that antenna pair in the calibration loop timescale? Or are the gains determined on every timestamp using linear algebraic minimization?})
-
-The results of our simulations are shown in figure~\ref{fig:noise}. The gain errors from our EPICal method is shown with solid lines, each color representing different levels of receiver noise. Each data point ({\bf I see no discrete data points. Can you add those to the plot?}) represents a separate simulation run (independent realization of the noise). The general trends are consistent with expectations -- decreasing as the square root of integration time, and increasing with receiver noise. The lowest receiver noise level (1.0 Jy) is significantly below the sky noise contribution (about 8 Jy), so the black line is not as low, compared to the red, as one would expect from receiver noise consideration alone ({\bf Need to elaborate. It is too terse, I couldn't follow. }).
+The results of our simulations are shown in figure~\ref{fig:errors}. The gain errors from our EPICal method is shown with solid lines, while the dashed lines represent the visibility-based calibration. The thick lines represent the results of using a full sky model, and the thin lines are from the single point source model.  In the case of the full sky model, we see the errors trend downward with longer integration times, as expected. The EPICal errors are slightly higher than the visibility-based errors. This is not surprising as EPICal only uses the information in a single pixel, while the visibilities use all information from the full sky model. However, we see that with this perfect model the errors do behave like noise, and the same level of noise can be achieved with a longer integration time (or larger damping factor).
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/cal_paper_noise_med_sky.pdf}
-\caption{Gain estimate errors as a function of integration time and receiver noise (line color). The solid lines represent the error on the EPICal derived gain estimates, while the dashed lines represent the error on the visibility based estimates. On average the EPICal error is 1.5\% higher than visibilities, and at worst it was 3.5\% higher.
+\includegraphics[width=\columnwidth]{figures/cal_paper_errors_complex_sky.pdf}
+\caption{Gain estimate errors as a function of integration time, receiver noise (line color), and calibration method. The solid lines represent the error on the EPICal derived gain estimates, while the dashed lines represent the error on the visibility based estimates. The thicker lines were derived using a full sky model in the calibration loops, and the thinner lines used only a single point source model. In the full sky model case we see all methods trend down with longer integration time as expected. In the case of a single source model, the errors bottom out due to the flux in the measurements that is not modeled. In this regime the EPICal method performs slightly better than the visibility-based method due to effectively beamforming to the sky pixel where the incomplete model is most accurate.  
 }
-\label{fig:noise}
+\label{fig:errors}
 \end{center}
 \end{figure}
 
-The dashed lines in figure~\ref{fig:noise} represent the errors from the visibility-based calibration. Each data point corresponds to the same simulation run as the corresponding EPICal point (same realization of noise). Generally we see the visibility-based calibration achieves slightly lower noise solutions. On average the EPICal errors are 1.5\% higher, and at the worst is 3.5\% higher ({\bf but need to also explain this trend reverses and dependent on receiver noise and integration time}). 
-
-We repeated this process for two extremes -- a simple sky model of a single point source, and a more complicated sky with 50 sources. In the simple sky case, we found the EPICal and visibility gain estimates to be identical to floating point precision, as expected from our discussion in section~\ref{sec:math}. In the more complicated sky case (about 23 Jy total sky power), we saw the EPICal gains exhibit errors 20\% higher than the visibility derived gains. The trend of higher EPICal errors with more complicated skies is due to the single correlated pixel not containing the full signal to noise of the data ({\bf Here is my other major concern. There is no sort of numerical substantiation offered to confirm this other than saying we have not done this yet and thus missing information.}). This reaffirms our intuition that using a pixel with a bright source is ideal, but will still not match visibilities for complicated skies ({\bf to reaffirm we need some sort of numerical evidence that this is at play and we will work on this further}). We suggest additional strategies for improving this signal to noise in the following section. ({\bf At the moment it sounds like we are conveniently sweeping it under the rug. Can we at least qualitatively make arguments that this should improve and what might that information from multiple pixels look like mathematically?})
-
-%\section{Noise analysis}\label{sec:noise_old}
-%\textcolor{red}{This section will most likely disappear in favor of the Noise Trends section.}
-%
-%Here we study the properties of our calibration solutions with respect to noise in the system. In order to compare to solutions from visibility-based calibration, we first derive the theoretical lower bound of the error in these solutions, given a set of measured visibilities, $\mathbf{V}$. Motivated by the performance analysis seen in \cite{kaz13}, we will do this through the Fischer information formalism and employ the Cram\'er-Rao lower bound. 
-%
-%Assume we did form visibilities with some integration time. Assuming the noise on each visibility, $\sigma_{ab}$, is independent, we can write the likelihood function of measuring $V_{ab}$ given the true value, the gains, and the noise.
-%\begin{equation}
-%\mathcal{L}(V_{ab};\mathbf{g}) = \frac{1}{2\pi \sigma_{ab}^2}\exp\left[-\frac{\left|V_{ab} - g_a g_b^* V_{ab}^T\right|^2}{2\sigma_{ab}^2}\right]
-%\end{equation}
-%Then the likelihood of the set of all visibilities is the product of all individual likelihoods.
-%\begin{equation}
-%\mathcal{L}(\mathbf{V};\mathbf{g}) = \prod_a \prod_{b > a} \mathcal{L}(V_{ab};\mathbf{g})
-%\end{equation}
-%The Fischer information matrix for the set of gain parameters is
-%\begin{equation}
-%\mathbf{F}^g_{ij} = \left<\left. \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_i} \frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_j}\right|_\mathbf{g}\right>,
-%\end{equation}
-%where the expectation is taken over all possible visibility measurements.
-%We next evaluate the derivate of the log-likelihood.
-%\begin{equation}
-%\frac{\partial \ln \mathcal{L}(\mathbf{V};\mathbf{g})}{\partial g_i} = 
-%\sum_{a \ne i} \frac{g_a^* V_{ai}^{T*} (V_{ai} - g_a g_i^* V_{ai}^T)}{2 \sigma_{ai}^2}
-%\end{equation}
-%
-%In order to find the Cram\'er-Rao lower bound on the variance of the complex parameter, $g_i$, we consider the term of the Fischer matrix where the first derivative is taken with respect to $g_i$, and the second with $g_i^*$. The result is
-%\begin{align}
-%\mathbf{F}^g_{ii} = & \left<\left[ \sum_{a \ne i} \frac{g_a^* V_{ai}^{T*} (V_{ai} - g_a g_i^* V_{ai}^T)}{2 \sigma_{ai}^2} \right] \right. \times \nonumber \\
-%& \left. \left[ \sum_{b \ne i} \frac{g_b V_{bi}^{T} (V_{bi}^* - g_b^* g_i V_{bi}^{T*})}{2 \sigma_{bi}^2} \right] \right> \nonumber \\
-%= &\sum_{a\ne i} \sum_{b \ne i} \frac{g_a^* g_b V_{ai}^{T*} V_{bi}^T}{4 \sigma_{ai}^2 \sigma_{bi}^2} \left< V_{ai}V_{bi}^* - g_i g_b^* V_{ai}V_{bi}^{T*}\nonumber \right.\\
-%&\left. - g_a g_i^* V_{ai}^T V_{bi}^* + g_a g_b^* |g_i|^2 V_{ai}^T V_{bi}^{T*}\right>
-%\label{eq:Fischer_before_expect}
-%\end{align}
-%
-%The expected values are easy to evaluate. Each visibility will average to the ``true" value times the respective gains. The term with two visibilities will include a noise bias on autocorrelation terms.
-%\begin{equation}
-%\left<V_{ai}V_{bi}^*\right> = |g_i|^2 g_a g_b^* V_{ai}^T V_{bi}^{T*} + \sigma_{ai}^2 \delta_{ab}
-%\end{equation}
-%Here $\delta_{ab}$ is the Kronecker delta selecting the term where $a=b$ and the noise correlates. Plugging in the expectation values, equation \ref{eq:Fischer_before_expect} simplifies greatly to
-%\begin{equation}
-%\mathbf{F}^g_{ii} = \sum_{a \ne i} \frac{\left|g_a V_{ia}^T \right|^2}{4\sigma_{ai}^2}
-%\end{equation}
-%
-%Finally we relate our result to the theoretical best uncertainty we can place on our unknown gain parameter using the Cram\'er-Rao lower bound \cite{kay93}.
-%\begin{equation}\label{eq:cramer_rao}
-%\sigma_{g_i}^2 \ge \left[ \mathbf{F}^g_{ii} \right]^{-1} = \left[ \sum_{a \ne i} \frac{\left|g_a V_{ia}^T \right|^2}{4\sigma_{ai}^2} \right]^{-1}
-%\end{equation}
-%
-%We next run a set of EPICal simulations to compare the noisy results to the theoretical lower bound if we had formed an analogous set of visibilities. Each simulation is run with a simple sky of a single point source with flux 1 Jy. We add noise to the system by adding a Gaussian-random complex value to each channelized electric field antenna measurement as in equation~\ref{eq:apply_gain}. The ``true" gains in our simulation are unity, as well as our initial estimate. This emulates a system where the initially volatile gain correction has been suppressed and only noise remains to corrupt our estimation, allowing us to run many simulations on a shorter timescale.
-%
-%We vary two parameters in our simulations: the variance of the complex random noise added to our electric field measurements ($\sigma_0$), and the length of integration in each calibration loop, $t_{\mathrm{cal}}$. The equivalent visibility variance in equation~\ref{eq:cramer_rao} is given by
-%\begin{equation}
-%\sigma_{ai}^2 = \frac{\sigma_0^2}{B t_{\mathrm{eff}}},
-%\end{equation}
-%where $B$ is the bandwidth of the simulation, and $t_{\mathrm{eff}}$ is the effective integration time based on the length of our calibration loop and the damping factor.
-%\begin{equation}
-%t_{\mathrm{eff}} = t_{\mathrm{cal}} \times \frac{1+\damp}{1-\damp}
-%\end{equation}
-%
-%We demonstrate the trend of the gain errors with respect to these parameters in figure~\ref{fig:noise}. For each $\sigma_0$ and $t_{\mathrm{cal}}$ we run the simulation for seven iterations of the calibration loop to allow the noise to fully corrupt our estimates. We then compute the variance of the resulting gains across the antennas. Each color line represents a different amount of input noise, with the dashed line showing the measured variance and the solid line showing the theoretical lower limit from equation~\ref{eq:cramer_rao}. The agreement between the dashed and solid lines demonstrates that not only do we reach an uncertainty consistent with visibility-based solutions, but that we actually reach the theoretical lower limit based on the amount of information contained in an equivalent set of visibility measurements. 
-%
-%
-
-
+When using the single point source model, all calibration methods trend downward until they reach an error floor due to the confusion sources that were not modeled. The EPICal and visibility-based solutions reach a similar floor, but EPICal achieves a marginally lower level. This can be attributed to the same reason EPICal underperformed with the full sky model. EPICal only used a single pixel in the sky to form its solutions. When using the full sky model, it was down weighting the information in the rest of the sky. But when the sky model only contains the bright point source, the single pixel used in EPICal is the location where this model is most accurate, effectively down weighting the pixels with incomplete sky model.
 
 \section{Discussion}\label{sec:discussion}
 Through simulations and application to real data, we have shown that the EPICal algorithm is a viable solution for calibrating direct imaging arrays in real time. The computation necessary only scales with the number of antenna elements, making it a sub-dominant cost factor when designing the correlator. This strategy will enable fast read-out for arrays with many thousands of antennas, which will be necessary for future radio transient and cosmology experiments.
 
 There remain many avenues of future work before EPICal can be deployed on an instrument. Here we name a few potential considerations for further study. These topics can be thought of as extensions to the white ``estimate gains" box in figure~\ref{fig:schematic}, which can be performed at a much lower cadence than the actual correlations.
 
-\textbf{Multiple pixel correlations.} As was seen in section~\ref{sec:noise}, the single pixel correlation demonstrated in this paper can underperform in the presence of a complex sky, when compared to visibility-based gains with perfect knowledge of the sky. These errors can be mitigated by using correlations of multiple image pixels to incorporate a higher fraction of the total sky power into the calibration loop. Of course this increases the computational cost to a scaling of $\mathcal{O}(\Nant N_{\mathrm{pix}})$, which will typically be much lower than the $\mathcal{O}(\Ng \log_2 \Ng)$ of the correlator itself. These additional correlations would further enable direction dependent gain solutions. Each correlation could be used to independently solve for gains in each pixel direction, then fit to a beam model on the sky. This updated beam pattern would then feed into the gridding step of the correlator, allowing the imager to convolve the signals with the effective beam pattern in the ground plane. 
+\textbf{Multiple pixel correlations.} As was seen in section~\ref{sec:noise}, the single pixel correlation demonstrated in this paper can underperform in the presence of a complex sky, when compared to visibility-based gains with perfect knowledge of the sky. These errors can be mitigated by using correlations of multiple image pixels to incorporate a higher fraction of the total sky power into the calibration loop. Of course this increases the computational cost to a scaling of $\mathcal{O}(\Nant N_{\mathrm{pix}})$, which will typically be much lower than the $\mathcal{O}(\Ng \log_2 \Ng)$ of the correlator itself. These additional correlations would also enable direction dependent gain solutions. Each correlation could be used to independently solve for gains in each pixel direction, then fit to a beam model on the sky. This updated beam pattern would then feed into the gridding step of the correlator, allowing the imager to convolve the signals with the effective beam pattern in the ground plane. 
 
 \textbf{Fitting gain models.} With some knowledge of the instrumental bandpass, the noise of the gain solutions can be greatly reduced by fitting a model to the per-frequency solutions derived here. We used this method at a rudimentary level in our demonstration to LWA data by assuming the gains were constant over a narrow bandwidth. One could easily improve on this by extending the bandwidth and fitting for a low order polynomial in phase and amplitude. Additionally, with knowledge of the poly-phase filters applied to the data stream, we could include channels closer to the edge of the band.
 
 \textbf{Improving sky model.} In this work we used a perfect sky model (for simulation), or a very simple sky model (for LWA data). In principle the images produced by the EPIC correlator can be used to improve the sky model used in calibration -- similar to a major loop in self-calibration. This can be especially useful for compact, widefield arrays which require a model of both compact and diffuse sources over a large patch of sky. In addition to requiring the sky model, the calibration also requires this model to be attenuated by the primary beam, which can be difficult to measure at the precision necessary \citep[e.g.][]{neb15,vir14,thy15b}. However, the direct imaging correlator provides exactly the model necessary in real time, and can be iterated over to improve the images and gain solutions.
 
 \textbf{Dynamic parameters.} In our controlled experiments we fine-tuned a number of parameters based on our testing (e.g. damping factor, integration time, frequency averaging). A deployed system will require robust determination of these parameters to operate continuously. The specifics will be heavily dependent on the stability of the instrument, the frequency of observation, and the sky. For example, a stable instrument may be able to use short integrations to determine a rough estimate of the gains before switching to much longer integration (on order seconds to minutes) to highly increase signal to noise. At low frequencies or high imaging resolution, the dynamics of the ionosphere are important, and will likely drive the limit of time integration allowed.
-
-
 
 The work here will serve as a foundation for further development. We have shown that the EPICal algorithm produces reliable calibration solutions, and have identified several aspects to increase the scope. With next generation instruments in the planning and development stages, EPICal is poised to greatly contribute to their success. The software is integrated into the EPIC package and freely available to use in simulations or offline processing of data. Work is underway to port the code to real-time GPU systems for deployment. 
 
