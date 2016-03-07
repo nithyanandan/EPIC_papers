@@ -1,8 +1,8 @@
 
 % Basic setup. Most papers should leave these options alone.
-\documentclass[a4paper,fleqn,usenatbib]{../mnras}
+\documentclass[a4paper,fleqn,usenatbib]{mnras}
 
-\usepackage{newtxtext,newtxmath}
+%\usepackage{newtxtext,newtxmath}
 
 % Use vector fonts, so it zooms properly in on-screen viewing software
 % Don't change these lines unless you know what you are doing
@@ -46,7 +46,7 @@
 
 % Title of the paper, and the short title which is used in the headers.
 % Keep the title short and informative.
-\title[EPICal]{An efficient feedback calibration algorithm for direct imaging radio telescopes
+\title[EPICal]{An Efficient Feedback Calibration Algorithm for Direct Imaging Radio Telescopes
 %The E-field Parallel Imaging Calibration Algorithm for Next-Generation Radio Telescopes
 }
 
@@ -109,7 +109,7 @@ We begin by reviewing the data flow of the MOFF algorithm, highlighting aspects 
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/MOFF_flowchart.pdf}
+\includegraphics[width=\columnwidth]{MOFF_flowchart.pdf}
 \caption{Data flow for the MOFF algorithm, reproduced from \citealt{thy15c}. The time ordered electric fields are collected by the antenna elements then frequency transformed in the F-engine. The calibration is applied, then the electric field measurements are gridded using the antenna voltage patterns. The imager performs a spatial 2D FFT on the gridded data before squaring and averaging. The accumulated images are then written to disk.}
 \label{fig:moff_flow}
 \end{center}
@@ -185,7 +185,7 @@ We show schematically the process of calibrating a direct imaging correlator in 
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/schematic.pdf}
+\includegraphics[width=\columnwidth]{schematic.pdf}
 \caption{The general data flow of the MOFF correlator, with a feedback calibration loop. A pixel from the (unsquared) image is tapped out and correlated against the input antenna electric field signals to form $\Cna$ coefficients (equation~\ref{eq:Cna}). These coefficients are then shipped off-chip to apply equations~\ref{eq:cal_solution}~and~\ref{eq:damping}, and any other processing to arrive at an updated estimate of the gains, $g^{(n)}_a$. The gray box shows operations which must be done at high speed (before averaging in time), which white boxes show operations which can be performed ``off-chip".}
 \label{fig:schematic}
 \end{center}
@@ -227,7 +227,7 @@ The calibration loop continues by updating the gain estimates every \caliter~tim
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/cal_paper_sim_phase.pdf}
+\includegraphics[width=\columnwidth]{cal_paper_sim_phase.pdf}
 \caption{Phase error of gain estimates as a function of iteration for simulated calibration. The gains were initialized with random phases, but the calibration loop was able to recover the correct phases after about 15 iterations. Each line represents an antenna in our 51 MWA antenna sample.
 }
 \label{fig:sim_phase}
@@ -238,7 +238,7 @@ The estimated gain amplitudes for the simulations are shown in figure~\ref{fig:s
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/cal_paper_sim_amps.pdf}
+\includegraphics[width=\columnwidth]{cal_paper_sim_amps.pdf}
 \caption{Gain estimate amplitudes as a function of iteration for simulated calibration. Again, each line represents an antenna in the 51 MWA antenna sample. The gain estimates were initialized randomly, while the true values were unity. After about 15 iterations we see the calibration loop has settled around the correct values, with only noise remaining.}
 \label{fig:sim_amp}
 \end{center}
@@ -250,8 +250,8 @@ Images created at the beginning of calibration and at the end are shown in figur
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/cal_paper_sim_image_before.pdf}
-\includegraphics[width=\columnwidth]{figures/cal_paper_sim_image_after.pdf}
+\includegraphics[width=\columnwidth]{cal_paper_sim_image_before.pdf}
+\includegraphics[width=\columnwidth]{cal_paper_sim_image_after.pdf}
 \caption{Images formed during simulated calibration. \emph{Top:} An image generated from a single frequency channel and 10 ms integration after the gain estimates are randomized. As expected with random phases, the image is completely noisy, with the shape of the primary beam evident. \emph{Bottom:} An image formed after calibration, again with a single frequency channel and 10 ms integration. The ten simulated (and modeled) point sources are easily visible, and highlighted with red circles.
 }
 \label{fig:sim_images}
@@ -274,7 +274,7 @@ Figure~\ref{fig:data_phase} shows the phase of our gain estimates over 30 calibr
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/cal_paper_data_phases.pdf}
+\includegraphics[width=\columnwidth]{cal_paper_data_phases.pdf}
 \caption{Gain phase solutions as a function of calibration iteration for an LWA TBN observation. The gain estimates are initialized with zero phase, but quickly span a $2\pi$ range, and settle into relatively flat, albeit noisy, solutions. The majority of phases congregate near zero, which is not surprising given the fairly good quality image produced from uncalibrated data.
 }
 \label{fig:data_phase}
@@ -285,7 +285,7 @@ The gain amplitudes as a function of calibration iteration are shown in figure~\
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/cal_paper_data_amps.pdf}
+\includegraphics[width=\columnwidth]{cal_paper_data_amps.pdf}
 \caption{Gain amplitudes as a function of calibration iteration for an LWA TBN observation. The gains estimates were initialized with amplitude 0.25 after inspection of the electric field values compared to our model sky. The solutions are noisy, but flat. The range in amplitudes is due to the non-uniformity of cables between the LWA antennas and receivers.
 }
 \label{fig:data_amp}
@@ -296,9 +296,9 @@ Figure~\ref{fig:data_images} shows the improvement in the images due to our cali
 
 \begin{figure*}
 \begin{center}
-\includegraphics[width=0.33\linewidth]{figures/cal_paper_data_image_before.pdf}
-\includegraphics[width=0.33\linewidth]{figures/cal_paper_data_image_after.pdf}
-\includegraphics[width=0.33\linewidth]{figures/cal_paper_gsm_beam_weighted.pdf}
+\includegraphics[width=0.3\linewidth]{cal_paper_data_image_before.pdf}
+\includegraphics[width=0.3\linewidth]{cal_paper_data_image_after.pdf}
+\includegraphics[width=0.3\linewidth]{cal_paper_gsm_beam_weighted.pdf}
 \caption{Images produced before (left) and after (middle) calibrating LWA data. These images were produces with 29 kHz bandwidth and 51.2 ms integration. The calibrated image shows significant reduction in sidelobe rumble throughout, while retaining the prominent Cyg~A and Cas~A sources. The galactic plane is also substantially more evident after calibration. For reference, the GSM is shown in the same coordinates and weighted by two factors of the LWA primary beam in the right panel. While much of the GSM is visible in the calibrated image, we note that the model used to calibrate was only the two bright sources, Cyg~A and Cas~A.
 }
 \label{fig:data_images}
@@ -344,7 +344,7 @@ The results of our simulations are shown in figure~\ref{fig:errors}. The gain er
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/cal_paper_errors_complex_sky.pdf}
+\includegraphics[width=\columnwidth]{cal_paper_errors_complex_sky.pdf}
 \caption{Gain estimate errors as a function of integration time, receiver noise (line color), and calibration method. The solid lines represent the error on the EPICal derived gain estimates, while the dashed lines represent the error on the visibility based estimates. The thicker lines were derived using a full sky model in the calibration loops, and the thinner lines used only a single point source model. In the full sky model case we see all methods trend down with longer integration time as expected. For a given integration time, EPICal derived errors are on average 23\% higher than those of visibility based calibration. In the case of a single source model, the errors bottom out due to the flux in the measurements that is not modeled. In this regime the EPICal method performs slightly better than the visibility-based method due to effectively beamforming to the sky pixel where the incomplete model is most accurate. On average EPICal errors are 5\% lower in this regime.
 }
 \label{fig:errors}
@@ -386,9 +386,9 @@ of the University Radio Observatory program.
 
 % The best way to enter references is to use BibTeX:
 
-\bibliographystyle{../mnras}
-\bibliography{../epic} % if your bibtex file is called example.bib
-
+\bibliographystyle{mnras}
+%\bibliography{epic} % if your bibtex file is called example.bib
+\input{ms.bbl}
 
 % Don't change these lines
 \bsp	% typesetting comment

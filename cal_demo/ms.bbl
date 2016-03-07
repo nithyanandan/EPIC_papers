@@ -17,11 +17,14 @@
   {mn@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter \expandafter \csname
   mn@eprint@\@tempb\endcsname \expandafter{\@tempc}}}
 
-\bibitem[\protect\citeauthoryear{Abbott}{Abbott}{2016}]{abb16b}
-Abbott B.~P.,  2016, {arXiv:temp}
+\bibitem[\protect\citeauthoryear{{Abbott} et~al.,}{{Abbott}
+  et~al.}{2016a}]{abb16b}
+{Abbott} B.~P.,  et~al., 2016a, preprint, \href
+  {http://adsabs.harvard.edu/abs/2016arXiv160208492A} {} (\mn@eprint {arXiv}
+  {1602.08492})
 
-\bibitem[\protect\citeauthoryear{Abbott et~al.,}{Abbott et~al.}{2016}]{abb16a}
-Abbott B.~P.,  et~al., 2016, \mn@doi [Phys. Rev. Lett.]
+\bibitem[\protect\citeauthoryear{Abbott et~al.,}{Abbott et~al.}{2016b}]{abb16a}
+Abbott B.~P.,  et~al., 2016b, \mn@doi [Phys. Rev. Lett.]
   {10.1103/PhysRevLett.116.061102}, 116, 061102
 
 \bibitem[\protect\citeauthoryear{{Bandura} et~al.,}{{Bandura}
@@ -78,6 +81,11 @@ Foster G.,  Hickish J.,  Magro A.,  Price D.,   Zarb~Adami K.,  2014, \mn@doi
 Hicks B.~C.,  et~al., 2012, Publications of the Astronomical Society of the
   Pacific, 124, pp. 1090
 
+\bibitem[\protect\citeauthoryear{{Jacobs}, {Beardsley}, {Hazelton},
+  {Thyagarajan}  \& {Trott}}{{Jacobs} et~al.}{2015}]{jac15}
+{Jacobs} D.~C.,  {Beardsley} A.~P.,  {Hazelton} B.~J.,  {Thyagarajan} N.,
+  {Trott} C.,  2015, HERA Memo~10, {System Temperatures of 21cm Arrays}
+
 \bibitem[\protect\citeauthoryear{{Kassim} et~al.,}{{Kassim}
   et~al.}{2007}]{kas07}
 {Kassim} N.~E.,  et~al., 2007, \mn@doi [\apjs] {10.1086/519022}, \href
@@ -128,8 +136,11 @@ Mitchell D.,  Greenhill L.,  Wayth R.,  Sault R.,  Lonsdale C.,  Cappallo R.,
 \bibitem[\protect\citeauthoryear{Parsons et~al.,}{Parsons et~al.}{2010}]{par10}
 Parsons A.~R.,  et~al., 2010, The Astronomical Journal, 139, 1468
 
-\bibitem[\protect\citeauthoryear{{Tegmark}}{{Tegmark}}{1997}]{teg97a}
-{Tegmark} M.,  1997, \mn@doi [\apjl] {10.1086/310631}, \href
+\bibitem[\protect\citeauthoryear{Tegmark}{Tegmark}{1997a}]{teg97b}
+Tegmark M.,  1997a, \mn@doi [Phys. Rev. D] {10.1103/PhysRevD.55.5895}, 55, 5895
+
+\bibitem[\protect\citeauthoryear{{Tegmark}}{{Tegmark}}{1997b}]{teg97a}
+{Tegmark} M.,  1997b, \mn@doi [\apjl] {10.1086/310631}, \href
   {http://adsabs.harvard.edu/abs/1997ApJ...480L..87T} {480, L87}
 
 \bibitem[\protect\citeauthoryear{{Tegmark} \& {Zaldarriaga}}{{Tegmark} \&
