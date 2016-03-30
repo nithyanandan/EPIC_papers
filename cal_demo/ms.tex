@@ -292,7 +292,7 @@ The gain amplitudes as a function of calibration iteration are shown in figure~\
 \end{center}
 \end{figure}
 
-Figure~\ref{fig:data_images} shows the improvement in the images due to our calibration. The left panel shows the uncalibrated image integrated over 51.2 ms, 29 kHz. Cyg~A is prominent near the center of the image, and Cas~A is also clearly visible in the upper right. The middle panel shows the image produced after calibration with identical integration time and bandwidth. The sidelobes throughout the image are significantly suppressed, and the galactic plane is much more evident, despite only modeling Cyg~A and Cas~A. We also note that the feature just to the right of Cyg~A is dimmer in the calibrated image, better matching the expected flux from the global sky model (GSM, \citealt{deo08}). We show the GSM\footnote{We use the PyGSM module by D.~C.~Price to import the GSM, https://github.com/telegraphic/PyGSM} modulated by two factors of the LWA power pattern in the right panel of figure~\ref{fig:data_images} for reference.
+Figure~\ref{fig:data_images} shows the improvement in the images due to our calibration. The left panel shows the uncalibrated image integrated over 51.2 ms, 29 kHz. Cyg~A is prominent near the center of the image, and Cas~A is also clearly visible in the upper right. The middle panel shows the image produced after calibration with identical integration time and bandwidth. The sidelobes throughout the image are significantly suppressed, and the galactic plane is much more evident, despite only modeling Cyg~A and Cas~A. We also note that the feature just to the right of Cyg~A is dimmer in the calibrated image, better matching the expected flux from the global sky model (GSM, \citealt{deo08}). We show the GSM \citep{pri16} modulated by two factors of the LWA power pattern in the right panel of figure~\ref{fig:data_images} for reference.
 
 \begin{figure*}
 \begin{center}
@@ -386,9 +386,9 @@ of the University Radio Observatory program.
 
 % The best way to enter references is to use BibTeX:
 
-\bibliographystyle{mnras}
-%\bibliography{../epic} % if your bibtex file is called example.bib
-\input{ms.bbl}
+\bibliographystyle{../mnras}
+\bibliography{../epic} % if your bibtex file is called example.bib
+%\input{ms.bbl}
 
 % Don't change these lines
 \bsp	% typesetting comment

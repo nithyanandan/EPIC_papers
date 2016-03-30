@@ -136,6 +136,10 @@ Mitchell D.,  Greenhill L.,  Wayth R.,  Sault R.,  Lonsdale C.,  Cappallo R.,
 \bibitem[\protect\citeauthoryear{Parsons et~al.,}{Parsons et~al.}{2010}]{par10}
 Parsons A.~R.,  et~al., 2010, The Astronomical Journal, 139, 1468
 
+\bibitem[\protect\citeauthoryear{{Price}}{{Price}}{2016}]{pri16}
+{Price} D.~C.,  2016, {Astrophysics Source Code Library}, \href
+  {{http://adsabs.harvard.edu/abs/2016ascl.soft03013D}} {{ascl:1603.013}}
+
 \bibitem[\protect\citeauthoryear{Tegmark}{Tegmark}{1997a}]{teg97b}
 Tegmark M.,  1997a, \mn@doi [Phys. Rev. D] {10.1103/PhysRevD.55.5895}, 55, 5895
 
