@@ -1,0 +1,4 @@
+# Notes on changes to manuscript for resubmission.
+# These notes will need to be polished into a cover letter before sending.
+
+- Changed reference to pyGSM to actual citation.
