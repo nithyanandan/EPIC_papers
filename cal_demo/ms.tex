@@ -130,7 +130,7 @@ $\mathcal{O}(\Ng \log_2 \Ng)$, where \Ng~is the number of grid points in the FFT
  teg09, teg10}. For certain classes of telescopes, significantly those envisioned for next 
  generation cosmology experiments, this scaling is a large improvement over the $\Nant^2$ 
  scaling of traditional methods. Furthermore, because images are generated online, the native 
- output bandwidth will be lowered (assuming $\Ng < \Nant^2$), and has the potential to be 
+ output bandwidth will be lowered in cases where $\Ng < \Nant^2$, and has the potential to be 
  lowered even further with online transient processing.
 
 A handful of prototype direct imaging correlators have been tested on arrays including the 
@@ -234,7 +234,7 @@ current estimate of the gains.
 
 The next step is to grid the antenna signals. MOFF uses the antenna patterns as the gridding 
 kernel according to the software holography/A-transpose technique \citep{mor09,bha08}. This 
-achieves both an optimal map \citep{teg97b} and places the data on a regular grid. Unlike 
+achieves an optimal map \citep{teg97b} and places the data on a regular grid. Unlike 
 traditional correlators which grid visibilities, the MOFF grids the electric fields directly. This 
 operation must be performed for every time step, before any averaging of the data.
 
@@ -252,7 +252,7 @@ estimate for the instantaneous electric field image. We can simplify this expres
 exchanging the sums to transform the beam term into sky coordinates.
 \begin{align}\label{eq:epix}
 \Ethetaest(\s_i,t) & = \frac{1}{\Nant} \sum_a \frac{g^T_a}{g'_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra} \nonumber \\
-  & \qquad\times \sum_i \beamr_b(\ri-\ra)e^{2\pi i \s_i \cdot (\ri-\ra)} \nonumber\\
+  & \qquad\times \sum_i \beamr_a(\ri-\ra)e^{2\pi i \s_i \cdot (\ri-\ra)} \nonumber\\
 & = \frac{1}{\Nant} \sum_a \frac{ g^T_a}{g'_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra}\beamtheta_a(\s_i)
 \end{align}
 In this form we see that the effect of gridding with the antenna voltage pattern is to attenuate 
@@ -447,7 +447,7 @@ The estimated gain amplitudes for the simulations are shown in figure~\ref{fig:s
 quantity plotted is the magnitude of the estimated gains over the true gains, $\left|g^{(n)}_a/
 g^T_a\right|$, which places all antennas on the same scale. We can see the amplitudes 
 converge toward their true values around the same time as the phases (iteration $\sim$15). At 
-the beginning of calibration we can see the value of the damping factor. At $n=0$, a couple of 
+the beginning of calibration we can see the importance of the damping factor. At $n=0$, a couple of 
 gains are shown to have abnormally high amplitude estimates, notably one about 3.3 times its 
 true value (red line). These unbalanced high estimates caused the entire set of gains to be 
 under estimated at $n=1$, even with a damping factor of 0.35. By $n=5$ the unbalanced 
@@ -523,8 +523,8 @@ across the band.
 A damping factor of $\gamma = 0.7$ was adopted.
 
 Finally, we found that seven antennas\footnote{LWA antenna IDs 48, 85, 124, 148, 203, 217, 
-and 244 were flagged.} produced unstable gain solutions, and in fact corrupted the entire array. 
-We therefore flagged these antennas in our analysis, resulting in a total of 248 antennas to 
+and 244 were omitted.} produced unstable gain solutions, and in fact corrupted the entire array. 
+We therefore omitted these antennas from our analysis, resulting in a total of 248 antennas to 
 calibrate. In each calibration loop, we form $C_{i,\hat{\boldsymbol{s}}_0}, i=1,2,\ldots N_a$ and 
 update our gain estimates over 10 timestamps (51.2 ms). We iterate the loop 30 times for a 
 total of 1.536 seconds. The results of this calibration experiment are shown in figures~
@@ -668,14 +668,16 @@ using both versions of the model visibilities described above.
 \end{equation}
 
 The results of our simulations are shown in figure~\ref{fig:errors}. The gain errors from our 
-EPICal method is shown with solid lines, while the dashed lines represent the visibility-based 
+EPICal method are shown with solid lines, while the dashed lines represent the visibility-based 
 calibration. The thick lines represent the results of using a full sky model, and the thin lines are 
 from the single point source model.  In the case of the full sky model, we see the errors trend 
 downward with longer integration times, as expected. The EPICal errors are slightly higher than 
 the visibility-based errors, on average about 23\% difference. This is not surprising as EPICal 
 only uses the information in a single pixel, while the visibilities use all information from the full 
-sky model. However, we see that with this perfect model the errors do behave like noise, and 
-the same level of noise can be achieved with a longer integration time (or larger damping 
+sky model. However, we see that with this perfect model the errors do behave like noise
+in the sense that they integrate down with longer integrations with the expected $t^{-1/2}$ 
+trend. 
+The same level of gain error as visibility based solutions can be achieved with a longer integration time (or larger damping 
 factor).
 
 \begin{figure}
