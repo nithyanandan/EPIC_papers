@@ -2,3 +2,8 @@
 # These notes will need to be polished into a cover letter before sending.
 
 - Changed reference to pyGSM to actual citation.
+- Major revisions to Sec 2.1 to address many comments.
+  - Clarified assumptions
+  - Careful definition of all symbols and terms
+- Tighten notation to avoid unnecessary marks
+

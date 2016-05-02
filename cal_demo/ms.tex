@@ -146,7 +146,7 @@ optimal map without placing constraints on array layout or requiring identical a
 \citep{mor09,bha08,teg97a}.
 
 A challenge common to all direct imaging algorithms is calibration of the antenna gains. With a 
-traditional FX or XF correlator, pair-wise visibilities are written to disk and used to calibrate 
+traditional cross correlator, pair-wise visibilities are written to disk and used to calibrate 
 offline before further processing such as imaging. However, a direct imaging correlator mixes 
 the signals from all antennas before averaging and writing to disk, making calibration a 
 requirement at the front end, before imaging and averaging. Previous solutions have involved 
@@ -239,7 +239,7 @@ E^I_a(f,t) = \int \mathcal{W}_a(\hat{\mathbf{s}})\mathcal{E}(\hat{\mathbf{s}},f,
 Equivalently we can express the effect of the antenna radiation pattern in the plane of the 
 aperture.
 \begin{equation}
-E^I_a(f,t) = \int_{\mathrm{aperture}}W_a(\mathbf{r}-\mathbf{r}_a)E_a(\mathbf{r},t)\,d^2\mathbf{r}
+E^I_a(f,t) = \int_{\mathrm{aperture}}W_a(\mathbf{r}-\mathbf{r}_a)E_a(\mathbf{r},f,t)\,d^2\mathbf{r}
 \end{equation}
 Here we used the Fourier relationship between the antenna's far-field radiation pattern and the 
 aperture distribution, $W_a(\mathbf{r}-\mathbf{r}_a)=\int  \mathcal{W}_a(\hat{\mathbf{s}}) \, d
@@ -270,10 +270,19 @@ position.
 %\end{equation}
 %The subscript $a$ labels the antenna, and $\mathbf{r}_a$ is the location of antenna $a$. 
 
-The first step of the MOFF algorithm is identical to the F-engine of a traditional FX correlator 
-where the electric fields are Fourier transformed to frequency channels, $\Er{a}^T(f,t)$. Even 
-after transforming along the time axis, we retain the time dependence of the signal to represent 
-a stream of spectra.
+The first step of the MOFF algorithm is to digitize the antenna signals and perform an FFT to 
+channelize the time-ordered data. This is effectively estimating the quasi-monochromatic 
+components of the electric field we already discussed. The sampling rate of the digitization 
+determines the bandwidth of the observation, and the sampling period determines the minimum 
+frequency channel resolution. The frequency Fourier transform operation is often referred to as 
+the F-engine of a correlator. The MOFF shares the same F-engine design as an FX cross-
+correlator which performs the frequency transform (F-engine) before cross multiplying (X-
+engine). 
+
+%The first step of the MOFF algorithm is identical to the F-engine of a traditional FX correlator 
+%where the electric fields are Fourier transformed to frequency channels, $\Er{a}^T(f,t)$. Even 
+%after transforming along the time axis, we retain the time dependence of the signal to represent 
+%a stream of spectra.
 
 Thus far we have assumed the antennas deliver the true electric field signals. Here we 
 introduce a multiplicative complex gain as well as an additive noise term which corrupt the 
