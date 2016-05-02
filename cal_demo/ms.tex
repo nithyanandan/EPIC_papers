@@ -190,21 +190,85 @@ squaring and averaging. The accumulated images are then written to disk.}
 \end{center}
 \end{figure}
 
-The electric field incident on the ground, $\Er{}(\mathbf{r},t)$, is related to the sky electric field, 
-$E(\hat{\mathbf{s}},t)$, through a Fourier transform.
+%%% New text
+We begin by considering the electric field vector incident on the ground as a function of time, 
+$\mathbf{E}(\mathbf{r},t)$. The position vector, $\mathbf{r}$, is measured from some arbitrary 
+origin. Following \citealt{cla99} we make a few assumptions in order to clarify notation and 
+simplify the problem. First we note that the time ordered electric field can be expressed as a 
+Fourier series with coefficients corresponding to frequencies $f$. This allows us to analyze the 
+quasi-monochromatic components of the electric field, $\mathbf{E}(\mathbf{r},f,t)$, with the 
+understanding that the full field is composed of all components and their corresponding Fourier 
+functions. We retain the time dependence because in practice each coefficient will only be 
+measured over some sampling period. 
+
+It is convenient to simplify notation by expressing the position vector in units of wavelengths, 
+$\mathbf{r}\rightarrow \mathbf{r}/\lambda$. We will also assume all antennas lie in a plane, 
+reducing the problem to two dimensions. While the MOFF algorithm in principle can account for 
+non-coplanar arrays through the W-projection algorithm \citep{cor08}, the EPIC code does not 
+currently support this so we leave it to future work.
+
+Next we treat the electric field as a scalar quantity, ignoring polarization effects. This allows us 
+to express the electric field as a scalar, $E(\mathbf{r},f,t)$, and treat subsequent field 
+propagation and measurements as scalar rather than tensor multiplications. A full polarization 
+treatment is required to construct polarized sky images, however the calibration will only 
+require a sky model expressed in the instrumental polarization basis. We can therefore treat 
+each polarization independently.
+
+Finally we assume the sources of the electric field are far away, allowing us to describe the 
+electric fields propagating from sky sources as originating from an imaginary celestial sphere 
+located a large distance from the ground. We express this intermediary electric field as an 
+angular distribution, $\mathcal{E}(\hat{\mathbf{s}},f,t)$, where $\hat{\mathbf{s}}$ is the unit 
+vector in the direction of a patch of the celestial sphere. We further assume the space between 
+the celestial sphere and the ground is empty, allowing us to express the electric field incident 
+on the ground as the integral of the propagated fields from the sphere.
 \begin{equation}
-\Er{}(\mathbf{r},t) = \int E(\hat{\mathbf{s}},t) e^{-2\pi i \mathbf{r}\cdot \hat{\mathbf{s}}}\, \dif^2 \hat{\mathbf{s}}
-\end{equation}
-Here $\hat{\mathbf{s}}$ denotes the sine-projected unit vector for the sky angle, $\mathbf{r}$ is 
-the observer's location (measured in wavelengths relative to an arbitrary origin). We will 
-encounter several quantities which we attempt to estimate. We distinguish the ``true'' values 
-with a superscript $T$, while the estimated quantities are denoted with a prime. We define the 
-true antenna signal as a convolution of the antenna voltage pattern, \beamr, with the electric 
-field on the ground.
+E(\mathbf{r},f,t) = \int \mathcal{E}(\hat{\mathbf{s}},f,t) e^{-2\pi i \mathbf{r} \cdot \hat{\mathbf{s}}}\, d\Omega
+\end{equation}  
+By making the latter assumptions we have left treatment of the ionosphere and terrestrial 
+emission such as local interference or thermal radiation from the ground for future work. 
+
+Next we turn to the measurement performed by an antenna with far-field radiation pattern 
+$\mathcal{W}_a(\hat{\mathbf{s}})$, where the subscript $a$ denotes a specific antenna. We 
+adopt the common convention of normalizing the radiation pattern to have response of 1 at the 
+center of the main lobe \citep[e.g.][]{nap99}. Consequently, the translation between the terminal 
+voltages to electric field measurements has been absorbed in our definition of the radiation 
+pattern. The ideal antenna electric field measurement can be expressed as 
 \begin{equation}
-\Er{a}^T(t) \equiv \int \beamr_a(\mathbf{r}-\ra) \Er{}(\mathbf{r},t) \, \dif^2 \mathbf{r}
+E^I_a(f,t) = \int \mathcal{W}_a(\hat{\mathbf{s}})\mathcal{E}(\hat{\mathbf{s}},f,t) e^{-2\pi i \mathbf{r} \cdot \hat{\mathbf{s}}}\, d\Omega. 
 \end{equation}
-The subscript $a$ labels the antenna, and $\mathbf{r}_a$ is the location of antenna $a$. 
+Equivalently we can express the effect of the antenna radiation pattern in the plane of the 
+aperture.
+\begin{equation}
+E^I_a(f,t) = \int_{\mathrm{aperture}}W_a(\mathbf{r}-\mathbf{r}_a)E_a(\mathbf{r},t)\,d^2\mathbf{r}
+\end{equation}
+Here we used the Fourier relationship between the antenna's far-field radiation pattern and the 
+aperture distribution, $W_a(\mathbf{r}-\mathbf{r}_a)=\int  \mathcal{W}_a(\hat{\mathbf{s}}) \, d
+\Omega$. Although any antenna extends over a region of space, we include a nominal antenna 
+position, $\mathbf{r}_a$, for multiple reasons. In the case where all antennas of an array are 
+identical, a global aperture distribution can be adopted and the translation of the antennas 
+distinguishes them. However, even if all antennas have unique aperture distributions, it can be 
+convenient to retain the relative positions of antennas in the analysis. This allows for easy 
+comparison with visibility-based analyses where the baseline vectors are used to describe 
+sampling of the $uv$ plane. From a practical point of view, measurements of the antenna 
+radiation pattern may not be performed in-situ, so it is convenient to describe the antenna 
+aperture distribution relative to a point fixed within the aperture, along with a translational 
+position.
+
+%The electric field incident on the ground, $\Er{}(\mathbf{r},t)$, is related to the sky electric field, 
+%$E(\hat{\mathbf{s}},t)$, through a Fourier transform.
+%\begin{equation}
+%\Er{}(\mathbf{r},t) = \int E(\hat{\mathbf{s}},t) e^{-2\pi i \mathbf{r}\cdot \hat{\mathbf{s}}}\, \dif^2 \hat{\mathbf{s}}
+%\end{equation}
+%Here $\hat{\mathbf{s}}$ denotes the sine-projected unit vector for the sky angle, $\mathbf{r}$ is 
+%the observer's location (measured in wavelengths relative to an arbitrary origin). We will 
+%encounter several quantities which we attempt to estimate. We distinguish the ``true'' values 
+%with a superscript $T$, while the estimated quantities are denoted with a prime. We define the 
+%true antenna signal as a convolution of the antenna voltage pattern, \beamr, with the electric 
+%field on the ground.
+%\begin{equation}
+%\Er{a}^T(t) \equiv \int \beamr_a(\mathbf{r}-\ra) \Er{}(\mathbf{r},t) \, \dif^2 \mathbf{r}
+%\end{equation}
+%The subscript $a$ labels the antenna, and $\mathbf{r}_a$ is the location of antenna $a$. 
 
 The first step of the MOFF algorithm is identical to the F-engine of a traditional FX correlator 
 where the electric fields are Fourier transformed to frequency channels, $\Er{a}^T(f,t)$. Even 
