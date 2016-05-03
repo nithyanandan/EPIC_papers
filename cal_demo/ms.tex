@@ -334,17 +334,18 @@ through the following equation.
 \underbrace{\sum_a W_a(\mathbf{r}_k - \ra)}_{\mathrm{Gridding}} \\
 & \qquad \times \underbrace{ \frac{1}{g'_a} \left(g_a E_a^I(t)+n_a(t)\right)}_{\mathrm{Calibration}} \nonumber
 \end{align}
-The sum over antennas uses the voltage pattern to grid the calibrated electric fields onto 
-regular gridpoint, $i$. The sum over $i$ denotes the 2D FFT to sky coordinates, resulting in an 
+The sum over antennas uses the antenna aperture distribution to grid the calibrated electric field measurements onto 
+regular gridpoints, $\mathbf{r}_j$. The sum over $j$ denotes the 2D FFT to sky coordinates, resulting in an 
 estimate for the instantaneous electric field image. We can simplify this expression by 
-exchanging the sums to transform the beam term into sky coordinates.
+exchanging the sums and use the DFT to approximate the Fourier relationship between
+the antenna aperture distribution and the far-field radiation pattern.
 \begin{align}\label{eq:epix}
-\Ethetaest(\s_i,t) & = \frac{1}{\Nant} \sum_a \frac{g^T_a}{g'_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra} \nonumber \\
-  & \qquad\times \sum_i \beamr_a(\ri-\ra)e^{2\pi i \s_i \cdot (\ri-\ra)} \nonumber\\
-& = \frac{1}{\Nant} \sum_a \frac{ g^T_a}{g'_a}\Er{a}^T(t) e^{2\pi i \s_i \cdot \ra}\beamtheta_a(\s_i)
+\mathcal{E}(\s_k,t) & = \frac{1}{\Nant} \sum_a \frac{1}{g'_a}\left(g_a E^I_a(t)+n_a(t)\right) e^{2\pi i \s_k \cdot \ra} \nonumber \\
+  & \qquad\times \sum_j W_a(\mathbf{r}_j-\ra)e^{2\pi i \s_k \cdot (\mathbf{r}_j-\ra)} \nonumber\\
+& \approx \frac{1}{\Nant} \sum_a \frac{1}{g'_a}\left(g_aE^I_a(t)+n_a(t)\right) e^{2\pi i \s_k \cdot \ra}\mathcal{W}_a(\s_k)
 \end{align}
-In this form we see that the effect of gridding with the antenna voltage pattern is to attenuate 
-the image by a factor of the antenna sky response, $\beamtheta_a(\s_i)$.
+In this form we see that the effect of gridding with the antenna aperture distribution is to attenuate 
+the image by a factor of the far-field radiation response, $\mathcal{W}_a(\s)$.
 
 Finally, the images are squared and averaged in time to reduce output bandwidth, then written 
 to disk. While operations have been reordered, the resulting image is equivalent to one 
