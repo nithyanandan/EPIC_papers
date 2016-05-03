@@ -288,9 +288,9 @@ Thus far we have assumed the antennas perfectly measure the sky electric field d
 \begin{equation}\label{eq:apply_gain}
 E_a(f,t) = g_a(f,t) E_a^I(f,t) + n_a(f,t)
 \end{equation}
-The noise term is 
-strictly receiver noise -- noise introduced by the instrument. Any sky noise is implicitly included 
-in the time dependence of the sky electric field. 
+%The noise term is 
+%strictly receiver noise -- noise introduced by the instrument. Any sky noise is implicitly included 
+%in the time dependence of the sky electric field. 
 We have carried the frequency dependence to this point to make clear the complex gains are
 frequency dependent. However, each subsequent step treats each frequency 
 channel independently, so we will drop the $f$ to simplify notation. 
@@ -298,18 +298,20 @@ Furthermore, while antenna gains may vary with time, we will assume they are con
 the period of our calibration, and thus drop their time dependence from the notation.
 
 The MOFF algorithm next calls for a calibration of the electric field measurements. The goal of our new calibration method will be 
-to form an estimate of the gains, $g'_a$, where the tick represents the estimate. For now we will assume we have formed an estimate 
+to form an estimate of the gains, $g'_a$, where the prime represents an estimate. For now we will assume we have formed an estimate 
 to proceed with the MOFF pipeline. We correct the incoming electric field data stream using our 
 current estimate of the gains.
 \begin{equation}
 E'_a(t) = E_a(t)/ g'_a
 \end{equation}
 
-The next step is to grid the calibrated electric field measurements. MOFF uses the antenna patterns as the gridding 
+The next step is to grid the calibrated electric field measurements to regularly spaced 
+positions on the 2D plane of the ground, $\mathbf{r}_j$. 
+MOFF uses the antenna patterns as the gridding 
 kernel according to the software holography/A-transpose technique \citep{mor09,bha08}. 
 Mathematically we can express the gridding operation as
 \begin{equation}
-E'_j=\sum_a W_a(\mathbf{r}_i-\mathbf{r}_a) E'_a(t)
+E'_j=\sum_a W_a(\mathbf{r}_j-\mathbf{r}_a) E'_a(t)
 \end{equation}
 This 
 achieves an optimal map \citep{teg97b} and places the data on a regular grid. Unlike 
