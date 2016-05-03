@@ -275,38 +275,43 @@ channelize the time-ordered data. This is effectively estimating the quasi-monoc
 components of the electric field we already discussed. The sampling rate of the digitization 
 determines the bandwidth of the observation, and the sampling period determines the minimum 
 frequency channel resolution. The frequency Fourier transform operation is often referred to as 
-the F-engine of a correlator. The MOFF shares the same F-engine design as an FX cross-
-correlator which performs the frequency transform (F-engine) before cross multiplying (X-
-engine). 
+the F-engine of a correlator. The MOFF shares the same F-engine design as an FX cross
+correlator which performs the frequency transform (F-engine) before cross multiplying 
+(X-engine). 
 
 %The first step of the MOFF algorithm is identical to the F-engine of a traditional FX correlator 
 %where the electric fields are Fourier transformed to frequency channels, $\Er{a}^T(f,t)$. Even 
 %after transforming along the time axis, we retain the time dependence of the signal to represent 
 %a stream of spectra.
 
-Thus far we have assumed the antennas deliver the true electric field signals. Here we 
-introduce a multiplicative complex gain as well as an additive noise term which corrupt the 
-measured signals.
+Thus far we have assumed the antennas perfectly measure the sky electric field distribution according to their far-field radiation patterns. Here we introduce a multiplicative complex gain as well as an additive noise term which corrupt the measured signals.
 \begin{equation}\label{eq:apply_gain}
-\Er{a}(f,t) = g^T_a(f,t) \Er{a}^T(f,t) + \widetilde{n}_a(f,t)
+E_a(f,t) = g_a(f,t) E_a^I(f,t) + n_a(f,t)
 \end{equation}
-Note that this quantity is neither a true or estimated value, but rather the raw electric field signal 
-corrupted by the complex gain before we attempt to estimate the true value. The noise term is 
+The noise term is 
 strictly receiver noise -- noise introduced by the instrument. Any sky noise is implicitly included 
-in the time dependence of the sky electric field. We will neglect $\widetilde{n}_a$ for now, but 
-will inspect its effects at the end of this section. Each subsequent step treats each frequency 
+in the time dependence of the sky electric field. 
+We have carried the frequency dependence to this point to make clear the complex gains are
+frequency dependent. However, each subsequent step treats each frequency 
 channel independently, so we will drop the $f$ to simplify notation. 
+Furthermore, while antenna gains may vary with time, we will assume they are constant over
+the period of our calibration, and thus drop their time dependence from the notation.
 
-The MOFF algorithm next calls for a calibration. The goal of our new calibration method will be 
-to form an estimate of the gains, $g'_a$. For now we will assume we have formed an estimate 
+The MOFF algorithm next calls for a calibration of the electric field measurements. The goal of our new calibration method will be 
+to form an estimate of the gains, $g'_a$, where the tick represents the estimate. For now we will assume we have formed an estimate 
 to proceed with the MOFF pipeline. We correct the incoming electric field data stream using our 
 current estimate of the gains.
 \begin{equation}
-\Erest{a}(t) = \Er{a}(t)/ g'_a
+E'_a(t) = E_a(t)/ g'_a
 \end{equation}
 
-The next step is to grid the antenna signals. MOFF uses the antenna patterns as the gridding 
-kernel according to the software holography/A-transpose technique \citep{mor09,bha08}. This 
+The next step is to grid the calibrated electric field measurements. MOFF uses the antenna patterns as the gridding 
+kernel according to the software holography/A-transpose technique \citep{mor09,bha08}. 
+Mathematically we can express the gridding operation as
+\begin{equation}
+E'_j=\sum_a W_a(\mathbf{r}_i-\mathbf{r}_a) E'_a(t)
+\end{equation}
+This 
 achieves an optimal map \citep{teg97b} and places the data on a regular grid. Unlike 
 traditional correlators which grid visibilities, the MOFF grids the electric fields directly. This 
 operation must be performed for every time step, before any averaging of the data.
