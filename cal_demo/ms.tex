@@ -220,8 +220,8 @@ located a large distance from the ground. We express this intermediary electric 
 angular distribution, $\mathcal{E}(\hat{\mathbf{s}},f,t)$, where $\hat{\mathbf{s}}$ is the unit 
 vector in the direction of a patch of the celestial sphere. We further assume the space between 
 the celestial sphere and the ground is empty, allowing us to express the electric field incident 
-on the ground as the integral of the propagated fields from the sphere.
-\begin{equation}
+on the ground as a Fourier integral of the propagated fields across the hemisphere above the horizon.
+\begin{equation}\label{eq:sky_propagated}
 E(\mathbf{r},f,t) = \int \mathcal{E}(\hat{\mathbf{s}},f,t) e^{-2\pi i \mathbf{r} \cdot \hat{\mathbf{s}}}\, d\Omega
 \end{equation}  
 By making the latter assumptions we have left treatment of the ionosphere and terrestrial 
@@ -305,9 +305,10 @@ current estimate of the gains.
 E'_a(t) = E_a(t)/ g'_a
 \end{equation}
 
-The next step is to grid the calibrated electric field measurements to regularly spaced 
-positions on the 2D plane of the ground, $\mathbf{r}_j$. 
-MOFF uses the antenna patterns as the gridding 
+The next step is to grid the calibrated electric field measurements to a finites set of regularly spaced 
+positions on the 2D plane of the ground, $\mathbf{r}_j$.
+The extent of the grid is chosen to encompass the footprint of the antenna array.
+MOFF uses the antenna aperture distributions as the gridding 
 kernel according to the software holography/A-transpose technique \citep{mor09,bha08}. 
 Mathematically we can express the gridding operation as
 \begin{equation}
@@ -319,13 +320,20 @@ traditional correlators which grid visibilities, the MOFF grids the electric fie
 operation must be performed for every sample, before any averaging of the data.
 
 After gridding, the imaging portion of the MOFF performs a 2D spatial FFT to form 
-instantaneous electric field images of the sky. The pipeline up to this point can be summarized 
+instantaneous electric field images of the sky at fixed locations $\s_k$.
+The Fourier dual coordinates to $\mathbf{r}$ are $(l,m)$, where $l=\sin\theta\cos\phi$,
+$m=\nobreak\sin\theta\sin\phi$, and $(\theta,\phi)$ are the zenith 
+and azimuthal angles. The full unit vector towards the sky is 
+$\s=(l,m,\sqrt{1-l^2-m^2})$.
+The sample spacing and resolution of $\s_k$ are given 
+by the choices of $\mathbf{r}_j$ grid parameters, according to the usual FFT relations.
+The pipeline up to this point can be summarized 
 through the following equation.
-\begin{equation}
-\Ethetaest (\s_i,t) = \underbrace{\frac{1}{\Nant} \sum_i e^{2\pi i \ri \cdot \s_i}}_{\mathrm{2D\;FFT}} 
-\underbrace{\sum_a \beamr_a(\ri - \ra)}_{\mathrm{Gridding}}
-\underbrace{ \frac{g^T_a}{g'_a} \Er{a}^T(t)}_{\mathrm{Calibration}}
-\end{equation}
+\begin{align}
+\mathcal{E}'(\s_k,t) & = \underbrace{\frac{1}{\Nant} \sum_j e^{2\pi i \mathbf{r}_j \cdot \s_k}}_{\mathrm{2D\;FFT}} 
+\underbrace{\sum_a W_a(\mathbf{r}_k - \ra)}_{\mathrm{Gridding}} \\
+& \qquad \times \underbrace{ \frac{1}{g'_a} \left(g_a E_a^I(t)+n_a(t)\right)}_{\mathrm{Calibration}} \nonumber
+\end{align}
 The sum over antennas uses the voltage pattern to grid the calibrated electric fields onto 
 regular gridpoint, $i$. The sum over $i$ denotes the 2D FFT to sky coordinates, resulting in an 
 estimate for the instantaneous electric field image. We can simplify this expression by 
