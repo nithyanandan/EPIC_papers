@@ -7,3 +7,11 @@
   - Careful definition of all symbols and terms
 - Tighten notation to avoid unnecessary marks
 
+
+TODO:
+- Finish revamping sec 2
+- Make more clear the parameters described in the simulation section
+- switch data and error sections
+- figure out CygA and CasA fluxes & references
+- Units on data image plots
+- Other small points
