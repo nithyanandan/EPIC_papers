@@ -39,9 +39,9 @@ Abbott B.~P.,  et~al., 2016b, \mn@doi [Phys. Rev. Lett.]
   {10.1111/j.1365-2966.2012.20878.x}, \href
   {http://adsabs.harvard.edu/abs/2012MNRAS.425.1781B} {425, 1781}
 
-\bibitem[\protect\citeauthoryear{{Bhatnagar, S.}, {Cornwell, T. J.}, {Golap,
-  K.}  \& {Uson, J. M.}}{{Bhatnagar, S.} et~al.}{2008}]{bha08}
-{Bhatnagar, S.} {Cornwell, T. J.} {Golap, K.}  {Uson, J. M.} 2008, \mn@doi
+\bibitem[\protect\citeauthoryear{{Bhatnagar}, {Cornwell, T. J.}, {Golap, K.}
+  \& {Uson, J. M.}}{{Bhatnagar} et~al.}{2008}]{bha08}
+{Bhatnagar} S.,  {Cornwell, T. J.} {Golap, K.}  {Uson, J. M.} 2008, \mn@doi
   [A\&A] {10.1051/0004-6361:20079284}, 487, 419
 
 \bibitem[\protect\citeauthoryear{{Bowman} et~al.,}{{Bowman}
@@ -54,12 +54,23 @@ Abbott B.~P.,  et~al., 2016b, \mn@doi [Phys. Rev. Lett.]
   {10.1007/s10686-005-5661-5}, \href
   {http://adsabs.harvard.edu/abs/2004ExA....17..251B} {17, 251}
 
+\bibitem[\protect\citeauthoryear{{Clark}}{{Clark}}{1999}]{cla99}
+{Clark} B.~G.,  1999, in {Taylor} G.~B.,  {Carilli} C.~L.,   {Perley} R.~A.,
+  eds,  Astronomical Society of the Pacific Conference Series Vol. 180,
+  Synthesis Imaging in Radio Astronomy II. p.~1
+
 \bibitem[\protect\citeauthoryear{{Cohen}, {Lane}, {Cotton}, {Kassim}, {Lazio},
   {Perley}, {Condon}  \& {Erickson}}{{Cohen} et~al.}{2007}]{coh07}
 {Cohen} A.~S.,  {Lane} W.~M.,  {Cotton} W.~D.,  {Kassim} N.~E.,  {Lazio}
   T.~J.~W.,  {Perley} R.~A.,  {Condon} J.~J.,   {Erickson} W.~C.,  2007,
   \mn@doi [\aj] {10.1086/520719}, \href
   {http://adsabs.harvard.edu/abs/2007AJ....134.1245C} {134, 1245}
+
+\bibitem[\protect\citeauthoryear{{Cornwell}, {Golap}  \&
+  {Bhatnagar}}{{Cornwell} et~al.}{2008}]{cor08}
+{Cornwell} T.~J.,  {Golap} K.,   {Bhatnagar} S.,  2008, \mn@doi [IEEE Journal
+  of Selected Topics in Signal Processing] {10.1109/JSTSP.2008.2005290}, \href
+  {http://adsabs.harvard.edu/abs/2008ISTSP...2..647C} {2, 647}
 
 \bibitem[\protect\citeauthoryear{Daishido et~al.,}{Daishido
   et~al.}{2000}]{dai00}
@@ -124,6 +135,11 @@ Mitchell D.,  Greenhill L.,  Wayth R.,  Sault R.,  Lonsdale C.,  Cappallo R.,
 {Morales} M.~F.,  {Matejek} M.,  2009, \mn@doi [\mnras]
   {10.1111/j.1365-2966.2009.15537.x}, \href
   {http://adsabs.harvard.edu/abs/2009MNRAS.400.1814M} {400, 1814}
+
+\bibitem[\protect\citeauthoryear{{Napier}}{{Napier}}{1999}]{nap99}
+{Napier} P.~J.,  1999, in {Taylor} G.~B.,  {Carilli} C.~L.,   {Perley} R.~A.,
+  eds,  Astronomical Society of the Pacific Conference Series Vol. 180,
+  Synthesis Imaging in Radio Astronomy II. p.~37
 
 \bibitem[\protect\citeauthoryear{{Neben} et~al.,}{{Neben} et~al.}{2015}]{neb15}
 {Neben} A.~R.,  et~al., 2015, \mn@doi [Radio Science] {10.1002/2015RS005678},
