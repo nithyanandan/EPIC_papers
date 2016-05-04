@@ -363,40 +363,51 @@ alternative method to estimate the antenna gains in real time, using the data pr
 MOFF. 
 
 Because the gains must be estimated in real time, we will need to use a finite stream of data to 
-form and estimate which will be applied to the subsequent stream of data. Therefore the 
+form an estimate which will be applied to the subsequent stream of data. Therefore the 
 process of finding a solution is an iterative one. We will use parenthetical superscripts to 
 denote the calibration loop number. For example, we will assume we have already formed an 
 estimate from $n$ loops, $g^{(n)}_a$. We will use these estimates to calibrate the next stream 
 of data in order to form an updated estimate, $g^{(n+1)}_a$.
 
 As a starting point, we consider the feedback calibration outlined in \citealt{mor11}. There it 
-was suggested to form a correlation of the uncalibrated antenna measurements with an image 
+was suggested to form a correlation of the uncalibrated antenna measurements with the complex conjugate of an image 
 pixel from the output of the correlator. This is a statistically stationary quantity, which can be 
 related to the sum of visibilities involving the antenna used in the correlation -- exactly the sum 
 needed to calibrate a simple sky of a single point source. However, we aim for a more 
 generalized solution for arbitrarily complex sky models. We therefore study the full expression 
 for the antenna-pixel correlation,
 \begin{equation}\label{eq:Cna}
-\Cna \equiv \left<\Er{a}(t) E'^*(\spix,t)\right>_t,
+\Cna \equiv \left<E_a^{(n)}(t) \mathcal{E}'^{*(n)}(\spix,t)\right>_t,
 \end{equation}
 where the superscript $n$ again represents the quantity formed in the $n^\mathrm{th}$ 
-calibration loop, and \spix\, is the pixel center nearest a bright calibrator of interest. The 
+calibration loop, 
+the superscript $^*$ indicates complex conjugation,
+and \spix\, is the pixel center nearest a bright calibrator of interest. The 
 following will hold for any chosen pixel, \spix, though it is advantageous to choose a pixel which 
 contains a bright source to achieve a high signal to noise. 
 
-Plugging equation \ref{eq:epix} into equation \ref{eq:Cna}, we find,
+Plugging equation \ref{eq:epix} into equation \ref{eq:Cna}, 
+and substituting the $g^{(n)}_b$ for $g'_b$ to indicate the specific loop number,
+we find,
 \begin{align}\label{eq:cna}
-\Cna & = \left<g^T_a \Er{a}^T(t) \frac{1}{\Nant} \sum_b \frac{g^{T*}_b}{g^{*(n)}_b}\Er{b}^{T*}(t) e^{-2\pi i \spix \cdot \rb} \beamtheta^*_b(\spix)\right>_t \nonumber \\
-& = \frac{g^T_a}{\Nant} \sum_b \frac{g^{T*}_b}{g^{*(n)}_b} \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \left<\Er{a}^T \Er{b}^{*T} \right>_t \nonumber \\
-& = \frac{g^T_a}{\Nant} \sum_b \frac{g^{T*}_b}{g^{*(n)}_b} \beamtheta^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \V^T_{ab}
+\Cna & = \left<\left(g_a E_a^I(t)+n_a(t)\right) \frac{1}{\Nant} \right. \nonumber \\
+& \qquad \left. \times \sum_b \frac{1}{g^{*(n)}_b}\left(g^*_bE_b^{I*}(t)+n^*_b(t)\right) e^{-2\pi i \spix \cdot \rb} \mathcal{W}^*_b(\spix)\right>_t \nonumber \\
+& = \frac{1}{\Nant} \sum_b \frac{1}{g^{*(n)}_b} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \nonumber \\
+& \qquad \times \left<\left(g_aE_a^I(t)+n_a(t)\right)\left(g^*_bE_b^{*I}+n^*_b(t)\right) \right>_t \nonumber \\
+& = \frac{1}{\Nant} \sum_b \frac{1}{g^{*(n)}_b} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \nonumber \\
+& \qquad \times \left(g_a g^*_b \left<E^I_a(t)E^{*I}_b(t)\right>_t + \left<n_a(t) n^*_b(t)\right>_t\right) \nonumber \\
+& = \frac{1}{\Nant} \sum_b \frac{1}{g^{*(n)}_b} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \left(g_ag^*_bV^I_{ab}+n_{ab}\right)
 \end{align}
-where in the second step we group time-dependent terms, and in the third we define the true 
-visibilities as the correlation between true antenna electric field measurements. It is easy to see 
-from here that the net effect of including the receiver noise term, $\widetilde{n}_a(f,t)$, will 
-result in added noise on the true visibilities, including a bias on the auto-correlation terms. In 
-principle a bias can result on any visibility from any noise correlations between antennas, but 
-the implementation included in the EPIC software package restricts the noise term to include 
-only the auto-correlation noise bias, and assumes baseline dependent noise has zero mean.
+where in the second step we group time-dependent terms, 
+in the third step we assume the noise does not correlate with the ideal electric field 
+measurements, and in the final step we introduce the baseline noise $n_{ab}\equiv
+\left<n_a(t)n^*_b(t)\right>_t$, and ideal visibilities as the correlation between ideal
+electric field measurements, $V^I_{ab} \equiv\left<E^I_a(t)E^{*I}_b(t)\right>_t$.
+To be clear, visibilities are never directly formed from the data. Rather it is convenient to
+express $\Cna$ in terms of the ideal visibilities, which we can model when solving for the
+gains below.
+
+\textcolor{red}{need a brief comment on the noise term}
 
 The next step is to use this antenna-pixel correlation to update our gain solution. We will model 
 the right hand side of equation~\ref{eq:cna} by assuming our current gain estimates are 
