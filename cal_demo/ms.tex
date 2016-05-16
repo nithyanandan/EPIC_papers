@@ -183,9 +183,9 @@ the various steps of the algorithm.
 \begin{center}
 \includegraphics[width=\columnwidth]{fig1.pdf}
 \caption{Data flow for the MOFF algorithm, reproduced from \citealt{thy15c}. The time ordered 
-electric fields are collected by the antenna elements then frequency transformed in the F-
-engine. The calibration is applied, then the electric field measurements are gridded using the 
-antenna voltage patterns. The imager performs a spatial 2D FFT on the gridded data before 
+electric field measurements are collected by the antenna elements then frequency transformed in the 
+F-engine. The calibration is applied, then the electric field measurements are gridded using the 
+antenna illumination patterns. The imager performs a spatial 2D FFT on the gridded data before 
 squaring and averaging. The accumulated images are then written to disk.}
 \label{fig:moff_flow}
 \end{center}
@@ -243,7 +243,7 @@ aperture.
 E^I_a(f,t) = \int_{\mathrm{aperture}}W_a(\mathbf{r}-\mathbf{r}_a)E_a(\mathbf{r},f,t)\,d^2\mathbf{r}
 \end{equation}
 Here we used the Fourier relationship between the antenna's far-field radiation pattern and the 
-aperture distribution, $W_a(\mathbf{r}-\mathbf{r}_a)=\int  \mathcal{W}_a(\hat{\mathbf{s}}) \, d
+aperture illumination pattern (sometimes referred to as the aperture distribution), $W_a(\mathbf{r}-\mathbf{r}_a)=\int  \mathcal{W}_a(\hat{\mathbf{s}}) \, d
 \Omega$. Although any antenna extends over a region of space, we include a nominal antenna 
 position, $\mathbf{r}_a$, for multiple reasons. In the case where all antennas of an array are 
 identical, a global aperture distribution can be adopted and the translation of the antennas 
@@ -306,19 +306,23 @@ current estimate of the gains.
 E'_a(t) = E_a(t)/ g'_a
 \end{equation}
 
-The next step is to grid the calibrated electric field measurements to a finites set of regularly spaced 
+The next step is to grid the calibrated electric field measurements to a finite set of regularly spaced 
 positions on the 2D plane of the ground, $\mathbf{r}_j$.
 The extent of the grid is chosen to encompass the footprint of the antenna array.
 MOFF uses the antenna aperture distributions as the gridding 
 kernel according to the software holography/A-transpose technique \citep{mor09,bha08}. 
 Mathematically we can express the gridding operation as
-\begin{equation}
+\begin{equation}\label{eq:gridding}
 E'_j=\sum_a W_a(\mathbf{r}_j-\mathbf{r}_a) E'_a(t)
 \end{equation}
-This 
+Formally each pixel is calculated by summing over all antennas and their illumination patterns.
+However the illumination patterns are typically compact and non-overlapping, so most pixels
+will only contain contribution from at most one antenna, allowing equation~\ref{eq:gridding}
+to be calculated through a sparse matrix multiplication.
+This gridding 
 achieves an optimal map \citep{teg97b} and places the data on a regular grid. Unlike 
 traditional correlators which grid visibilities, the MOFF grids the electric field measurements directly. This 
-operation must be performed for every sample, before any averaging of the data.
+operation must be performed for every time sample, before any averaging of the data.
 
 After gridding, the imaging portion of the MOFF performs a 2D spatial FFT to form 
 instantaneous electric field images of the sky at fixed locations $\s_k$.
@@ -327,25 +331,28 @@ $m=\nobreak\sin\theta\sin\phi$, and $(\theta,\phi)$ are the zenith
 and azimuthal angles. The full unit vector towards the sky is 
 $\s=(l,m,\sqrt{1-l^2-m^2})$.
 The sample spacing and resolution of $\s_k$ are given 
-by the choices of $\mathbf{r}_j$ grid parameters, according to the usual FFT relations.
+by the choices of $\mathbf{r}_j$ grid parameters, according to the usual FFT relations. 
+Fine $\mathbf{r}_j$ grid spacing can result in non-physical angular pixels ($l^2+m^2>1$),
+which should be discarded.
+
 The pipeline up to this point can be summarized 
 through the following equation.
 \begin{align}
 \mathcal{E}'(\s_k,t) & = \underbrace{\frac{1}{\Nant} \sum_j e^{2\pi i \mathbf{r}_j \cdot \s_k}}_{\mathrm{2D\;FFT}} 
-\underbrace{\sum_a W_a(\mathbf{r}_k - \ra)}_{\mathrm{Gridding}} \\
+\underbrace{\sum_a W_a(\mathbf{r}_j - \ra)}_{\mathrm{Gridding}} \\
 & \qquad \times \underbrace{ \frac{1}{g'_a} \left(g_a E_a^I(t)+n_a(t)\right)}_{\mathrm{Calibration}} \nonumber
 \end{align}
-The sum over antennas uses the antenna aperture distribution to grid the calibrated electric field measurements onto 
+The sum over antennas uses the antenna illumination pattern to grid the calibrated electric field measurements onto 
 regular gridpoints, $\mathbf{r}_j$. The sum over $j$ denotes the 2D FFT to sky coordinates, resulting in an 
 estimate for the instantaneous electric field image. We can simplify this expression by 
 exchanging the sums and use the DFT to approximate the Fourier relationship between
-the antenna aperture distribution and the far-field radiation pattern.
+the antenna illumination pattern and the far-field radiation pattern.
 \begin{align}\label{eq:epix}
 \mathcal{E}(\s_k,t) & = \frac{1}{\Nant} \sum_a \frac{1}{g'_a}\left(g_a E^I_a(t)+n_a(t)\right) e^{2\pi i \s_k \cdot \ra} \nonumber \\
   & \qquad\times \sum_j W_a(\mathbf{r}_j-\ra)e^{2\pi i \s_k \cdot (\mathbf{r}_j-\ra)} \nonumber\\
 & \approx \frac{1}{\Nant} \sum_a \frac{1}{g'_a}\left(g_aE^I_a(t)+n_a(t)\right) e^{2\pi i \s_k \cdot \ra}\mathcal{W}_a(\s_k)
 \end{align}
-In this form we see that the effect of gridding with the antenna aperture distribution is to attenuate 
+In this form we see that the effect of gridding with the antenna illumination pattern is to attenuate 
 the image by a factor of the far-field radiation response, $\mathcal{W}_a(\s)$.
 
 Finally, the images are squared and averaged in time to reduce output bandwidth, then written 
@@ -377,7 +384,7 @@ related to the sum of visibilities involving the antenna used in the correlation
 needed to calibrate a simple sky of a single point source. However, we aim for a more 
 generalized solution for arbitrarily complex sky models. We therefore study the full expression 
 for the antenna-pixel correlation,
-\begin{equation}\label{eq:Cna}
+\begin{equation}\label{eq:Kna_def}
 \Kna \equiv \left<E_a^{(n)}(t) \mathcal{E}'^{*(n)}(\spix,t)\right>_t,
 \end{equation}
 where the superscript $n$ again represents the quantity formed in the $n^\mathrm{th}$ 
@@ -387,7 +394,7 @@ and \spix\, is the pixel center nearest a bright calibrator of interest. The
 following will hold for any chosen pixel, \spix, though it is advantageous to choose a pixel which 
 contains a bright source to achieve a high signal to noise. 
 
-Plugging equation \ref{eq:epix} into equation \ref{eq:Cna}, 
+Plugging equation \ref{eq:epix} into equation \ref{eq:Kna_def}, 
 and substituting the $g^{(n)}_b$ for $g'_b$ to indicate the specific loop number,
 we find,
 \begin{align}
@@ -403,8 +410,8 @@ we find,
 where in the second step we group time-dependent terms, 
 and in the third step we expanded the product within the time average.
 Because the noise does not correlate with the ideal antenna measurements we can
-drop the middle terms. We will also assume that the noise of antenna $a$ correlated with
-the noise of antenna $b$ is also zero mean, unless $a=b$. By defining an ideal visibility as
+drop the middle terms. We will also assume that the cross-correlation noise ($a\ne b$) 
+is zero mean. Then by defining an ideal visibility as
 $V_{ab}^I \equiv \left<E^I_a(t)E^{*I}_b(t)\right>_t$, we can simplify to
 \begin{align}\label{eq:Kna}
 \Kna & = \frac{1}{\Nant} \sum_b \frac{1}{g^{*(n)}_b} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb}\nonumber \\
@@ -414,40 +421,42 @@ where $\delta_{ab}$ is the Kronecker-delta function. To be clear, visibilities a
 formed from the data. Rather it is convenient to express $\Kna$ in terms of the ideal 
 visibilities, which we can model when solving for the gains below.
 
-We will ultimately wish to model the right side of this equation to in order to solve for the
-antenna gains. However, the self-correlated noise bias, $\left<|n_a(t)|^2\right>$, can often be 
+We will ultimately wish to model the right side of equation~\ref{eq:Kna} in order to solve for the
+antenna gains. However, the self-correlated noise, $\left<|n_a(t)|^2\right>$, can often be 
 significantly larger than the cross correlation power, and difficult to model precisely. It 
 is therefore beneficial to subtract the self-correlation directly from $\Kna$. By properly
-accounting for the various weighting and phasing terms, we can use self-correlation of the
-uncalibrated antenna electric field measurements to remove the noise bias and $V^I_{aa}$
-term from equation~\ref{eq:Kna}.
-\begin{align}\label{eq:cna}
+accounting for the various weighting and phasing terms, we can use self-correlations of the
+uncalibrated antenna electric field measurements to remove the corresponding
+terms from equation~\ref{eq:Kna}.
+\begin{align}\label{eq:Cna}
 \Cna & \equiv \Kna - \frac{1}{\Nant g^{*(n)}_a}\mathcal{W}^*_a(\spix)e^{-2\pi i \spix \cdot \ra} \left<|E_a|^2\right>_t\nonumber \\
 & = \frac{g_a}{\Nant} \sum_{b\ne a} \frac{g^*_b}{g^{*(n)}_b} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} V^I_{ab}
 \end{align}
 
 The next step is to use this antenna-pixel correlation to update our gain solution. We will model 
-the right hand side of equation~\ref{eq:cna} by assuming our current gain estimates are 
+the right hand side of equation~\ref{eq:Cna} by assuming our current gain estimates are 
 approximately correct, $g^{(n)}_b\approx g_b$, and replacing the ideal visibilities with a set of 
 model visibilities, $V^M_{ab}$. These model visibilities rely on knowledge of the sky, and should 
-be precomputed before observing. We can then solve equation~\ref{eq:cna} for $g_a$ to achieve an 
+be precomputed before observing. We can then solve equation~\ref{eq:Cna} for $g_a$ to achieve an 
 updated estimate.
 \begin{equation}\label{eq:cal_solution}
-g^{(n+1)}_a = \Cna \Nant \left[ \sum_{b\ne a} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} V^M_{ab} \right]^{-1}
+%g^{(n+1)}_a = \Cna \Nant \left[ \sum_{b\ne a} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} V^M_{ab} \right]^{-1}
+g^{(n+1)}_a = \frac{\Cna \Nant }{ \sum_{b\ne a} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} V^M_{ab} }
 \end{equation}
 This equation is our prescription for estimating the antenna gains of a direct imaging array. The 
 real-time computation complexity scales as $\mathcal{O}(\Nant)$ as we form 
 an antenna-pixel correlation, $\Cna$, for each 
 antenna. 
 
-\textcolor{red}{pick up here}
-
 We show schematically the process of calibrating a direct imaging correlator in 
-figure~\ref{fig:schematic}. Computationally expensive steps that must be performed ``on-chip" 
-are shown inside the gray box. The uncalibrated antenna signals are tapped out after the F-
-engine and correlated against the output image pixel of interest (i.e., equation~\ref{eq:Cna} is 
-``on-chip''). The correlated values are then passed off-chip to estimate the gains using 
-equation~\ref{eq:cal_solution}, and additional fitting if desired. The gains are then passed back 
+figure~\ref{fig:schematic}. Computationally expensive steps that must be performed in near real-time 
+are shown inside the gray box. The uncalibrated antenna signals are tapped out after the 
+F-engine and correlated against the output image pixel of interest (i.e., equation~\ref{eq:Cna} is 
+computed in near real-time). The correlated values are then used to estimate the gains
+using equation~\ref{eq:cal_solution}, and additional fitting if desired. This step does not have
+the speed requirement of the steps in the gray box because the correlations have been 
+averaged in time.
+The gains are then passed back 
 to the correlator to update the calibration for subsequent integration intervals. 
 
 \begin{figure}
@@ -455,49 +464,37 @@ to the correlator to update the calibration for subsequent integration intervals
 \includegraphics[width=\columnwidth]{fig2.pdf}
 \caption{The general data flow of the MOFF correlator, with a feedback calibration loop. A pixel 
 from the (unsquared) image is tapped out and correlated against the input antenna electric field 
-signals to form $\Cna$ coefficients (equation~\ref{eq:Cna}). These coefficients are then 
-shipped off-chip to apply equations~\ref{eq:cal_solution}~and~\ref{eq:damping}, and any other 
-processing to arrive at an updated estimate of the gains, $g^{(n)}_a$. The gray box shows 
-operations which must be done at high speed (before averaging in time), which white boxes 
-show operations which can be performed ``off-chip".}
+measurements to form $\Cna$ coefficients (equation~\ref{eq:Cna}). These coefficients are then 
+used to update the gain estimates using equations~\ref{eq:cal_solution}~and~\ref{eq:damping},
+and any additional fitting.
+The gray box shows operations which must be done at high speed (before averaging in time),
+while the white boxes show operations which can be performed at lower speeds because
+they involve time averages quantities.
+}
 \label{fig:schematic}
 \end{center}
 \end{figure}
 
-While testing we found equation~\ref{eq:cal_solution} resulted in oscillatory gain solutions as it 
-was iterated, as is often the case in iterative minimization methods. To mitigate this we 
+While testing we found equation~\ref{eq:cal_solution} resulted in oscillatory gain solutions over time, 
+as is often the case in iterative methods. To mitigate this we 
 introduce a damping factor, $0 \leq \damp <1$, which is used to attenuate the gain update, 
 effectively giving the solutions memory of previous iterations.
 \begin{equation}\label{eq:damping}
-g^{(n+1)}_a = (1-\damp) g'^{(n+1)}_a + \damp g^{(n)}_a
+%g^{(n+1)}_a = (1-\damp) g'^{(n+1)}_a + \damp g^{(n)}_a
+g^{(n+1)}_a = \frac{(1-\damp)\Cna \Nant }{ \sum_{b\ne a} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} V^M_{ab} }+ \damp g^{(n)}_a
 \end{equation}
 We found that while equation~\ref{eq:cal_solution} does indeed converge on good solutions, 
-the process is made faster by tuning the damping factor. While $g'^{(n+1)}_a$ is the best 
-estimate of the gains after the $n^{\textrm{th}}$ iteration, the damped version, $g^{(n+1)}_a$, is 
-actually used in the iterative calibration loop. Once the loop converges the damped version is 
+the process is made faster by tuning the damping factor. 
+ Once the loop converges the damped version is 
 essentially a weighted average over the past several iterations, giving it a longer effective 
 integration time. 
 
-An important feature to note is that, like the MOFF-generated images themselves, 
-equation~\ref{eq:cal_solution} includes the antenna auto-correlations (the sum is over 
-\emph{all} $b$, not excluding $a$). It can be difficult to perfectly model the noise bias from 
-auto-correlations, which can often times be far brighter than the visibilities themselves. It can 
-therefore be beneficial to subtract this term directly from \Cna, and exclude the $b=a$ term in 
-the sum.
-\begin{equation}
-\Cna \rightarrow \Cna - \frac{1}{\Nant\, g^{*(n)}_a} \beamtheta^*_a(\spix) e^{-2\pi i \spix \cdot \ra} \left<|\Er{a}|^2\right>_t
-\end{equation}
-We have absorbed $g_a^T$ into the electric field so that the correlation is now simply the 
-autocorrelation of the uncalibrated antenna measurement. This requires generating these 
-correlations, which again only scale as $\mathcal{O}(\Nant)$, and are generally useful for array 
-diagnostics.
-
 We conclude this section by connecting our calibration expression to that found in a visibility 
-framework. In the limit of a single bright calibrating source at phase center, we can greatly 
-simplify equations~\ref{eq:cna} and~\ref{eq:cal_solution}. We will assume the beams are 
-normalized such that $\beamtheta(0)=1$. We can further drop the exponential phase terms 
-because $\spix=0$. We then absorb the true gains into the true visibilities in 
-equation~\ref{eq:cna} to express as a sum of measured, uncalibrated, visibilities.
+framework. In the limit of a single bright calibrating source at center, we can greatly 
+simplify equations~\ref{eq:Cna} and~\ref{eq:cal_solution}. We will assume the radiation patterns are 
+normalized such that $\mathcal{W}(0)=1$. We can further drop the exponential phase terms 
+because $\spix$ is perpendicular to our planar antenna array. We then absorb the true gains into the true visibilities in 
+equation~\ref{eq:Cna} to express as a sum of measured, uncalibrated, visibilities.
 \begin{equation}
 \mathcal{C}^{(n)}_{a,0} \rightarrow \frac{1}{\Nant}\sum_b \frac{1}{g^{*(n)}_b} \V_{ab}
 \end{equation}
@@ -506,12 +503,12 @@ We next plug this expression into equation~\ref{eq:cal_solution} to find our sim
 calibration solution for a single bright point source. Because our sky is a single bright point 
 source, the model visibilities are simply the flux of the source, $S_{\mathrm{src}}$.
 \begin{equation}
-g'^{(n+1)}_a \rightarrow \frac{\sum_b  \V_{ab}/g^{*(n)}_b}{\Nant S_{\mathrm{src}}}
+g^{(n+1)}_a \rightarrow \frac{\sum_b  V_{ab}/g^{*(n)}_b}{\Nant S_{\mathrm{src}}}
 \end{equation}
 This is simply a gain-weighted sum of the measured visibilities over the flux of the source, 
 which is indeed the limiting result from a visibility approach, for example seen in \citealt{mit08}. 
 The ability to recover the equivalent expression despite not actually forming the visibilities is a 
-result of the fact that only sums over visibilities come into the FX solution, as was described in 
+result of the fact that only sums over visibilities come into the visibility-based solution, as was described in 
 \citealt{mor11}. We have confirmed the limiting case equivalence here, and will explore the 
 more general case in more detail in \S~\ref{sec:noise}.
 
