@@ -518,28 +518,33 @@ created for each antenna with random phase and amplitude, which is used to corru
 simulated data stream, then we attempt to recover the gains using our calibration routine. The 
 simulation software used is included in the EPIC package.
 
-Our simulated signal consists of 10 random point sources with flux densities 0.5~Jy~$\lesssim 
-S \lesssim 1$~Jy. For an antenna array we use the inner 51 antennas of the MWA layout 
-\citep{bea12}, within a bounding box of 150~m. The antenna voltage pattern used is a 4.4~m 
-square tophat on the ground. Because our algorithm treats frequency channels independently, 
-we simulate only one channel. For context we treat this channel as a single 40 kHz, meaning 
-each subsequent timestep is separated by 25~$\mu$s.
+The physical parameters of our simulation can be arbitrarily scaled to other cases. However, 
+we provide typical units for an MWA observation as an example. Our simulated antenna 
+array consists of the inner 51 antennas of the MWA layout \citep{bea12}, within a bounding 
+box of 150~m. The antenna illumination pattern used is a 4.4~m square tophat; a very rough 
+approximation to the square shaped tiles of the MWA. Because our algorithm treats frequency 
+channels independently, we simulate only one channel. For context we treat this as a channel
+at 150~MHz with 40 kHz bandwidth, and adopt a sampling period of 25~$\mu$s. The simulated signal 
+consists of 10 random point sources with flux densitities 0.5~Jy~$\lesssim S \lesssim$~1~Jy 
+within the main lobe of the primary beam.
 
 For our unknown gains, we create a set of random complex numbers where the amplitude is 
 drawn from approximately gaussian distribution centered around 1 with width 0.25, and 
-completely random phase. These are our ``true gains", and we apply them to the frequency-
-domain simulated antenna electric fields as in equation~\ref{eq:apply_gain}. Our analysis is 
+completely random phase. These are our ``true gains", and we apply them to the frequency
+domain simulated antenna electric field measurements as in equation~\ref{eq:apply_gain}. Our analysis is 
 blind to these values until the end of the process to check accuracy. The gain estimates are 
 initialized with unity, $g^{(0)}_a=1$.
 
-We next process and image \caliter~time steps (10~ms). We also form the correlations, 
+We next process and image \caliter~time samples (10~ms). We also form the correlations, 
 \Cna[0], used in our calibration loop. The pixel used for the correlation is the source with the 
 largest apparent flux (intrinsic flux attenuated by the primary beam). These correlation values 
-are used to update the gain estimates, which in turn are used to calibrate the following 
-\caliter~time steps. Through experimentation we found a damping factor of $\damp=0.35$ 
+are used to update the gain estimates. For this simple demonstration we create perfect model 
+visibilities of our 10 simulated sources to be used in equation~\ref{eq:damping}. 
+The updated gain estimates are used to calibrate the following 
+\caliter~time samples. Through experimentation we found a damping factor of $\damp=0.35$ 
 resulted in the quickest convergence in this simulation.
 
-The calibration loop continues by updating the gain estimates every \caliter~time steps. The 
+The calibration loop continues by updating the gain estimates every \caliter~time samples. The 
 phases of our gain estimates are shown in figure~\ref{fig:sim_phase} for 20 such iterations. 
 The phase error plotted is the phase relative to the true gain for each antenna (various colored 
 lines). One antenna was used as a reference to fix the absolute phase, so has zero phase 
