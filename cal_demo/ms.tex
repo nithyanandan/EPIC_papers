@@ -600,7 +600,7 @@ figure~\ref{fig:sim_images}. Each image is obtained over 10~ms integration, corr
 all snapshot images created with a given set of gain estimates. The top panel shows the image 
 produced with our initialized unity gains. Because the phases are completely random, the 
 image is essentially noise with the primary beam evident. After 20 iterations, the image is far 
-more clear, shown in the bottom panel. Each of the ten simulated sources are clearly visible, 
+more clear, shown in the bottom panel. Each of the ten simulated sources is clearly visible, 
 indicated with red circles. 
 
 \begin{figure}
@@ -620,9 +620,10 @@ visible, and highlighted with red circles.
 
 \section{Application to LWA data}\label{sec:data}
 We next demonstrate our calibration algorithm using an observation from the LWA station in 
-New Mexico. The data is from the LWA narrow-band transient buffer (TBN), with time ordered 
-voltage data from 255 antennas within a core radius of 100~m. The central frequency is 74.03 
-MHz, with a bandwidth of 100 kHz and writeout timescale of 5.12 ms (frequency channel 
+New Mexico \citep{ell13}. The data is from the LWA narrow-band transient buffer (TBN), with time ordered 
+voltage data from the 255 core antennas within a 110~m x 100~m ellipse. 
+The central frequency is 74.03 
+MHz, with a bandwidth of 100 kHz and sampling period of 5.12 ms (frequency channel 
 resolution of 195.3125 Hz). For this demonstration we limit ourselves to a single polarization.
 
 After correcting for geometric cable delays, the instrument is naturally well calibrated, as was 
@@ -637,18 +638,21 @@ this in our model using beam values consistent with \cite{hic12}.
 We made several choices while studying the behavior of the LWA data to improve our 
 calibration. Through our previous imaging work, we noted that the flux scale of uncalibrated 
 images was consistent with average gain amplitudes of 0.25. To allow the calibration to 
-converge quickly we initialized our gain estimates at this level. We also found a boost in signal 
-to noise is achieved easily by averaging frequency channels and assuming the gains are 
-constant within a sub-band. Here we average solutions across 150 channels, or about 29 kHz. 
+converge quickly we initialized our gain estimates at this level. 
+We also found a boost in signal to noise is achieved easily by assuming the gains are
+constant across a range of frequencies, and averaging solutions across channels.
+Here we average solutions across 150 channels, or about 29 kHz. 
 With a fractional bandwidth $B/f_0 = 3.9 \times 10^{-4} \ll 1$, we assume a smooth bandpass 
 across the band. 
 A damping factor of $\gamma = 0.7$ was adopted.
+The large damping factor, relative to what was used in simulations, was necessary due to
+the larger noise levels in the LWA data compared to the ideal simulations.
 
 Finally, we found that seven antennas\footnote{LWA antenna IDs 48, 85, 124, 148, 203, 217, 
 and 244 were omitted.} produced unstable gain solutions, and in fact corrupted the entire array. 
 We therefore omitted these antennas from our analysis, resulting in a total of 248 antennas to 
 calibrate. In each calibration loop, we form $C_{i,\hat{\boldsymbol{s}}_0}, i=1,2,\ldots N_a$ and 
-update our gain estimates over 10 timestamps (51.2 ms). We iterate the loop 30 times for a 
+update our gain estimates over 10 samples (51.2 ms). We iterate the loop 30 times for a 
 total of 1.536 seconds. The results of this calibration experiment are shown in figures~
 \ref{fig:data_phase}~--~\ref{fig:data_images}.
 
@@ -710,7 +714,7 @@ reference.
 \includegraphics[width=0.3\linewidth]{fig8b.pdf}
 \includegraphics[width=0.3\linewidth]{fig8c.pdf}
 \caption{Images produced before (left) and after (middle) calibrating LWA data. These images 
-were produces with 29 kHz bandwidth and 51.2 ms integration. The calibrated image shows 
+were produced with 29 kHz bandwidth and 51.2 ms integration. The calibrated image shows 
 significant reduction in sidelobe rumble throughout, while retaining the prominent Cyg~A and 
 Cas~A sources. The galactic plane is also substantially more evident after calibration. For 
 reference, the GSM is shown in the same coordinates and weighted by two factors of the LWA 
@@ -723,10 +727,11 @@ note that the model used to calibrate was only the two bright sources, Cyg~A and
 
 To compare the image qualities quantitatively we compute the dynamic range, defined as the 
 peak of the image over the noise level. We estimate the noise level as the median of the 
-absolute deviation of the image, a robust statistic. With this metric we find the calibrated image 
-to have a 55\% dynamic range improvement over the uncalibrated image.
+absolute deviation of the image, a robust statistic. With this metric we find the uncalibrated 
+and calibrated images to have dynamic ranges of 88.5 and 137, respectively, a 55\% 
+improvement.
 
-\section{Noise trends and error analysis}\label{sec:noise}
+\section{Noise trends}\label{sec:noise}
 Now we return to simulations to study the effect of noise in our system, and the consequences 
 of an incomplete sky model. We run a suite of simulations varying the receiver noise and 
 integration times, while forming antenna-pixel correlations, $\Cna$, for EPICal gain solutions, 
