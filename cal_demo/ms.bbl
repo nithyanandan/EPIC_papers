@@ -27,11 +27,9 @@
 Abbott B.~P.,  et~al., 2016b, \mn@doi [Phys. Rev. Lett.]
   {10.1103/PhysRevLett.116.061102}, 116, 061102
 
-\bibitem[\protect\citeauthoryear{{Bandura} et~al.,}{{Bandura}
-  et~al.}{2014}]{ban14}
-{Bandura} K.,  et~al., 2014, in Society of Photo-Optical Instrumentation
-  Engineers (SPIE) Conference Series. p.~22 (\mn@eprint {arXiv} {1406.2288}),
-  \mn@doi{10.1117/12.2054950}
+\bibitem[\protect\citeauthoryear{Bandura et~al.,}{Bandura et~al.}{2014}]{ban14}
+Bandura K.,  et~al., 2014, \mn@doi [Proc. SPIE] {10.1117/12.2054950}, 9145,
+  914522
 
 \bibitem[\protect\citeauthoryear{{Beardsley} et~al.,}{{Beardsley}
   et~al.}{2012}]{bea12}
