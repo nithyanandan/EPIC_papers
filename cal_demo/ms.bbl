@@ -57,13 +57,6 @@ Bandura K.,  et~al., 2014, \mn@doi [Proc. SPIE] {10.1117/12.2054950}, 9145,
   eds,  Astronomical Society of the Pacific Conference Series Vol. 180,
   Synthesis Imaging in Radio Astronomy II. p.~1
 
-\bibitem[\protect\citeauthoryear{{Cohen}, {Lane}, {Cotton}, {Kassim}, {Lazio},
-  {Perley}, {Condon}  \& {Erickson}}{{Cohen} et~al.}{2007}]{coh07}
-{Cohen} A.~S.,  {Lane} W.~M.,  {Cotton} W.~D.,  {Kassim} N.~E.,  {Lazio}
-  T.~J.~W.,  {Perley} R.~A.,  {Condon} J.~J.,   {Erickson} W.~C.,  2007,
-  \mn@doi [\aj] {10.1086/520719}, \href
-  {http://adsabs.harvard.edu/abs/2007AJ....134.1245C} {134, 1245}
-
 \bibitem[\protect\citeauthoryear{{Cornwell}, {Golap}  \&
   {Bhatnagar}}{{Cornwell} et~al.}{2008}]{cor08}
 {Cornwell} T.~J.,  {Golap} K.,   {Bhatnagar} S.,  2008, \mn@doi [IEEE Journal
@@ -95,10 +88,11 @@ Hicks B.~C.,  et~al., 2012, Publications of the Astronomical Society of the
 {Jacobs} D.~C.,  {Beardsley} A.~P.,  {Hazelton} B.~J.,  {Thyagarajan} N.,
   {Trott} C.,  2015, HERA Memo~10, {System Temperatures of 21cm Arrays}
 
-\bibitem[\protect\citeauthoryear{{Kassim} et~al.,}{{Kassim}
-  et~al.}{2007}]{kas07}
-{Kassim} N.~E.,  et~al., 2007, \mn@doi [\apjs] {10.1086/519022}, \href
-  {http://adsabs.harvard.edu/abs/2007ApJS..172..686K} {172, 686}
+\bibitem[\protect\citeauthoryear{{Lane}, {Cotton}, {Helmboldt}  \&
+  {Kassim}}{{Lane} et~al.}{2012}]{lan12}
+{Lane} W.~M.,  {Cotton} W.~D.,  {Helmboldt} J.~F.,   {Kassim} N.~E.,  2012,
+  \mn@doi [Radio Science] {10.1029/2011RS004941}, \href
+  {http://adsabs.harvard.edu/abs/2012RaSc...47.0K04L} {47, RS0K04}
 
 \bibitem[\protect\citeauthoryear{{Lonsdale}, {Doeleman}, {Cappallo}, {Hewitt}
   \& {Whitney}}{{Lonsdale} et~al.}{2000}]{lon00}
