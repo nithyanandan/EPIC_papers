@@ -768,14 +768,14 @@ For each simulation run we find gain solutions using four methods:
 \item Visibility-based, using a full sky model
 \item Visibility-based, using a single point source model.
 \end{enumerate}
-In the cases where we use the full sky model, the model visibilities, $\V'_{ab}$ used in the 
+In the cases where we use the full sky model, the model visibilities, $V^M_{ab}$ used in the 
 calibration loop are created using all point sources in the simulated sky. For the single point 
 source model, we only allow the calibration loop to be privy to the bright calibrator source. 
 While we vary the model used for calibration, the simulated ``true sky'' remains fixed with all 50 
 point sources.
 
 For the EPICal calibration loops, we initialize our gain estimates with the true values 
-(${g^{(0)}_a=g^T_a=1}$), and allow the estimate to be corrupted by the noise through ten 
+(${g^{(0)}_a=g_a=1}$), and allow the estimate to be corrupted by the noise through ten 
 iterations of the calibration loop. We adopt a damping factor $\damp=0.35$. Because EPICal 
 updates the gain estimate at each calibration loop, \tcal, but retains a memory of previous 
 iterations through the damping factor, the total integration time is not straightforward. We define 
@@ -792,14 +792,14 @@ measurements (including the receiver noise). The E-fields are correlated for a d
 the effective integration time of the EPICal loop for comparison. We then find the visibility-
 based gain estimates by minimizing
 \begin{equation}\label{eq:vis_cal}
-\chi^2 = \sum_a\sum_{b\ne a} \left|\V_{ab}-g_a g_b^* \V'_{ab}\right|^2,
+\chi^2 = \sum_a\sum_{b\ne a} \left|V_{ab}-g_a g_b^* V^M_{ab}\right|^2,
 \end{equation}
 using both versions of the model visibilities described above.
 
  For each version of calibration, we observe the error in the gain estimates averaging over both 
  antennas and frequency channels.
 \begin{equation}\label{eq:gain_error}
-\sigma_g = \left[\frac{1}{N_f \Nant} \sum_f \sum_a \frac{\left|g'_a(f)-g^T_a(f)\right|^2}{\left|g^T_a(f)\right|^2}\right]^{1/2}
+\sigma_g = \left[\frac{1}{N_f \Nant} \sum_f \sum_a \frac{\left|g^{(n)}_a(f)-g_a(f)\right|^2}{\left|g_a(f)\right|^2}\right]^{1/2}
 \end{equation}
 
 The results of our simulations are shown in figure~\ref{fig:errors}. The gain errors from our 
