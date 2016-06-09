@@ -770,8 +770,8 @@ images was consistent with average gain amplitudes of 0.25. To allow the calibra
 converge quickly we initialized our gain estimates at this level. 
 We also found a boost in signal to noise is achieved easily by assuming the gains are
 constant across a range of frequencies, and averaging solutions across channels.
-Here we average solutions across 150 channels, or about 29 kHz. 
-With a fractional bandwidth $B/f_0 = 3.9 \times 10^{-4} \ll 1$, we assume a smooth bandpass 
+Here we average solutions across 300 channels, or about 58.6 kHz. 
+With a fractional bandwidth $B/f_0 = 7.9 \times 10^{-4} \ll 1$, we assume a smooth bandpass 
 across the band. 
 A damping factor of $\gamma = 0.7$ was adopted.
 The large damping factor, relative to what was used in simulations, was necessary due to
@@ -814,6 +814,26 @@ figure~\ref{fig:data_amp}. There is a fairly wide range in gain amplitudes (from
 However, this is not surprising due to the non-uniformity in the cables from the antennas to the 
 receivers. Again, the amplitudes are noisy but relatively flat.
 
+To ensure the level of noise in our solutions is reasonable we compared to the fractional errors
+from our simulations shown in Figure~\ref{fig:errors}. We first use the Global Sky Model
+\citep{deo08} to generate a mock observed sky at 74.03 MHz using the PyGSM python 
+module\footnote{https://github.com/telegraphic/PyGSM} \citep{pri16}. We integrate this model
+to estimate a total sky flux power of 171,000~Jy, meaning our calibration pixel containing
+Cyg A accounts for  approximately $20,539/171,000 \approx 12\%$ of the total sky power. 
+This places us in a regime very similar to the incomplete sky model simulations of the 
+previous section, where the calibration pixel accounted for 21.7\% of the sky power. We 
+should therefore expect our fractional gain noise levels to be at best around 0.1, the level 
+to which the simulations asymptotically approached. 
+
+To estimate our fractional gain noise we calculate the standard deviation of the gain
+estimates after iteration 15 for each antenna separately. We then divide these standard
+deviations by the respective mean gain amplitudes. This resulted in a distribution of fractional
+gain noise centered at 0.15 and a width of 0.04 ($\approx 0.15/\sqrt{15}$). This noise level
+is consistent with what we expected from the simulations.
+There were four outliers with noise levels significantly outside the distribution 
+($\sigma_g \approx 0.29$). Upon closer inspection the gain amplitudes of these outliers had
+converged later in the calibration loop, after iteration 15.
+
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{fig8.pdf}
@@ -833,10 +853,10 @@ panel shows the image produced after calibration with identical integration time
 The sidelobes throughout the image are significantly suppressed, and the galactic plane is 
 much more evident, despite only modeling Cyg~A and Cas~A. We also note that the feature 
 just to the right of Cyg~A is dimmer in the calibrated image, better matching the expected flux 
-from the global sky model (GSM, \citealt{deo08}). 
-For reference we should the GSM \citep{pri16} in the right panel of 
+from the GSM. 
+For reference we show the GSM in the right panel of 
 Figure~\ref{fig:data_images}, convolved by the LWA point spread function and weighted
-by  two factors of the primary beam to match the data images.
+by  two factors of the primary beam to match the holographic frame of the data images.
 
 \begin{figure*}
 \begin{center}
@@ -891,8 +911,9 @@ the gain solutions can be greatly reduced by fitting a model to the per-frequenc
 derived here. We used this method at a rudimentary level in our demonstration to LWA data by 
 assuming the gains were constant over a narrow bandwidth. One could easily improve on this 
 by extending the bandwidth and fitting for a low order polynomial in phase and amplitude. 
-Additionally, with knowledge of the poly-phase filters applied to the data stream, we could 
-include channels closer to the edge of the band.
+Additionally, with knowledge of 
+any filters applied to the data stream in the receiver chain,
+we could include channels closer to the edge of the band.
 
 \textbf{Improving sky model.} In this work we used a perfect sky model (for simulation), or a 
 very simple sky model (for LWA data). In principle the images produced by the EPIC correlator 
