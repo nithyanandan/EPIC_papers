@@ -625,22 +625,23 @@ seen here, confirming that they are point spread function artifacts. The ten sim
 \end{figure*}
 
 \section{Noise trends}\label{sec:noise}
-Now we return to simulations to study the effect of noise in our system, and the consequences 
+Now next study the effect of noise in our system, and the consequences 
 of an incomplete sky model. We run a suite of simulations varying the receiver noise and 
 integration times, while forming antenna-pixel correlations, $\Cna$, for EPICal gain solutions, 
-and simultaneously forming visibilities from the same E-field streams to find visibility-based 
+and simultaneously forming visibilities from the same electric field measurement streams to find visibility-based 
 gain solutions for comparison. 
 
 We use a simulated sky consisting of a 5~Jy calibrator source, and 49 other random sources 
 with apparent flux densities 0.2 to 0.5 Jy (total sky power $\approx$ 23 Jy). We generated 
-these sources randomly, but kept them fixed for each run. As in section~\ref{sec:sim}, we use 
-the MWA core layout (51 antennas), and a 4.4~m square tophat antenna voltage pattern. We 
-simulate 64 frequency channels each of width 40~kHz. Because our calibration loop treats 
+these sources randomly, but kept them fixed for each run. 
+We simulate the same antenna layout as in Section~\ref{sec:sim}. 
+However, we increase the number of frequency channels simulated to 64.
+Because our calibration loop treats 
 frequency channels independently, each channel can be treated as a separate trial of the 
 simulation, and is used to better estimate the statistics.
 
 To simulate receiver noise, we add a gaussian distributed complex random number to each 
-antenna electric field measurement at each time stamp according to 
+antenna electric field measurement at each time sample according to 
 equation~\ref{eq:apply_gain}. The level of the receiver noise, $\sigma_r = \left<\left|
 n_a(f,t)\right|^2\right>$, is varied in different simulation runs. We include two limiting 
 cases, where the receiver noise power is subdominant to the sky power ($\sigma_r = 
@@ -653,7 +654,7 @@ For each simulation run we find gain solutions using four methods:
 \item Visibility-based, using a full sky model
 \item Visibility-based, using a single point source model.
 \end{enumerate}
-In the cases where we use the full sky model, the model visibilities, $V^M_{ab}$ used in the 
+In the cases where we use the full sky model, the model visibilities, $V^M_{ab}$, used in the 
 calibration loop are created using all point sources in the simulated sky. For the single point 
 source model, we only allow the calibration loop to be privy to the bright calibrator source. 
 While we vary the model used for calibration, the simulated ``true sky'' remains fixed with all 50 
@@ -661,7 +662,7 @@ point sources.
 
 For the EPICal calibration loops, we initialize our gain estimates with the true values 
 (${g^{(0)}_a=g_a=1}$), and allow the estimate to be corrupted by the noise through ten 
-iterations of the calibration loop. We adopt a damping factor $\damp=0.35$. Because EPICal 
+iterations of the calibration loop. We again adopt a damping factor $\damp=0.35$. Because EPICal 
 updates the gain estimate at each calibration loop, \tcal, but retains a memory of previous 
 iterations through the damping factor, the total integration time is not straightforward. We define 
 an effective integration time by considering the relative weights of each previous $\Cna$ 
@@ -672,8 +673,8 @@ contributing to the current $g^{(n)}_a$ estimate, each with integration time \tc
 \end{equation}
 With the damping factor we adopted here, $\teff \approx 2.1 \times \tcal$. 
 
-We simultaneously form simulated visibilities by correlating all pairs of antenna E-field 
-measurements (including the receiver noise). The E-fields are correlated for a duration equal to 
+We simultaneously form simulated visibilities, $V_{ab}$, by correlating all pairs of antenna electric field 
+measurements (including the receiver noise). The electric field measurements are correlated for a duration equal to 
 the effective integration time of the EPICal loop for comparison. We then find the visibility-
 based gain estimates by minimizing
 \begin{equation}\label{eq:vis_cal}
@@ -681,13 +682,13 @@ based gain estimates by minimizing
 \end{equation}
 using both versions of the model visibilities described above.
 
- For each version of calibration, we observe the error in the gain estimates averaging over both 
+ For each version of calibration, we observe the error in the gain estimates by averaging over both 
  antennas and frequency channels.
 \begin{equation}\label{eq:gain_error}
 \sigma_g = \left[\frac{1}{N_f \Nant} \sum_f \sum_a \frac{\left|g^{(n)}_a(f)-g_a(f)\right|^2}{\left|g_a(f)\right|^2}\right]^{1/2}
 \end{equation}
 
-The results of our simulations are shown in figure~\ref{fig:errors}. The gain errors from our 
+The results of our simulations are shown in Figure~\ref{fig:errors}. The gain errors from our 
 EPICal method are shown with solid lines, while the dashed lines represent the visibility-based 
 calibration. The thick lines represent the results of using a full sky model, and the thin lines are 
 from the single point source model.  In the case of the full sky model, we see the errors trend 
