@@ -624,6 +624,128 @@ seen here, confirming that they are point spread function artifacts. The ten sim
 \end{center}
 \end{figure*}
 
+\section{Noise trends}\label{sec:noise}
+Now we return to simulations to study the effect of noise in our system, and the consequences 
+of an incomplete sky model. We run a suite of simulations varying the receiver noise and 
+integration times, while forming antenna-pixel correlations, $\Cna$, for EPICal gain solutions, 
+and simultaneously forming visibilities from the same E-field streams to find visibility-based 
+gain solutions for comparison. 
+
+We use a simulated sky consisting of a 5~Jy calibrator source, and 49 other random sources 
+with apparent flux densities 0.2 to 0.5 Jy (total sky power $\approx$ 23 Jy). We generated 
+these sources randomly, but kept them fixed for each run. As in section~\ref{sec:sim}, we use 
+the MWA core layout (51 antennas), and a 4.4~m square tophat antenna voltage pattern. We 
+simulate 64 frequency channels each of width 40~kHz. Because our calibration loop treats 
+frequency channels independently, each channel can be treated as a separate trial of the 
+simulation, and is used to better estimate the statistics.
+
+To simulate receiver noise, we add a gaussian distributed complex random number to each 
+antenna electric field measurement at each time stamp according to 
+equation~\ref{eq:apply_gain}. The level of the receiver noise, $\sigma_r = \left<\left|
+n_a(f,t)\right|^2\right>$, is varied in different simulation runs. We include two limiting 
+cases, where the receiver noise power is subdominant to the sky power ($\sigma_r = 
+10.0$~Jy), and where the receiver dominates the noise ($\sigma_r=100.0$~Jy).
+
+For each simulation run we find gain solutions using four methods:
+\begin{enumerate}[i.]
+\item EPICal, using a full sky model
+\item EPICal, using a single point source model
+\item Visibility-based, using a full sky model
+\item Visibility-based, using a single point source model.
+\end{enumerate}
+In the cases where we use the full sky model, the model visibilities, $V^M_{ab}$ used in the 
+calibration loop are created using all point sources in the simulated sky. For the single point 
+source model, we only allow the calibration loop to be privy to the bright calibrator source. 
+While we vary the model used for calibration, the simulated ``true sky'' remains fixed with all 50 
+point sources.
+
+For the EPICal calibration loops, we initialize our gain estimates with the true values 
+(${g^{(0)}_a=g_a=1}$), and allow the estimate to be corrupted by the noise through ten 
+iterations of the calibration loop. We adopt a damping factor $\damp=0.35$. Because EPICal 
+updates the gain estimate at each calibration loop, \tcal, but retains a memory of previous 
+iterations through the damping factor, the total integration time is not straightforward. We define 
+an effective integration time by considering the relative weights of each previous $\Cna$ 
+contributing to the current $g^{(n)}_a$ estimate, each with integration time \tcal. In the limit $n
+\rightarrow \infty$, the geometric series converges to an effective integration time of
+\begin{equation}
+\teff = \tcal \times \frac{1+\damp}{1-\damp}.
+\end{equation}
+With the damping factor we adopted here, $\teff \approx 2.1 \times \tcal$. 
+
+We simultaneously form simulated visibilities by correlating all pairs of antenna E-field 
+measurements (including the receiver noise). The E-fields are correlated for a duration equal to 
+the effective integration time of the EPICal loop for comparison. We then find the visibility-
+based gain estimates by minimizing
+\begin{equation}\label{eq:vis_cal}
+\chi^2 = \sum_a\sum_{b\ne a} \left|V_{ab}-g_a g_b^* V^M_{ab}\right|^2,
+\end{equation}
+using both versions of the model visibilities described above.
+
+ For each version of calibration, we observe the error in the gain estimates averaging over both 
+ antennas and frequency channels.
+\begin{equation}\label{eq:gain_error}
+\sigma_g = \left[\frac{1}{N_f \Nant} \sum_f \sum_a \frac{\left|g^{(n)}_a(f)-g_a(f)\right|^2}{\left|g_a(f)\right|^2}\right]^{1/2}
+\end{equation}
+
+The results of our simulations are shown in figure~\ref{fig:errors}. The gain errors from our 
+EPICal method are shown with solid lines, while the dashed lines represent the visibility-based 
+calibration. The thick lines represent the results of using a full sky model, and the thin lines are 
+from the single point source model.  In the case of the full sky model, we see the errors trend 
+downward with longer integration times, as expected. The EPICal errors are slightly higher than 
+the visibility-based errors, on average about 23\% difference. This is not surprising as EPICal 
+only uses the information in a single pixel, while the visibilities use all information from the full 
+sky model. However, we see that with this perfect model the errors do behave like noise
+in the sense that they integrate down with longer integrations with the expected $t^{-1/2}$ 
+trend. 
+The same level of gain error as visibility based solutions can be achieved with a longer integration time (or larger damping 
+factor).
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\columnwidth]{fig9.pdf}
+\caption{Gain estimate errors as a function of integration time, receiver noise (line color), and 
+calibration method. The solid lines represent the error on the EPICal derived gain estimates, 
+while the dashed lines represent the error on the visibility based estimates. The thicker lines 
+were derived using a full sky model in the calibration loops, and the thinner lines used only a 
+single point source model. In the full sky model case we see all methods trend down with 
+longer integration time as expected. For a given integration time, EPICal derived errors are on 
+average 23\% higher than those of visibility based calibration. In the case of a single source 
+model, the errors bottom out due to the flux in the measurements that is not modeled. In this 
+regime the EPICal method performs slightly better than the visibility-based method due to 
+effectively beamforming to the sky pixel where the incomplete model is most accurate. On 
+average EPICal errors are 5\% lower in this regime.
+}
+\label{fig:errors}
+\end{center}
+\end{figure}
+
+The exact ratio of EPICal gain noise to visibility-based gain noise depends on the fraction of 
+the total sky power contained in our calibrator source. In the example here, our calibrator 
+accounted for 22\% of the total sky power. We repeated the experiment in the regime where 
+the calibrator dominated the sky and found that the difference in EPICal and visibility-based 
+error goes to zero, as expected. For a typical HERA observation, the sky temperature is 
+expected to by about 180~K \citep{jac15}, and a bright calibrator source could be about 10\% 
+of this power. In this regime we found that EPICal gain noise was about 60\% higher than 
+visibility-based gain noise for the same effective integration time.
+
+When using the single point source model, all calibration methods in figure~\ref{fig:errors} trend 
+downward until they reach an error floor due to the confusion sources that were not modeled. 
+The EPICal and visibility-based solutions reach a similar floor, but EPICal achieves a 
+marginally lower level (on average 5\% lower). This can be attributed to the same reason 
+EPICal underperformed with the full sky model: EPICal only used a single pixel in the sky to 
+form its solutions. When using the full sky model, it was down weighting the information in the 
+rest of the sky. But when the sky model only contains the bright point source, the single pixel 
+used in EPICal is the location where this model is most accurate, effectively down weighting 
+the pixels with incomplete sky model. In the regime typical of HERA discussed above, EPICal's 
+error floor was 10\% lower than that of visibility-based solutions.
+
+Any realistic sky model will lie somewhere between the two extremes explored here. In the 
+case where the sky is modeled by a single source, as is often the case for an initial calibration, 
+EPICal actually achieves smaller gain errors compared to the traditional visibility-based 
+calibration. As the sky model improves, both visibility-based and EPICal gains improve, though 
+the former quicker than the latter. In the limit of a perfect model, both calibration methods 
+produce noise-like errors in their gains which scale down with more integration time.
+
 \section{Application to LWA data}\label{sec:data}
 We next demonstrate our calibration algorithm using an observation from the LWA station in 
 New Mexico \citep{ell13}. The data is from the LWA narrow-band transient buffer (TBN), with time ordered 
@@ -738,128 +860,6 @@ peak of the image over the noise level. We estimate the noise level as the media
 absolute deviation of the image, a robust statistic. With this metric we find the uncalibrated 
 and calibrated images to have dynamic ranges of 88.5 and 137, respectively, a 55\% 
 improvement.
-
-\section{Noise trends}\label{sec:noise}
-Now we return to simulations to study the effect of noise in our system, and the consequences 
-of an incomplete sky model. We run a suite of simulations varying the receiver noise and 
-integration times, while forming antenna-pixel correlations, $\Cna$, for EPICal gain solutions, 
-and simultaneously forming visibilities from the same E-field streams to find visibility-based 
-gain solutions for comparison. 
-
-We use a simulated sky consisting of a 5~Jy calibrator source, and 49 other random sources 
-with apparent flux densities 0.2 to 0.5 Jy (total sky power $\approx$ 23 Jy). We generated 
-these sources randomly, but kept them fixed for each run. As in section~\ref{sec:sim}, we use 
-the MWA core layout (51 antennas), and a 4.4~m square tophat antenna voltage pattern. We 
-simulate 64 frequency channels each of width 40~kHz. Because our calibration loop treats 
-frequency channels independently, each channel can be treated as a separate trial of the 
-simulation, and is used to better estimate the statistics.
-
-To simulate receiver noise, we add a gaussian distributed complex random number to each 
-antenna electric field measurement at each time stamp according to 
-equation~\ref{eq:apply_gain}. The level of the receiver noise, $\sigma_r = \left<\left|
-\widetilde{n}_a(f,t)\right|^2\right>$, is varied in different simulation runs. We include two limiting 
-cases, where the receiver noise power is subdominant to the sky power ($\sigma_r = 
-10.0$~Jy), and where the receiver dominates the noise ($\sigma_r=100.0$~Jy).
-
-For each simulation run we find gain solutions using four methods:
-\begin{enumerate}[i.]
-\item EPICal, using a full sky model
-\item EPICal, using a single point source model
-\item Visibility-based, using a full sky model
-\item Visibility-based, using a single point source model.
-\end{enumerate}
-In the cases where we use the full sky model, the model visibilities, $V^M_{ab}$ used in the 
-calibration loop are created using all point sources in the simulated sky. For the single point 
-source model, we only allow the calibration loop to be privy to the bright calibrator source. 
-While we vary the model used for calibration, the simulated ``true sky'' remains fixed with all 50 
-point sources.
-
-For the EPICal calibration loops, we initialize our gain estimates with the true values 
-(${g^{(0)}_a=g_a=1}$), and allow the estimate to be corrupted by the noise through ten 
-iterations of the calibration loop. We adopt a damping factor $\damp=0.35$. Because EPICal 
-updates the gain estimate at each calibration loop, \tcal, but retains a memory of previous 
-iterations through the damping factor, the total integration time is not straightforward. We define 
-an effective integration time by considering the relative weights of each previous $\Cna$ 
-contributing to the current $g^{(n)}_a$ estimate, each with integration time \tcal. In the limit $n
-\rightarrow \infty$, the geometric series converges to an effective integration time of
-\begin{equation}
-\teff = \tcal \times \frac{1+\damp}{1-\damp}.
-\end{equation}
-With the damping factor we adopted here, $\teff \approx 2.1 \times \tcal$. 
-
-We simultaneously form simulated visibilities by correlating all pairs of antenna E-field 
-measurements (including the receiver noise). The E-fields are correlated for a duration equal to 
-the effective integration time of the EPICal loop for comparison. We then find the visibility-
-based gain estimates by minimizing
-\begin{equation}\label{eq:vis_cal}
-\chi^2 = \sum_a\sum_{b\ne a} \left|V_{ab}-g_a g_b^* V^M_{ab}\right|^2,
-\end{equation}
-using both versions of the model visibilities described above.
-
- For each version of calibration, we observe the error in the gain estimates averaging over both 
- antennas and frequency channels.
-\begin{equation}\label{eq:gain_error}
-\sigma_g = \left[\frac{1}{N_f \Nant} \sum_f \sum_a \frac{\left|g^{(n)}_a(f)-g_a(f)\right|^2}{\left|g_a(f)\right|^2}\right]^{1/2}
-\end{equation}
-
-The results of our simulations are shown in figure~\ref{fig:errors}. The gain errors from our 
-EPICal method are shown with solid lines, while the dashed lines represent the visibility-based 
-calibration. The thick lines represent the results of using a full sky model, and the thin lines are 
-from the single point source model.  In the case of the full sky model, we see the errors trend 
-downward with longer integration times, as expected. The EPICal errors are slightly higher than 
-the visibility-based errors, on average about 23\% difference. This is not surprising as EPICal 
-only uses the information in a single pixel, while the visibilities use all information from the full 
-sky model. However, we see that with this perfect model the errors do behave like noise
-in the sense that they integrate down with longer integrations with the expected $t^{-1/2}$ 
-trend. 
-The same level of gain error as visibility based solutions can be achieved with a longer integration time (or larger damping 
-factor).
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=\columnwidth]{fig9.pdf}
-\caption{Gain estimate errors as a function of integration time, receiver noise (line color), and 
-calibration method. The solid lines represent the error on the EPICal derived gain estimates, 
-while the dashed lines represent the error on the visibility based estimates. The thicker lines 
-were derived using a full sky model in the calibration loops, and the thinner lines used only a 
-single point source model. In the full sky model case we see all methods trend down with 
-longer integration time as expected. For a given integration time, EPICal derived errors are on 
-average 23\% higher than those of visibility based calibration. In the case of a single source 
-model, the errors bottom out due to the flux in the measurements that is not modeled. In this 
-regime the EPICal method performs slightly better than the visibility-based method due to 
-effectively beamforming to the sky pixel where the incomplete model is most accurate. On 
-average EPICal errors are 5\% lower in this regime.
-}
-\label{fig:errors}
-\end{center}
-\end{figure}
-
-The exact ratio of EPICal gain noise to visibility-based gain noise depends on the fraction of 
-the total sky power contained in our calibrator source. In the example here, our calibrator 
-accounted for 22\% of the total sky power. We repeated the experiment in the regime where 
-the calibrator dominated the sky and found that the difference in EPICal and visibility-based 
-error goes to zero, as expected. For a typical HERA observation, the sky temperature is 
-expected to by about 180~K \citep{jac15}, and a bright calibrator source could be about 10\% 
-of this power. In this regime we found that EPICal gain noise was about 60\% higher than 
-visibility-based gain noise for the same effective integration time.
-
-When using the single point source model, all calibration methods in figure~\ref{fig:errors} trend 
-downward until they reach an error floor due to the confusion sources that were not modeled. 
-The EPICal and visibility-based solutions reach a similar floor, but EPICal achieves a 
-marginally lower level (on average 5\% lower). This can be attributed to the same reason 
-EPICal underperformed with the full sky model: EPICal only used a single pixel in the sky to 
-form its solutions. When using the full sky model, it was down weighting the information in the 
-rest of the sky. But when the sky model only contains the bright point source, the single pixel 
-used in EPICal is the location where this model is most accurate, effectively down weighting 
-the pixels with incomplete sky model. In the regime typical of HERA discussed above, EPICal's 
-error floor was 10\% lower than that of visibility-based solutions.
-
-Any realistic sky model will lie somewhere between the two extremes explored here. In the 
-case where the sky is modeled by a single source, as is often the case for an initial calibration, 
-EPICal actually achieves smaller gain errors compared to the traditional visibility-based 
-calibration. As the sky model improves, both visibility-based and EPICal gains improve, though 
-the former quicker than the latter. In the limit of a perfect model, both calibration methods 
-produce noise-like errors in their gains which scale down with more integration time.
 
 \section{Discussion}\label{sec:discussion}
 Through simulations and application to real data, we have shown that the EPICal algorithm is a 
