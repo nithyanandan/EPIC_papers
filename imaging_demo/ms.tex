@@ -480,19 +480,20 @@ matrix and the grid containing the mapped aperture footprints of the antennas.
 \noindent This module is common to the MOFF and visibility-based imaging 
 techniques. Time samples of electric fields measured by the antenna and 
 digitized by the A/D converter is Fourier transformed to generate electric 
-field spectra. This step can be parallelized across antennas as shown in 
-Fig.~\ref{fig:f-engine}. The output is then fed to either MOFF or 
+field spectra. This step can be parallelized across antennas%  as shown in 
+% Fig.~\ref{fig:f-engine}
+. The output is then fed to either MOFF or 
 visibility-based imaging pipelines.
 
-\begin{figure}
-  \includegraphics[width=\columnwidth]{figure4}
-  % \includegraphics[width=\columnwidth]{parallel_F_engine}
-  % \includegraphics[width=\columnwidth]{parallel_F_engine.eps}
-  \caption{Block diagram of a F-engine. The electric field data streams from
-    antennas are Fourier transformed in parallel to generate electric field
-    spectra.}
-  \label{fig:f-engine}
-\end{figure}
+% \begin{figure}
+%   \includegraphics[width=\columnwidth]{figure4}
+%   % \includegraphics[width=\columnwidth]{parallel_F_engine}
+%   % \includegraphics[width=\columnwidth]{parallel_F_engine.eps}
+%   \caption{Block diagram of a F-engine. The electric field data streams from
+%     antennas are Fourier transformed in parallel to generate electric field
+%     spectra.}
+%   \label{fig:f-engine}
+% \end{figure}
 
 \par\medskip
 \noindent {\bf Calibration}
@@ -505,7 +506,7 @@ calibration solutions \citep{zhe14,fos14}, or integrating a dedicated FX
 correlator which periodically forms the full visibility matrix 
 \citep{wij09,dev09}. 
 
-In a companion paper to appear soon, we demonstrate a novel calibration 
+In a companion paper \citep{bea16}, we demonstrate a novel calibration 
 technique (EPICal) which leverages the data products formed by direct imaging 
 correlators to estimate antenna complex gains. This method correlates the antenna 
 electric field signals with an image pixel from the output of the correlator in 
