@@ -148,6 +148,11 @@ Parsons A.~R.,  et~al., 2010, The Astronomical Journal, 139, 1468
 {Price} D.~C.,  2016, {Astrophysics Source Code Library}, \href
   {{http://adsabs.harvard.edu/abs/2016ascl.soft03013D}} {{ascl:1603.013}}
 
+\bibitem[\protect\citeauthoryear{{Romney}}{{Romney}}{1999}]{rom99}
+{Romney} J.~D.,  1999, in {Taylor} G.~B.,  {Carilli} C.~L.,   {Perley} R.~A.,
+  eds,  Astronomical Society of the Pacific Conference Series Vol. 180,
+  Synthesis Imaging in Radio Astronomy II. p.~57
+
 \bibitem[\protect\citeauthoryear{Tegmark}{Tegmark}{1997a}]{teg97b}
 Tegmark M.,  1997a, \mn@doi [Phys. Rev. D] {10.1103/PhysRevD.55.5895}, 55, 5895
 

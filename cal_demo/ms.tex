@@ -111,7 +111,8 @@ Canadian Hydrogen Intensity Mapping Experiment (CHIME,\citealt{ban14}), the Long
 Wavelength Array (LWA, \citealt{ell13}), and the low frequency Square Kilometer Array (SKA1-
 Low \citealt{mel13}).
 
-Traditional radio correlators cross-multiply the signals from all pairs of antennas, and 
+The most common radio correlator designs of today, the FX and lag correlators \citep{rom99},
+cross-multiply the signals from all pairs of antennas, and 
 the computation scales as the number of antennas squared, $\mathcal{O}(\Nant^2)$ 
 \citep{bun04}. As the number of elements in future arrays grows, the computational cost will 
 become prohibitively expensive, and exploring efficient correlator schemes is essential to 
@@ -148,7 +149,7 @@ optimal map without placing constraints on array layout or requiring identical a
 
 A challenge common to all direct imaging algorithms is calibration of the antenna gains. With a 
 traditional cross correlator, pair-wise visibilities are written to disk and used to calibrate 
-offline before further processing such as imaging. However, a direct imaging correlator mixes 
+after observing before further processing such as imaging. However, a direct imaging correlator mixes 
 the signals from all antennas before averaging and writing to disk, making calibration a 
 requirement at the front end, before imaging and averaging. Previous solutions have involved 
 applying calibration solutions generated from a parallel FX correlator \citep{zhe14, fos14}, or 
@@ -281,7 +282,9 @@ correlator which performs the frequency transform (F-engine) before cross multip
 %after transforming along the time axis, we retain the time dependence of the signal to represent 
 %a stream of spectra.
 
-Thus far we have assumed the antennas perfectly measure the sky electric field distribution according to their far-field radiation patterns. Here we introduce a multiplicative complex gain as well as an additive noise term which corrupt the measured signals.
+Thus far we have considered the perfectly measured electric field distribution according to 
+the antenna far-field radiation patterns. Here we introduce a multiplicative complex gain as 
+well as an additive noise term which corrupt the measured signals.
 \begin{equation}\label{eq:apply_gain}
 E_a(f,t) = g_a(f,t) E_a^I(f,t) + n_a(f,t)
 \end{equation}
@@ -344,14 +347,15 @@ estimate for the instantaneous electric field image. We can simplify this expres
 exchanging the sums and use the DFT to approximate the Fourier relationship between
 the antenna illumination pattern and the far-field radiation pattern.
 \begin{align}\label{eq:epix}
-\mathcal{E}(\s_k,t) & = \frac{1}{\Nant} \sum_a \frac{1}{g'_a}\left(g_a E^I_a(t)+n_a(t)\right) e^{2\pi i \s_k \cdot \ra} \nonumber \\
+\mathcal{E}'(\s_k,t) & = \frac{1}{\Nant} \sum_a \frac{1}{g'_a}\left(g_a E^I_a(t)+n_a(t)\right) e^{2\pi i \s_k \cdot \ra} \nonumber \\
   & \qquad\times \sum_j W_a(\mathbf{r}_j-\ra)e^{2\pi i \s_k \cdot (\mathbf{r}_j-\ra)} \nonumber\\
 & \approx \frac{1}{\Nant} \sum_a \frac{1}{g'_a}\left(g_aE^I_a(t)+n_a(t)\right) e^{2\pi i \s_k \cdot \ra}\mathcal{W}_a(\s_k)
 \end{align}
 In this form we see that the effect of gridding with the antenna illumination pattern is to attenuate 
 the image by a factor of the far-field radiation response, $\mathcal{W}_a(\s)$.
 
-Finally, the images are squared and averaged in time to reduce output bandwidth, then written 
+Finally, the images are squared and averaged in time to form dirty images, 
+$I'(\hat{\mathbf{s}}_k)$, then written 
 to disk. While operations have been reordered, the resulting image is equivalent to one 
 produced by gridding and imaging visibilities. By shifting from cross-correlation of all pairs of 
 antennas to a spatial FFT, the computational cost is significantly lowered for certain classes of 
