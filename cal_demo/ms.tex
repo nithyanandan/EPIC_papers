@@ -308,14 +308,14 @@ E'_a(t) = E_a(t)/ g'_a
 The next step is to grid the calibrated electric field measurements to a finite set of regularly spaced 
 positions on the 2D plane of the ground, $\mathbf{r}_j$.
 The extent of the grid is chosen to encompass the footprint of the antenna array.
-MOFF uses the antenna illumination patterns as the gridding 
+MOFF uses the antenna aperture illumination patterns as the gridding 
 kernel according to the software holography/A-transpose technique \citep{mor09,bha08}. 
 Mathematically we can express the gridding operation as
 \begin{equation}\label{eq:gridding}
 E'_j=\sum_a W_a(\mathbf{r}_j-\mathbf{r}_a) E'_a(t)
 \end{equation}
-Formally each pixel is calculated by summing over all antennas and their illumination patterns.
-However the illumination patterns are typically compact and non-overlapping, so most pixels
+Formally each pixel is calculated by summing over all antennas and their aperture illumination patterns.
+However the aperture illumination patterns are typically compact and non-overlapping, so most pixels
 will only contain contribution from at most one antenna, allowing equation~\ref{eq:gridding}
 to be calculated through a sparse matrix multiplication.
 This gridding 
@@ -341,17 +341,17 @@ through the following equation.
 \underbrace{\sum_a W_a(\mathbf{r}_j - \ra)}_{\mathrm{Gridding}} \\
 & \qquad \times \underbrace{ \frac{1}{g'_a} \left(g_a E_a^I(t)+n_a(t)\right)}_{\mathrm{Calibration}} \nonumber
 \end{align}
-The sum over antennas uses the antenna illumination pattern to grid the calibrated electric field measurements onto 
+The sum over antennas uses the antenna aperture illumination pattern to grid the calibrated electric field measurements onto 
 regular gridpoints, $\mathbf{r}_j$. The sum over $j$ denotes the 2D FFT to sky coordinates, resulting in an 
 estimate for the instantaneous electric field image. We can simplify this expression by 
 exchanging the sums and use the DFT to approximate the Fourier relationship between
-the antenna illumination pattern and the far-field radiation pattern.
+the antenna aperture illumination pattern and the far-field radiation pattern.
 \begin{align}\label{eq:epix}
 \mathcal{E}'(\s_k,t) & = \frac{1}{\Nant} \sum_a \frac{1}{g'_a}\left(g_a E^I_a(t)+n_a(t)\right) e^{2\pi i \s_k \cdot \ra} \nonumber \\
   & \qquad\times \sum_j W_a(\mathbf{r}_j-\ra)e^{2\pi i \s_k \cdot (\mathbf{r}_j-\ra)} \nonumber\\
 & \approx \frac{1}{\Nant} \sum_a \frac{1}{g'_a}\left(g_aE^I_a(t)+n_a(t)\right) e^{2\pi i \s_k \cdot \ra}\mathcal{W}_a(\s_k)
 \end{align}
-In this form we see that the effect of gridding with the antenna illumination pattern is to attenuate 
+In this form we see that the effect of gridding with the antenna aperture illumination pattern is to attenuate 
 the image by a factor of the far-field radiation response, $\mathcal{W}_a(\s)$.
 
 Finally, the images are squared and averaged in time to form dirty images, 
@@ -521,7 +521,7 @@ simulation software used is included in the EPIC package.
 The physical parameters of our simulation can be arbitrarily scaled to other cases. However, 
 we provide typical units for an MWA observation as an example. Our simulated antenna 
 array consists of the inner 51 antennas of the MWA layout \citep{bea12}, within a bounding 
-box of 150~m. The antenna illumination pattern used is a 4.4~m square tophat; a very rough 
+box of 150~m. The antenna aperture illumination pattern used is a 4.4~m square tophat; a very rough 
 approximation to the square shaped tiles of the MWA. Because our algorithm treats frequency 
 channels independently, we simulate only one channel. For context we treat this as a channel
 at 150~MHz with 40 kHz bandwidth, and adopt a sampling period of 25~$\mu$s. The simulated signal 
