@@ -1,0 +1,895 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\froman\fcharset0 Times-Roman;\f1\fnil\fcharset0 LucidaGrande;\f2\fswiss\fcharset0 Helvetica;
+\f3\ftech\fcharset77 Symbol;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red0\green0\blue0;
+}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid1\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww18420\viewh11880\viewkind0
+\deftab720
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f0\fs24 \cf0 \expnd0\expndtw0\kerning0
+Dear Editor,\
+\
+We would like to thank the referee for a very thorough and detailed read of our manuscript titled \'93An Efficient Feedback Calibration Algorithm for Direct Imaging Radio Telescopes\'94 by myself and others (submission \cf2 \cb3 \outl0\strokewidth0 \strokec2 MN-16-0746-MJ\cf0 \cb1 \outl0\strokewidth0 ).  Below we detail the changes made regarding the specific changes and additions requested by the referee. Here we outline major changes.\
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl280\partightenfactor0
+\ls1\ilvl0\cf0 \kerning1\expnd0\expndtw0 {\listtext	
+\f1 \uc0\u8259 
+\f0 	}\expnd0\expndtw0\kerning0
+We rewrote Section 2, \'93Mathematical Framework\'94 to expand on our derivations and directly address assumptions. Additional references were added to connect to established literature.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 {\listtext	
+\f1 \uc0\u8259 
+\f0 	}\expnd0\expndtw0\kerning0
+Our notation has been simplified for clarity.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 {\listtext	
+\f1 \uc0\u8259 
+\f0 	}We \expnd0\expndtw0\kerning0
+added a panel to Figure 5 to compare to a perfect calibration. Color scales were also added.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 {\listtext	
+\f1 \uc0\u8259 
+\f0 	}Sections 4 and 5 have been swapped.\
+{\listtext	
+\f1 \uc0\u8259 
+\f0 	}The application to LWA data was slightly tuned for lower noise levels (discussed below).\
+{\listtext	
+\f1 \uc0\u8259 
+\f0 	}We now quantify the noise levels of the LWA gain solutions and compare to the noise trend section.\
+\
+\pard\tx220\tx720\pardeftab720\sl280\partightenfactor0
+\ls1\ilvl0\cf0 We feel that the changes made adequately address the comments and concerns of the referee and appreciate the feedback to make the manuscript more self-contained and accessible.\
+\
+On behalf of the coauthors,\
+\
+Adam Beardsley\
+Arizona State University
+\b \
+\ls1\ilvl0
+\b0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sl280\partightenfactor0
+\cf0 \
+\
+Specific changes (Our responses in bold):\
+
+\fs22 \
+\
+
+\i\fs20 MAIN DIFFICULTY\
+The analysis begins with equation (1), in which the relationship between the \'93ground\'94 and \'93sky\'94\
+electric fields is written as a Fourier integral. The relationship is asserted without any reference; this is not\
+surprising because no such relationship exists. There are multiple problems, beginning with the fact that\
+\'93sky electric field\'94 has no physical meaning. If the authors wish to define the sky electric field through this\
+equation, they should say so and provide some motivation. But then the name \'93electric field\'94 would not have\
+its usual meaning as a quantity in Maxwell\'92s equations. Nor can the \'93electric field incident on the ground\'94\
+be correctly described by the scalar quantity E\'98(r, t) since electric field is a vector. Next, r is said to be \'93the\
+observer\'92s position in wavelengths.\'94 But what is the wavelength? Since the fields are arbitrary functions of\
+time, they are not at a single frequency or wavelength. What is a \'93sine-projected\'94 unit vector? If omitting\
+that adjective would not change anything, it should be omitted. Eqn (1) is written as an indefinite integral\
+but a Fourier integral is definite, albeit over an infinite range.\
+\
+It is possible to derive something similar to (1) from the underlying physics of radiative transfer, but\
+many other important things would need to be considered. These include the fact that we are dealing with\
+electromagnetic waves, not just electric fields; that such waves have a polarization state as well as a direction\
+of propagation; and that the fields are quite different near the radiator (\'93near field\'94) then far from it. (For\
+a radio telescope on Earth, an orbiting satellite may still be in its near field.)\
+\
+Since the entire analysis starts from an equation written with no attention to the physics of the\
+situation and with insufficient mathematical rigor, everything that follows is suspect.\
+\
+Equation (2) \'93defines\'94 the antenna (output) signal, but antennas are constructs of physics and engineering\
+that work in a certain way; they cannot simply be defined. Does (2) describe the operation of\
+an actual antenna? ra is called \'93the location of antenna a\'94 but a physical antenna cannot exist at only\
+one point. Presumably the antenna extends over the region of support of W\'98\
+a; in that case, ra seems to be\
+arbitrary, so why is it introduced at all? One reason might be to describe an array of antennas that are\
+identical except for translation of their positions, but then W\'98\
+a should not be subscripted. The LHS of (2) is\
+called the \'93antenna signal\'94 but in the next paragraph it is called the \'93electric field\'94 and later the \'93antenna\
+electric field\'94. The signal at the terminals of an antenna is a voltage or current with a particular source \
+impedance, not an electric field. The factor W\'98 in (2) is called the \'93antenna voltage pattern\'94; that terminology\
+is sometimes used in antenna engineering, but W\'98 appears to be something else. If W\'98 is a voltage and\
+E\'98 is an electric field, then (2) is dimensionally incorrect; the RHS would be in units such as volts2\'d7meters,\
+which cannot describe the output of an antenna. Actually W\'98 seems to be some sort of weighting function\
+that describes how fields over an extended region of space are combined. Typically such a function is\
+non-zero only within the finite, two-dimensional aperture of the antenna; yet W\'98 seems to extend over all\
+of three-dimensional space. Furthermore, any antenna couples only to waves of a particular polarization,\
+although that polarization may vary with direction; no account is taken of this in (2). In radio astronomy, it\
+is common to co-locate two antennas with nearly orthogonal polarizations, but that is not mentioned here.\
+\
+I realize that you are trying to simplifly the description of how radiation from the sky induces signals\
+at the terminals of antennas so that you can move on to the main points of the paper. In that case, you must\
+start from a well-established relationship for which a reference can be cited (for example, the Van CittertZernike\
+theorem, see Born and Wolf, Principles of Optics, 1999, chapter 10), and then state explicitly what\
+simplifications you are making and how those lead to the simplified equations. The complete lack of rigor\
+here should not be accepted.\
+\
+Section 2 needs to be re-written completely. All quantities and symbols need to be defined. Clear\
+distinctions must be made among physical quantities, definitions, and mathematical constructs. Descriptions\
+of physical processes must be consistent with established physics, including electromagnetic theory and\
+antenna theory. When discussing a given quantity, the same name should be used throughout the paper; it\
+is preferable to use names that are established in the literature rather than inventing new ones. The entire\
+notation scheme should be reconsidered so as to avoid using so many subscripts, superscripts, and diacritical\
+marks to distinguish similar symbols. Care must be taken to avoid typos.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 \
+We have made strong efforts to address these concerns. Sections 2.1 and 2.2 have been significantly expanded to establish all assumptions and rigorously define all symbols and terms. Most notably, several paragraphs have been inserted at the beginning of Section 2.1 to follow Ch. 1 of \'93Synthesis Imaging in Radio Astronomy II\'94 (chapter by B.G. Clark) to arrive at our updated Eq. 1. \
+\
+The raw measurement of an antenna is indeed a voltage induced by the ambient electric field, as indicated by the referee. However, the subsequent analysis is greatly served by immediately making the translation into a measurement of the electric field. We now make this explicit in the paragraph leading up to Eq. 2. \
+\
+Our notation has also been simplified (removed tildes and some extra marks). \cf4 There are still many different symbols and diacritical marks, we find them necessary to accurately describe the many quantities being discussed. We have made efforts to consolidate symbols where possible, and removed tildes by instead using caligraphic versions of symbols (e.g. the antenna far-field radiation pattern is now a caligraphic W, in contrast to the normal math font W for the antenna aperture illumination pattern).
+\b0 \cf0 \
+\
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 DETAILED NOTES\
+Sec 1, par 2: \'93Recording the full visibility matrix for Na > 1000 arrays at this timescale leads to extremely\
+high data write rates.\'94 This is true, but direct imaging telescopes are not necessarily better. If the array is\
+sparse, then the image output data rate is greater than the visibility output data rate. Only for a highly\
+redundant array might the image data rate be lower, and even then the two can be made comparable by\
+combining the redundant visibilities before the output.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 In the following paragraph we specify the regime in which direct imaging arrays have the potential to lower the output bandwidth (namely, where N_g < N_a^2). With the MOFF algorithm, the array need not be redundant, but only compact.\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b0 \cf0 \
+
+\i\fs20 Sec 1, par 3: \'93Direct imaging correlators\'94 is a misnomer. The distinguishing feature of a direct imaging\
+telescope is that no correlation is done.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We agree, but \'93direct imaging correlator\'94 and \'93FFT correlator\'94 are common parlance in the literature (e.g. Foster et al, MNRAS 2014; Zheng et al, MNRAS 2014; Morales, PASP 2011).
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 1, par 3: \'93assuming Ng < N2a \'94. This assumption should justified, if not now then later in the paper,\
+but that never happens.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Clarified to state the output bandwidth is lowered 
+\i in cases where N_g < N_a^2
+\i0 , not an assumption.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 1, par 3 and 5: The terms \'93online\'94 and \'93offline\'94 are misused. In common parlance, these terms describe\
+operations that respectively depend on and are independent of a connection to the Internet. If you mean\
+something different, it should be defined. You actually seem to be referring to operations that must be done\
+in near-real-time vs. operations that can be done at any convenient time.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We have removed these terms, and instead specifically state which operations must be performed in near-real-time vs at a slower cadence (because the data has been averaged in time). 
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.1, par 2: See earlier discussion of issues with equations (1) and (2).
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 As described we have completely rewritten this section to address the concerns.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.1, par 3: Jargon terms \'93F-engine\'94 and \'93FX correlator\'94 are not defined or referenced. The use of\
+adjective \'93traditional\'94 is questionable.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf4 A reference has been added in the introduction when FX (and lag) correlators are first mentioned. At this point we now expand on what the F-engine does and spell out the F and X stages of the FX correlator.
+\b0 \cf0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.1, par 4: \'93Thus far we have assumed the antennas deliver the true electric field signals.\'94 According\
+to the earlier wording, the antenna behavior is defined, not assumed. Neither is appropriate; the actual\
+behavior of antennas should be used.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Removed the confusing wording.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.1, par 4: \'93The noise term is strictly receiver noise.\'94 It can be defined that way, but that neglects other\
+sources of additive noise that are often more important, such as thermal radiation from the ground and the\
+troposphere. There are also multiplicative noise effects that are neglected here, such as turbulence in the\
+troposphere and ionosphere.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Removed assumption that additive noise was receiver noise (this was a relic of some other analysis which treated receiver noise separately, but was omitted from the paper). Multiplicative noise is degenerate with time dependent antenna gains. If this noise is on a time scale longer than the calibration loop, it will be solved for as part of the gain. If it is on a shorter time scale, it will be washed out.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.1, par 4: \'93We will neglect na for now, but will inspect its effects at the end of this section.\'94 Neglecting\
+the noise here makes its effects hard to understand. The promised inspection at the end of the section never\
+appears. There is a brief discussion in par 4 of sec 2.2, where it is claimed that the \'93net effect\'94 of the noise\
+is \'93easy to see.\'94 Actually it\'92s not easy at all since so much has been skipped. Sec 5 discusses \'93error trends\'94\
+but it contains no analysis and it never mentions the term that is neglected here.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We now carry the noise through the derivation.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.1, par 6: The text description here is hard to parse for anyone who does not already know what is\
+being done. Requiring the reader to read old papers of the authors does not help. Instead, the gridding step\
+should be described explicitly, with an equation of its own.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 More explanation has been added, including clarification that the data are gridded to regular grid\
+points, and an equation has been added.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.1, par 6: \'93This achieves both an optimal map...\'94 Delete \'92both\'92.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Done.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.1, par 6: \'93the MOFF grids the electric fields directly\'94. Again, it\'92s the antenna terminal signals (or\
+rather the outputs of the receivers after long cables) that are being \'93gridded,\'94 not any electric field.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 See earlier discussion. We are now more careful throughout to refer to \'93electric field measurements\'94 rather than electric fields themselves.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.1, par 6: \'93This operation must be performed for every time step...\'94 The concept of a time step is\
+first mentioned here but without any explanation. So far the signals have not been sampled or quantized;\
+they remain continuous functions of time. If the signals were described as being sampled in accordance with\
+Nyquist\'92s theorem, it would then be better to talk about \'93every sample\'94 rather than \'93every time step,\'94\
+since the size of the latter is arbitrary.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Description of the sampling is now given earlier, and here we fixed the terminology.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.1, eqn (5): There are many problems with this equation.\
+The outer summation is over i, so i cannot appear on the LHS, yet we see \'88si. \
+Symbol i is also used in the\
+exponent, where it no doubt means \uc0\u8730 \u8722 1. This triple use of the same symbol must be fixed, here and in (6).
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Fixed in both places.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 The first factor is called \'932D FFT\'94 but it is not an FFT at all, nor even a discrete Fourier transform (DFT).\
+For one thing, the vectors are all three-dimensional. There has been no description of the locations ri\
+; for\
+all that we\'92ve been told, there could be an infinite number of them and they could be anywhere. An expert\
+reader might know that you intend them to be a finite set of points confined to a plane and on a rectangular\
+lattice, but you have not said any such thing.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We have now introduced the 2D assumption and discussed the Fourier dual coordinates to r earlier in the text. The restriction to a regular grid is also discussed in the new gridding step text.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 If the first factor is to be a 2D FFT, then \'88sk (where I have changed subscript i to k in order to correct the\
+first error) must also be a finite set of points at particular locations; they cannot be arbitrary. The transform\
+is with respect to only two of the dimensions of 3D unit vectors \'88sk, whose coordinate system must place\
+those dimensions in the plane of the set of positions ri.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Fixed in previous paragraph.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Unless all these things are stated, eqn (5) is not what it is said to be.\
+In an archival journal article, readers cannot be expected to infer from their separate expertise what the\
+authors meant to say. It is necessary for the authors to say exactly what they mean.\
+\
+Sec 2.1, eqn (6): The first equation should include W\'98\
+a rather than W\'98\
+b (typo?).
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Fixed.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 \'93... the effect of gridding with the antenna voltage pattern is to attenuate the image by a factor of the antenna\
+sky response, Wa(\'88si).\'94 As discussed earlier, \'93antenna voltage pattern\'94 is a term in antenna engineering. Its\
+meaning is the same as what you call \'93antenna sky response\'94 here. Ignoring established terminology and\
+inventing new and non-descriptive terms is poor practice. You would do better to start with W and use it\
+to define W\'98 by means of a Fourier integral (not a DFT).
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Done.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.2, eqn (7): Since there are so many subscripts, superscripts, and marks on symbols, it took me a long\
+time to figure out that * means complex conjugate rather than something else; that needs to be stated, and\
+the reason for it needs to be given. There is no \'91(n)\'92 superscript on the RHS, but there should be, even\
+though it makes the notation awkward. (This is part of the reason that the entire notation scheme should\
+be reconsidered.)
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We have attempted to rework the notation in general to remove unnecessary marks and superscripts,\
+but much does remain simply because there are a lot of related quantities to represent. We have explicitly\
+stated that the * represents complex conjugate, and added superscript (n) to the RHS.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.2, eqn (8): For gb, the prime notation has been replaced by the superscript-(n) notation without\
+explanation. That, plus the mysterious *, makes it hard to see how this follows by substituting (6) into (7).
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Now state why we substitute g^(n) for g\'92, and added more steps to math for clarity.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.2, par 4: \'93It is easy to see from here that the net effect of including the receiver noise term ...\'94 It is\
+not easy at all, as noted earlier. Delete \'93the net effect of\'94.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We now have carry the noise to this point.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 \'93... will result in added noise on the true visibilities, including a bias on the auto-correlation terms.\'94 This\
+statement is inconsistent with your definitions. The \'93true\'94 visibilities are defined in (8) to be correlations\
+of the \'93true\'94 antenna signals, and according to your earlier definition these true antenna signals do not\
+include the noise term. It is unreasonable and confusing to say that there is a \'93bias.\'94 Additive noise that\
+accompanies the actual antenna signals (as opposed to what you call the \'93true\'94 ones) results in additive\
+noise on the measured visibilities (as opposed to the \'93true\'94 ones), and that noise has zero mean for crosscorrelations\
+but non-zero mean for self-correlations. (Incidentally, the proper term here is self-correlation\
+rather than auto-correlation, which is subtly different.) Of course, the concept of measured visibilities has\
+not been introduced, so saying it this way is awkward.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We have switched to \'93ideal\'94 visibilities for clarity (we also use \'93ideal\'94 electric field measurements for the same reason). Removed confusing text, added another equation for clarity. We moved the handling of the self-correlation noise term to the following paragraph to yield a more natural discussion (rather than mentioning it here and handling it later as in the  previous version). 
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 The entire formulation of the problem should be re-considered so as to avoid the inconsistencies and awkwardness\
+that I have described. In particular, you cannot drop the noise terms near the beginning and then\
+re-introduce them by hand-waving. If you intend to consider the noise at all, then you must carry it through\
+the analysis.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We believe the rewritten section is much more clear and addresses all the concerns mentioned.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.2, par 4: \'93... the implementation included in the EPIC software package restricts the noise term to\
+include only the auto-correlation noise bias ...\'94 You never describe how the implementation does this, and\
+what you say later (sec 2.2 par 8 and (11)) is inconsistent with what you say here. Apparently you will\
+exclude the zero-baseline terms from the antenna-pixel correlation; is that what you\'92re referring to here, or\
+does the implementation also do something else?
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 That is what we were referring to, and we now address it at this point in the text.\
+(By the way, when we said \'93\'85restricts the noise term \'85\'94 we intended this to mean that one can include a model of the noise term in the EPICal implementation. This was confusing and we removed it in lieu of the new equation 12.) \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b0 \cf0 \
+
+\i\fs20 \'93... and assumes baseline dependent noise has zero mean.\'94 You introduce the new term \'93baseline dependent\
+noise\'94 without explanation. I think you don\'92t mean to do this. The only noise in your formulation is\
+antenna dependent, as shown in (3). I think you mean \'93cross-correlation noise\'94 rather than \'93baseline\
+dependent noise.\'94 In practical correlation telescopes, there are errors in visibility measurements that do not\
+factor into antenna gain errors. These have been called \'93baseline dependent noise\'94 in the literature, but no\
+such things are included in your formulation.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 This issue is avoided with the reworking of this section.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.2, eqn (9): The LHS now includes the prime mark, which was absent in (8). Again, the notation\
+scheme is messy and should be re-considered.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Typo fixed.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.2, par 6 and Fig 2: The terms \'93on-chip\'94 and \'93off-chip\'94 are misleading. Which chip is that? In current\
+general-purpose hardware like CPUs and GPUs, your \'93on-chip\'94 processing cannot be done in a single device;\
+there is at least an external memory. The gain estimation calculation, which you call \'93off-chip\'94 is likely done\
+in the same hardware as the \'93on-chip\'94 calculations. You make a valid distinction between fast operations\
+and slower ones, but your terminology obscures that distinction.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Removed this terminology.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.2, par 7: \'93... as is often the case in iterative minimization methods.\'94 Your procedure is not a minimization\
+method, so what is the relevance of this remark?
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Removed mention of minimization.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.2, par 8: \'93... all b, not excluding a\'94. The double negative is confusing. Better: \'93all b, including b = a\'94.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Fixed.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Once again, \'93noise bias\'94 fails to describe what\'92s happening.\
+\'93... which can often times be far brighter than the visibilities themselves.\'94 New term \'93brighter\'94 is introduced\
+without explanation; instead, simply say \'93larger\'94. Delete \'93times\'94. Here you mean your \'93true\'94 visibilities,\
+or perhaps the visibilities calculated from the sky model.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 This has been fixed and made more clear in rewritten section.
+\b0 \
+\
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.2, par 9: New term \'93phase center\'94 is introduced without explanation.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Removed \'93phase center\'94 
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 \'93We can further drop the exponential phase terms because \'88s0 = 0.\'94 This is certainly wrong since \'88s0 is a unit vector.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Clarified that s0 is orthogonal to the antenna array (with earlier assumption of a planar array).
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 2.2, par 10: What do you mean by \'93the FX solution\'94?
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Changed to \'93visibility-based solution\'94
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 3, par 2: In this section on simulations, many parameters of practical telescopes are irrelevant since the\
+results are fully scalable to other cases. For example, all lengths can be in wavelengths and the results will\
+apply at any actual wavelength. All times can be given in samples, and the results will apply at any actual\
+sampling rate. Yet here you use an inconsistent mixture of absolute and normalized quantities. You give the\
+so-called \'93antenna voltage pattern\'94 (actually the aperture distribution) in meters, but you never give the\
+wavelenth or frequency. You say that the channel bandwidth of 40 kHz is given \'93for context\'94 but actually it\
+is irrelevant. You give the simulated source strengths in janskys, but they are actually on an arbitrary scale.\
+\'93... we treat this channel as a single 40 kHz, meaning each subsequent timestep is separated by 25 s.\'94 Again,\
+you use \'93timestep\'94 when you mean sampling period. You say \'93a 40 kHz\'94 where you mean that the channel\'92s\
+bandwidth is 40 kHz. It is not true that a bandwidth of 40 kHz means that the sampling period is 25 \'b5s;\
+that might be a good choice under some circumstances, but any sampling period could be used. None of\
+these numbers is relevant to the simulations described in this section, so all of this is a distraction.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We agree that many of these physical parameters are not technically needed. However we find giving\
+example observation parameters can help some readers quickly grasp the regime we are working in. We rewrote this paragraph to ensure this intent is clear, and that all parameters are actually given (omitting the central frequency was an oversight).
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Why is \'93a 4.4 m square tophat on the ground\'94 a reasonable choice for the antenna aperture distribution?
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 For a demonstrative simulation, a square tophat is a rough approximation to the physical MWA\
+antenna aperture. Of course the actual antenna illumination patterns are more complex, but because this is a simulation the specific pattern used is a choice, and a simple one allowed us to run many simulations quickly.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Presumably the model visibilities used in the gain-finding algorithm were perfect. That is, they were the\
+exact visibilities of the 10 simulated sources, so that the sky model was perfect. That should be stated.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 This is now stated explicitly.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 3, par 6: \'93... we can see the value of the damping factor.\'94 For clarity, replace \'91value\'92 with \'91importance\'92\
+or something similar.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Done.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 3, par 7: \'93After the gains have converged, we see both the phases and amplitudes to continue to fluctuate\
+coherently. This is due to the stochastic fluctuations of the simulated sources themselves, and is limited by\
+the sky noise.\'94 Apparently no noise was added to the simulated antenna signals, but the radiation from\
+the sources is simulated as a set of random processes with zero mean and with variance proportional to the\
+source flux density. This is the \'93thermal noise\'94 to which you refer in par 5; it would be better to make\
+that clear. It is certainly not \'93sky noise,\'94 which is something else and which you have not included in your\
+simulation. 
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We fixed the language and make explicit what we mean.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 You claim that the fluctuation in estimated gains after convergence, seen in Figs 3-4, is due to\
+this noise, but how do you know? There is no anaylsis to show that the fluctuations are of the expected size.\
+There might be other causes, such as numerical errors in the implementation.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 To reach this conclusion we ran several, increasingly complex, simulations. We first started with a single point source simulation with no added noise (beyond that of the thermal fluctuations of the single source). We can plot the relative intensity of the source fluctuations during a given iteration (bold red line) over the gain amplitude plot:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b0 \cf0 \kerning1\expnd0\expndtw0 {{\NeXTGraphic Pasted Graphic.tiff \width5660 \height4440
+}¬}\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 Because there is only a single source the antennas converge onto the same solution very quickly, but the amplitude still fluctuates with a strong correlation with the source intensity over that integration. If we increase the integration time per iteration, this effect goes down as the amplitude of the source fluctuations goes down.\
+We repeat this with varying numbers of additional sources. For example, here is the plot for a total of five sources:
+\f2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+
+\b0 \cf0 {{\NeXTGraphic Pasted Graphic 1.tiff \width5480 \height4320
+}¬}\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 (Note the integration time per iteration here is much less than in the paper to illustrate the effect). This time the red line is computed by 1) averaging the ideal antenna E-field measurements (this is an estimate of the central pixel value), 2) squaring, and 3) averaging in time for the calibration iteration. We still see a strong correlation between the gain amplitudes and this estimate of the central pixel intensity.\
+This was an interesting avenue for us to pursue to understand our algorithm, but does not fit in the narrative of the paper.
+\b0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sl280\partightenfactor0
+\cf0 \
+
+\i\fs20 Sec 3, par 8 and Fig 5: \'93Each of the ten simulated sources are clearly visible ...\'94 Change \'91are\'92 to \'91is\'92 (subject\
+each\'92 is singular). 
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Done.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 The sources are not all clear to me from Fig 5. The sources at approximately (\'960.22,\'960.8)\
+and (\'960.1,+0.12) would not be distinguishable from the background fluctuations without the artificial red\
+circles. 
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We think part of the trouble in distinguishing the sources from the noise was matplotlib\'92s default to\
+use interpolation when plotting images. We turned this off and the sources are more clear. We have also performed significantly more analysis internally on the SNR of the sources vs background fluctuations. Below is a signal-to-noise map where for each pixel we calculate the noise level as a local standard deviation of the map with known sources masked out.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b0 \cf0 \kerning1\expnd0\expndtw0 {{\NeXTGraphic Pasted Graphic 5.tiff \width7940 \height6880
+}¬}\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\sl280\partightenfactor0
+\cf0 We found that each source had SNR>8, and the background is similar to a gaussian with a small positive tail. 5.3% of background pixels are outside of the distribution\'92s 2-sigma range. \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b0 \cf0 \kerning1\expnd0\expndtw0 {{\NeXTGraphic Pasted Graphic 4.tiff \width8600 \height6880
+}¬}\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 \expnd0\expndtw0\kerning0
+\
+\
+\pard\pardeftab720\sl280\partightenfactor0
+\cf0 We generated these plots to directly address the referee\'92s question, but we believe it will be a distraction to the flow of the paper. The point is more concisely addressed by the image we added to compare the calibrated image to a perfectly calibrated image. We also made the red circles more faint and moved them to the new image (to not obscure the calibrated image).
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 The figure is presented without any intensity scale, so it provides no quantitative information. The\
+axes are labeled \'92l\'92 and \'92m\'92, but those symbols are not defined anywhere.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Colorscales added.  In doing this we realized putting the \'93before\'94 image on the same color scale is probably a better comparison.\
+(l,m) are now defined in Section 2.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 4, par 1: \'93... 255 antennas within a core radius of 100 m.\'94 LWA1 fits within a 100 m x 110 m ellipse,\
+so it is closer to 100 m diameter rather than radius. 
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Fixed.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 A reference giving details of the LWA design should be cited here, e.g. Ellingson et al. 2013, IEEE Trans on Ant & Prop.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Added.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 \'93writeout timescale of 5.12 ms\'94 should be \'93sampling period of 5.12 ms\'94. Without much more knowledge of\
+the LWA1 design, \'93writeout\'94 is not meaningful; and (as discussed earlier) \'93timescale\'94 is not appropriate.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Fixed.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 4, par 3: \'93Cyg A with flux 16611.68 Jy (Cohen et al. 2007); and Cas A with flux 17693.9 Jy (Kassim et\
+al. 2007).\'94 How did you get these fluxes to 7 significant digits? It was certainly not from the cited references.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We had originally used {\field{\*\fldinst{HYPERLINK "https://ned.ipac.caltech.edu/"}}{\fldrslt https://ned.ipac.caltech.edu/}} to obtain flux values at 74MHz, and cited the references cited there. However, while investigating these values we realized we should be using the VLSSr values. So we switched to integrated flux values retrieved from {\field{\*\fldinst{HYPERLINK "http://www.cv.nrao.edu/vlss/VLSSlist.shtml"}}{\fldrslt http://www.cv.nrao.edu/vlss/VLSSlist.shtml}}, and updated the reference appropriately. 
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 4, par 4: \'93... consistent with average gain amplitudes of 0.25.\'94 What are the units of this number? If\
+the gains are consistent with your definition in Sec 2, then they are not dimensionless. Perhaps you do not\
+mean the actual gains, but rather a gain correction factor (ratio of actual gain to some default value), in\
+which case it might be dimensionless.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 The gains as we define them are indeed dimensionless. This should be more clear with the re-write of Section 2.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 \'93... within a sub-band.\'94 Sub-band is a new term, introduced without explanation.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Removed this term.\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b0 \cf0 \
+
+\i\fs20 \'93A damping factor of \uc0\u947  = 0.7 was adopted.\'94 Why was 0.7 used here while 0.35 was used in the simulations of Sec 3?
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 The higher damping factor helped improve signal to noise, and is now explained in the text. It also follows more naturally with the rearrangement of Sections 4 and 5.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 4, par 5: \'93We therefore flagged these antennas in our analysis.\'94 \'93Flagged\'94 is a jargon term, and could\
+mean any of several things. Please say what you really mean, which is probably \'93we therefore omitted these\
+antennas from our analysis.\'94
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Done.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 \'93... over 10 timestamps\'94 should be \'93over 10 samples\'94.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Done.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 4, par 6: \'93the phases are relatively flat after about 15 iterations (modulo noise)...\'94 Some of them are not\
+so flat, with variations 
+\f3\i0 \uc0\u8764 
+\f0\i  0.5 radian. (Incidentally, while I can infer that the ordinate of Fig 6 is in radians,\
+it is not labeled; it should be.) Since there has been no noise analysis, we do not know whether this variation\
+is consistent with the expected noise.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We\'92ve addressed this in two ways - first we increased the frequency averaging to 300 channels for better signal to noise. Second, we added a quantitative discussion relating the fluctuations seen here to the noise simulations in the (now) previous section. \
+Units were added to vertical axis.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 4, par 7: \'93the amplitudes are noisy but relatively flat.\'94 Many of them do not look flat to me. At least one\
+varies from 0.38 to 0.55 after interation 15. It is important to explain this, or to admit that the explanation\
+is unknown. A careful noise analysis to show how much can be explained by the known system noise would\
+be valuable.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 The analysis was added (see previous comment). We admit there are 4 outliers in the noise distribution. When we inspect them they appear to be converging slower than the rest of the antennas.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 4, par 8: \'93We show the GSM4 modulated by two factors of the LWA power pattern.\'94 What are these\
+\'93two factors of the LWA power pattern\'94? (Also mentioned without explanation in Fig 8 caption.)
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We now explain that this is to place the GSM in the same holographic frame as the data images. \
+By the way, we now convolve the GSM with the appropriate point spread function for a more accurate comparison.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 4, par 9: \'93... we find the calibrated image to have a 55% dynamic range improvement over the uncalibrated\
+image.\'94 What were the two dynamic ranges separately? It is important to know these in order to\
+understand whether the improvement was significant.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Added - 137 and 88.5 respectively.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Fig 8: Like Fig 5, no intensity scale is provided, so quantitative interpretation is not possible. Are the\
+scales the same in all 3 images? 
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Added color scales. The data images are set to saturate at 1/2 image peak. We find this is a convenient way to observe the relative size of the rumble throughout the image. The GSM is now convolved with the LWA point spread function to put it in appropriate units for comparison, and is fixed to the same color scale as the \'93after calibration\'94 image.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Caption: Replace \'93produces\'94 with \'93produced\'94 (typo). 
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Done.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Background of uncalibrated image is called \'93sidelobe rumble,\'94 but no justification is given for that description; it is another\
+term introduced without explanation.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 We removed \'93sidelobe\'94 to avoid assumption of the source of the rumble.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 5 title: The section discusses \'93Noise Trends\'94 but contains no \'93Error Analysis\'94.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Removed \'93Error analysis\'94 from section title.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 5: This section is really an extension of Sec 3, giving additional simulations that are more realistic.\
+Consider swapping the order of Sec 5 and Sec 4, so that the simulation presentations are not split by the\
+experimental data presentation.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 This was an excellent recommendation. It not only helped the flow of the simulation sections, but allowed us to reference this section when discussing the noise in the data solutions.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 5, par 2: Again, giving the antenna aperture distribuion in meters is meaningless since the wavelength\
+is not specified. Why is this square top-hat function reasonable?
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Because this section now immediately follows section 3, we were able to remove redundant text such as this.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 5, par 6: \'93antenna E-fields are correlated...\'94 Again, the antenna outputs are not electric fields.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 This is more clear with the cleaned up Section 2.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 5, par 7: \'93The gain errors ... is shown\'94. Replace \'91is\'92 with \'91are\'92.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Fixed.
+\b0 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 \'93... the errors do behave like noise...\'94 What does this mean? How did you come to that conclusion? Does\
+the rms calibration error \uc0\u963 g have the expected value for the known noise level?
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Specified that we simply mean that the error trends down as t^(-1/2).
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 Sec 6, par 4: \'93... with knowledge of the poly-phase filters applied to the data stream...\'94 Another new\
+concept, poly-phase filters, is introduced without explanation. Until now, the only description of the \'93Fengine\'94\
+(another unexplained term) was that it performs a Fourier transform (Sec 2.1, par 3).
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 Removed \'93poly-phase\'94 and simply refer to \'93any filters applied to the data stream in the receiver chain\'94.
+\b0 \
+\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\i\fs20 \cf0 References: Many references point only preprints. When a reference is cited only for background and is not\
+critical to the points of this paper, the use of preprints is arguably acceptable. However, you cite a recent\
+preprint of your own (Thyagarajan et al. 2015a) a total of seven times, and it is the only reference on many\
+critical points. If that paper has now been published in a peer-reviewed journal, then the reference to the\
+published version should be given. If another published article covers the point, then it should be cited\
+instead. If a reviewed article is not available for a particular point, then that point needs to be explained\
+in this paper rather than relying on a reference. Often, even if a suitable reference exists, a more complete\
+explanation here would be better for most readers; it would make this paper more self-contained.
+\i0\fs24 \
+\pard\pardeftab720\sl280\partightenfactor0
+
+\b \cf0 In the current version we reference two preprints. Abbot et al has been accepted to ApJL and will be updated when publication info is available. This work and our own preprint are intended as companion papers. The latter received an encouraging referee report, but with significant additional work requested. That work is now complete, and will be resubmitted around the same time as this paper. We hope to have both papers\'92 references updated if/when they are accepted.\
+In additional we have added significant text to Sec 2 to make it more self-contained as recommended.}
