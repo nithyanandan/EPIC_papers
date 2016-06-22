@@ -81,7 +81,7 @@ $^{2}$University of Washington, Department of Physics, Seattle, WA 98195, USA\\
 \begin{abstract}
 We present the E-field Parallel Imaging Calibration (EPICal) algorithm, which addresses the 
 need for a real-time calibration method for direct imaging radio astronomy correlators. Direct 
-imaging involves a spatial fast Fourier transform of antenna signals, alleviating the harsh 
+imaging involves a spatial fast Fourier transform of antenna \textbf{signals}, alleviating the harsh 
 $\mathcal{O}(\Nant^2)$ computational scaling to a more gentle $\mathcal{O}(\Nant \log_2 
 \Nant)$, which can save orders of magnitude in computation cost for next generation arrays 
 consisting of hundreds to thousands of antennas. However, because signals are mixed in the 
@@ -111,8 +111,8 @@ Canadian Hydrogen Intensity Mapping Experiment (CHIME,\citealt{ban14}), the Long
 Wavelength Array (LWA, \citealt{ell13}), and the low frequency Square Kilometer Array (SKA1-
 Low \citealt{mel13}).
 
-The most common radio correlator designs of today, the FX and lag correlators \citep{rom99},
-cross-multiply the signals from all pairs of antennas, and 
+\textbf{The most common radio correlator designs of today, the FX and lag correlators \citep{rom99}},
+cross-multiply the \textbf{signals} from all pairs of antennas, and 
 the computation scales as the number of antennas squared, $\mathcal{O}(\Nant^2)$ 
 \citep{bun04}. As the number of elements in future arrays grows, the computational cost will 
 become prohibitively expensive, and exploring efficient correlator schemes is essential to 
@@ -131,9 +131,9 @@ to image the antenna signals, then squaring and averaging in time. This process 
 $\mathcal{O}(\Ng \log_2 \Ng)$, where \Ng~is the number of grid points in the FFT \citep{mor11,
  teg09, teg10}. For certain classes of telescopes, significantly those envisioned for next 
  generation cosmology experiments, this scaling is a large improvement over the $\Nant^2$ 
- scaling of traditional methods. Furthermore, because images are generated in real-time, the native 
- output bandwidth will be lowered in cases where $\Ng < \Nant^2$, and has the potential to be 
- lowered even further with real-time transient processing.
+ scaling of traditional methods. Furthermore, because images are generated \textbf{in real-time}, the native 
+ output bandwidth will be lowered \textbf{in cases where $\Ng < \Nant^2$}, and has the potential to be 
+ lowered even further with \textbf{real-time} transient processing.
 
 A handful of prototype direct imaging correlators have been tested on arrays including the 
 Basic Element for SKA Training II (BEST-2) array \citep{fos14}, the Omniscope \citep{zhe14}, 
@@ -148,8 +148,8 @@ optimal map without placing constraints on array layout or requiring identical a
 \citep{mor09,bha08,teg97a}.
 
 A challenge common to all direct imaging algorithms is calibration of the antenna gains. With a 
-traditional cross correlator, pair-wise visibilities are written to disk and used to calibrate 
-after observing before further processing such as imaging. However, a direct imaging correlator mixes 
+traditional \textbf{cross correlator}, pair-wise visibilities are written to disk and used to calibrate 
+\textbf{after observing before further processing} such as imaging. However, a direct imaging correlator mixes 
 the signals from all antennas before averaging and writing to disk, making calibration a 
 requirement at the front end, before imaging and averaging. Previous solutions have involved 
 applying calibration solutions generated from a parallel FX correlator \citep{zhe14, fos14}, or 
@@ -169,8 +169,8 @@ package\footnote{http://github.com/nithyanandan/EPIC}.
 
 We review the MOFF algorithm and derive the calibration algorithm in \S \ref{sec:math}. We 
 then demonstrate the algorithm in simulations in \S \ref{sec:sim}, 
-and discuss noise trends in \S \ref{sec:noise}. We then apply the algorithm to a sample LWA 
-data set in \S \ref{sec:data}.
+\textbf{and discuss noise trends in \S \ref{sec:noise}. We then apply the algorithm to a sample LWA 
+data set in \S \ref{sec:data}}.
 Finally we conclude and discuss potential extensions to the 
 algorithm in \S \ref{sec:discussion}.
 
@@ -185,16 +185,16 @@ the various steps of the algorithm.
 \begin{center}
 \includegraphics[width=\columnwidth]{fig1.pdf}
 \caption{Data flow for the MOFF algorithm, reproduced from \citealt{thy15c}. The time ordered 
-electric field measurements are collected by the antenna elements then frequency transformed in the 
+electric field \textbf{measurements} are collected by the antenna elements then frequency transformed in the 
 F-engine. The calibration is applied, then the electric field measurements are gridded using the 
-antenna aperture illumination patterns. The imager performs a spatial 2D FFT on the gridded data before 
+\textbf{antenna aperture illumination patterns}. The imager performs a spatial 2D FFT on the gridded data before 
 squaring and averaging. The accumulated images are then written to disk.}
 \label{fig:moff_flow}
 \end{center}
 \end{figure}
 
 %%% New text
-We begin by considering the electric field vector incident on the ground as a function of time, 
+\textbf{We begin by considering the electric field vector incident on the ground as a function of time, 
 $\mathbf{E}(\mathbf{r},t)$. The position vector, $\mathbf{r}$, is measured from some arbitrary 
 origin. Following \citealt{cla99} we make a few assumptions in order to clarify notation and 
 simplify the problem. First we note that the time ordered electric field can be expressed as a 
@@ -202,22 +202,22 @@ Fourier series with coefficients corresponding to frequencies $f$. This allows u
 quasi-monochromatic components of the electric field, $\mathbf{E}(\mathbf{r},f,t)$, with the 
 understanding that the full field is composed of all components and their corresponding Fourier 
 functions. We retain the time dependence because in practice each coefficient will only be 
-measured over some sampling period. 
+measured over some sampling period. }
 
-It is convenient to simplify notation by expressing the position vector in units of wavelengths, 
+\textbf{It is convenient to simplify notation by expressing the position vector in units of wavelengths, 
 $\mathbf{r}\rightarrow \mathbf{r}/\lambda$. We will also assume all antennas lie in a plane, 
 reducing the problem to two dimensions. While the MOFF algorithm in principle can account for 
 non-coplanar arrays through the W-projection algorithm \citep{cor08}, the EPIC code does not 
-currently support this so we leave it to future work.
+currently support this so we leave it to future work.}
 
-Next we treat the electric field as a scalar quantity, ignoring polarization effects. This allows us 
+\textbf{Next we treat the electric field as a scalar quantity, ignoring polarization effects. This allows us 
 to express the electric field as a scalar, $E(\mathbf{r},f,t)$, and treat subsequent field 
 propagation and measurements as scalar rather than tensor multiplications. A full polarization 
 treatment is required to construct polarized sky images, however the calibration will only 
 require a sky model expressed in the instrumental polarization basis. We can therefore treat 
-each polarization independently.
+each polarization independently.}
 
-Finally we assume the sources of the electric field are far away, allowing us to describe the 
+\textbf{Finally we assume the sources of the electric field are far away, allowing us to describe the 
 electric fields propagating from sky sources as originating from an imaginary celestial sphere 
 located a large distance from the ground. We express this intermediary electric field as an 
 angular distribution, $\mathcal{E}(\hat{\mathbf{s}},f,t)$, where $\hat{\mathbf{s}}$ is the unit 
@@ -228,9 +228,9 @@ on the ground as a Fourier integral of the propagated fields across the hemisphe
 E(\mathbf{r},f,t) = \int \mathcal{E}(\hat{\mathbf{s}},f,t) e^{-2\pi i \mathbf{r} \cdot \hat{\mathbf{s}}}\, d\Omega
 \end{equation}  
 By making the latter assumptions we have left treatment of the ionosphere and terrestrial 
-emission such as local interference or thermal radiation from the ground for future work. 
+emission such as local interference or thermal radiation from the ground for future work. }
 
-Next we turn to the measurement performed by an antenna with far-field radiation pattern 
+\textbf{Next we turn to the measurement performed by an antenna with far-field radiation pattern 
 $\mathcal{W}_a(\hat{\mathbf{s}})$, where the subscript $a$ denotes a specific antenna. We 
 adopt the common convention of normalizing the radiation pattern to have response of 1 at the 
 center of the main lobe \citep[e.g.][]{nap99}. Consequently, the translation between the terminal 
@@ -250,81 +250,57 @@ aperture illumination pattern (sometimes referred to as the aperture distributio
 While it is possible to define each antenna aperture illumination pattern in a way to absorb the 
 relative position of the antenna, we keep the $\mathbf{r}_a$ coordinate to retain the separable
 concepts of the primary beam (the product of two antenna radiation patterns) and the array
-point spread function (square of the Fourier transform of the array layout).
+point spread function (square of the Fourier transform of the array layout).}
 
-%The electric field incident on the ground, $\Er{}(\mathbf{r},t)$, is related to the sky electric field, 
-%$E(\hat{\mathbf{s}},t)$, through a Fourier transform.
-%\begin{equation}
-%\Er{}(\mathbf{r},t) = \int E(\hat{\mathbf{s}},t) e^{-2\pi i \mathbf{r}\cdot \hat{\mathbf{s}}}\, \dif^2 \hat{\mathbf{s}}
-%\end{equation}
-%Here $\hat{\mathbf{s}}$ denotes the sine-projected unit vector for the sky angle, $\mathbf{r}$ is 
-%the observer's location (measured in wavelengths relative to an arbitrary origin). We will 
-%encounter several quantities which we attempt to estimate. We distinguish the ``true'' values 
-%with a superscript $T$, while the estimated quantities are denoted with a prime. We define the 
-%true antenna signal as a convolution of the antenna voltage pattern, \beamr, with the electric 
-%field on the ground.
-%\begin{equation}
-%\Er{a}^T(t) \equiv \int \beamr_a(\mathbf{r}-\ra) \Er{}(\mathbf{r},t) \, \dif^2 \mathbf{r}
-%\end{equation}
-%The subscript $a$ labels the antenna, and $\mathbf{r}_a$ is the location of antenna $a$. 
-
-The first step of the MOFF algorithm is to digitize the antenna signals and perform an FFT to 
+\textbf{The first step of the MOFF algorithm is to digitize the antenna signals and perform an FFT to 
 channelize the time-ordered data. This is effectively estimating the quasi-monochromatic 
 components of the electric field we already discussed. The sampling rate of the digitization 
 determines the bandwidth of the observation, and the sampling period determines the minimum 
 frequency channel resolution. The frequency Fourier transform operation is often referred to as 
 the F-engine of a correlator. The MOFF shares the same F-engine design as an FX cross
 correlator which performs the frequency transform (F-engine) before cross multiplying 
-(X-engine). 
+(X-engine). }
 
-%The first step of the MOFF algorithm is identical to the F-engine of a traditional FX correlator 
-%where the electric fields are Fourier transformed to frequency channels, $\Er{a}^T(f,t)$. Even 
-%after transforming along the time axis, we retain the time dependence of the signal to represent 
-%a stream of spectra.
-
-Thus far we have considered the perfectly measured electric field distribution according to 
-the antenna far-field radiation patterns. Here we introduce a multiplicative complex gain as 
+Thus far we have \textbf{considered the perfectly measured electric field distribution according to 
+the antenna far-field radiation patterns}. Here we introduce a multiplicative complex gain as 
 well as an additive noise term which corrupt the measured signals.
 \begin{equation}\label{eq:apply_gain}
 E_a(f,t) = g_a(f,t) E_a^I(f,t) + n_a(f,t)
 \end{equation}
-%The noise term is 
-%strictly receiver noise -- noise introduced by the instrument. Any sky noise is implicitly included 
-%in the time dependence of the sky electric field. 
-We have carried the frequency dependence to this point to make clear the complex gains are
-frequency dependent. However, each subsequent step treats each frequency 
+\textbf{We have carried the frequency dependence to this point to make clear the complex gains are
+frequency dependent. However,} each subsequent step treats each frequency 
 channel independently, so we will drop the $f$ to simplify notation. 
-Furthermore, while antenna gains may vary with time, we will assume they are constant over
-the period of our calibration, and thus drop their time dependence from the notation.
+\textbf{Furthermore, while antenna gains may vary with time, we will assume they are constant over
+the period of our calibration, and thus drop their time dependence from the notation.}
 
-The MOFF algorithm next calls for a calibration of the electric field measurements. The goal of our new calibration method will be 
-to form an estimate of the gains, $g'_a$, where the prime represents an estimate. For now we will assume we have formed an estimate 
+The MOFF algorithm next calls for a calibration \textbf{of the electric field measurements}. The goal of our new calibration method will be 
+to form an estimate of the gains, $g'_a$, \textbf{where the prime represents an estimate}. For now we will assume we have formed an estimate 
 to proceed with the MOFF pipeline. We correct the incoming electric field data stream using our 
 current estimate of the gains.
 \begin{equation}
 E'_a(t) = E_a(t)/ g'_a
 \end{equation}
 
-The next step is to grid the calibrated electric field measurements to a finite set of regularly spaced 
+The next step is to grid the \textbf{calibrated electric field measurements to a finite set of regularly spaced 
 positions on the 2D plane of the ground, $\mathbf{r}_j$.
 The extent of the grid is chosen to encompass the footprint of the antenna array.
-MOFF uses the antenna aperture illumination patterns as the gridding 
+MOFF uses the antenna aperture illumination patterns as the} gridding 
 kernel according to the software holography/A-transpose technique \citep{mor09,bha08}. 
-Mathematically we can express the gridding operation as
+\textbf{Mathematically we can express the gridding operation as}
 \begin{equation}\label{eq:gridding}
 E'_j=\sum_a W_a(\mathbf{r}_j-\mathbf{r}_a) E'_a(t)
 \end{equation}
-Formally each pixel is calculated by summing over all antennas and their aperture illumination patterns.
+\textbf{Formally each pixel is calculated by summing over all antennas and their aperture illumination patterns.
 However the aperture illumination patterns are typically compact and non-overlapping, so most pixels
 will only contain contribution from at most one antenna, allowing equation~\ref{eq:gridding}
-to be calculated through a sparse matrix multiplication.
+to be calculated through a sparse matrix multiplication.}
 This gridding 
 achieves an optimal map \citep{teg97b} and places the data on a regular grid. Unlike 
 traditional correlators which grid visibilities, the MOFF grids the electric field measurements directly. This 
 operation must be performed for every time sample, before any averaging of the data.
 
 After gridding, the imaging portion of the MOFF performs a 2D spatial FFT to form 
-instantaneous electric field images of the sky at fixed locations $\s_k$.
+instantaneous electric field images of the sky \textbf{at fixed locations $\s_k$.
 The Fourier dual coordinates to $\mathbf{r}$ are $(l,m)$, where $l=\sin\theta\cos\phi$,
 $m=\nobreak\sin\theta\sin\phi$, and $(\theta,\phi)$ are the zenith 
 and azimuthal angles. The full unit vector towards the sky is 
@@ -332,7 +308,7 @@ $\s=(l,m,\sqrt{1-l^2-m^2})$.
 The sample spacing and resolution of $\s_k$ are given 
 by the choices of $\mathbf{r}_j$ grid parameters, according to the usual FFT relations. 
 Fine $\mathbf{r}_j$ grid spacing can result in non-physical angular pixels ($l^2+m^2>1$),
-which should be discarded.
+which should be discarded.}
 
 The pipeline up to this point can be summarized 
 through the following equation.
@@ -341,21 +317,21 @@ through the following equation.
 \underbrace{\sum_a W_a(\mathbf{r}_j - \ra)}_{\mathrm{Gridding}} \\
 & \qquad \times \underbrace{ \frac{1}{g'_a} \left(g_a E_a^I(t)+n_a(t)\right)}_{\mathrm{Calibration}} \nonumber
 \end{align}
-The sum over antennas uses the antenna aperture illumination pattern to grid the calibrated electric field measurements onto 
-regular gridpoints, $\mathbf{r}_j$. The sum over $j$ denotes the 2D FFT to sky coordinates, resulting in an 
+The sum over antennas uses the \textbf{antenna aperture illumination pattern} to grid the calibrated electric field \textbf{measurements} onto 
+regular gridpoints, $\mathbf{r}_j$. The \textbf{sum over $j$} denotes the 2D FFT to sky coordinates, resulting in an 
 estimate for the instantaneous electric field image. We can simplify this expression by 
-exchanging the sums and use the DFT to approximate the Fourier relationship between
-the antenna aperture illumination pattern and the far-field radiation pattern.
+exchanging the sums \textbf{and use the DFT to approximate the Fourier relationship between
+the antenna aperture illumination pattern and the far-field radiation pattern.}
 \begin{align}\label{eq:epix}
 \mathcal{E}'(\s_k,t) & = \frac{1}{\Nant} \sum_a \frac{1}{g'_a}\left(g_a E^I_a(t)+n_a(t)\right) e^{2\pi i \s_k \cdot \ra} \nonumber \\
   & \qquad\times \sum_j W_a(\mathbf{r}_j-\ra)e^{2\pi i \s_k \cdot (\mathbf{r}_j-\ra)} \nonumber\\
 & \approx \frac{1}{\Nant} \sum_a \frac{1}{g'_a}\left(g_aE^I_a(t)+n_a(t)\right) e^{2\pi i \s_k \cdot \ra}\mathcal{W}_a(\s_k)
 \end{align}
-In this form we see that the effect of gridding with the antenna aperture illumination pattern is to attenuate 
-the image by a factor of the far-field radiation response, $\mathcal{W}_a(\s)$.
+In this form we see that the effect of gridding with the antenna \textbf{aperture illumination pattern} is to attenuate 
+the image by a factor of the \textbf{far-field radiation response, $\mathcal{W}_a(\s)$.}
 
-Finally, the images are squared and averaged in time to form dirty images, 
-$I'(\hat{\mathbf{s}}_k)$, then written 
+Finally, the images are squared and averaged in time to form \textbf{dirty images, 
+$I'(\hat{\mathbf{s}}_k)$, then} written 
 to disk. While operations have been reordered, the resulting image is equivalent to one 
 produced by gridding and imaging visibilities. By shifting from cross-correlation of all pairs of 
 antennas to a spatial FFT, the computational cost is significantly lowered for certain classes of 
@@ -378,7 +354,7 @@ estimate from $n$ loops, $g^{(n)}_a$. We will use these estimates to calibrate t
 of data in order to form an updated estimate, $g^{(n+1)}_a$.
 
 As a starting point, we consider the feedback calibration outlined in \citealt{mor11}. There it 
-was suggested to form a correlation of the uncalibrated antenna measurements with the complex conjugate of an image 
+was suggested to form a correlation of the uncalibrated antenna measurements with the \textbf{complex conjugate of} an image 
 pixel from the output of the correlator. This is a statistically stationary quantity, which can be 
 related to the sum of visibilities involving the antenna used in the correlation -- exactly the sum 
 needed to calibrate a simple sky of a single point source. However, we aim for a more 
@@ -389,13 +365,13 @@ for the antenna-pixel correlation,
 \end{equation}
 where the superscript $n$ again represents the quantity formed in the $n^\mathrm{th}$ 
 calibration loop, 
-the superscript $^*$ indicates complex conjugation,
+\textbf{the superscript $^*$ indicates complex conjugation,}
 and \spix\, is the pixel center nearest a bright calibrator of interest. The 
 following will hold for any chosen pixel, \spix, though it is advantageous to choose a pixel which 
 contains a bright source to achieve a high signal to noise. 
 
 Plugging equation \ref{eq:epix} into equation \ref{eq:Kna_def}, 
-and substituting the $g^{(n)}_b$ for $g'_b$ to indicate the specific loop number,
+\textbf{and substituting the $g^{(n)}_b$ for $g'_b$ to indicate the specific loop number,}
 we find,
 \begin{align}
 \Kna & = \left<\left(g_a E_a^I(t)+n_a(t)\right) \frac{1}{\Nant} \right. \nonumber \\
@@ -408,26 +384,26 @@ we find,
 %& = \frac{1}{\Nant} \sum_b \frac{1}{g^{*(n)}_b} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} \left(g_ag^*_bV^I_{ab}+n_{ab}\right)
 \end{align}
 where in the second step we group time-dependent terms, 
-and in the third step we expanded the product within the time average.
+and in the third \textbf{step we expanded the product within the time average.
 Because the noise does not correlate with the ideal antenna measurements we can
 drop the middle terms. We will also assume that the cross-correlation noise ($a\ne b$) 
 is zero mean. Then by defining an ideal visibility as
-$V_{ab}^I \equiv \left<E^I_a(t)E^{*I}_b(t)\right>_t$, we can simplify to
+$V_{ab}^I \equiv \left<E^I_a(t)E^{*I}_b(t)\right>_t$, we can simplify to}
 \begin{align}\label{eq:Kna}
 \Kna & = \frac{1}{\Nant} \sum_b \frac{1}{g^{*(n)}_b} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb}\nonumber \\
 & \qquad \times \left( g_ag_b^* V_{ab}^I + \delta_{ab}\left<|n_a(t)|^2\right>_t\right)
 \end{align}
-where $\delta_{ab}$ is the Kronecker-delta function. To be clear, visibilities are never directly 
+\textbf{where $\delta_{ab}$ is the Kronecker-delta function. To be clear, visibilities are never directly 
 formed from the data. Rather it is convenient to express $\Kna$ in terms of the ideal 
-visibilities, which we can model when solving for the gains below.
+visibilities, which we can model when solving for the gains below.}
 
-We will ultimately wish to model the right side of equation~\ref{eq:Kna} in order to solve for the
+\textbf{We will ultimately wish to model the right side of equation~\ref{eq:Kna} in order to solve for the
 antenna gains. However, the self-correlated noise, $\left<|n_a(t)|^2\right>$, can often be 
 significantly larger than the cross correlation power, and difficult to model precisely. It 
 is therefore beneficial to subtract the self-correlation directly from $\Kna$. By properly
 accounting for the various weighting and phasing terms, we can use self-correlations of the
 uncalibrated antenna electric field measurements to remove the corresponding
-terms from equation~\ref{eq:Kna}.
+terms from equation~\ref{eq:Kna}.}
 \begin{align}\label{eq:Cna}
 \Cna & \equiv \Kna - \frac{1}{\Nant g^{*(n)}_a}\mathcal{W}^*_a(\spix)e^{-2\pi i \spix \cdot \ra} \left<|E_a|^2\right>_t\nonumber \\
 & = \frac{g_a}{\Nant} \sum_{b\ne a} \frac{g^*_b}{g^{*(n)}_b} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} V^I_{ab}
@@ -435,27 +411,26 @@ terms from equation~\ref{eq:Kna}.
 
 The next step is to use this antenna-pixel correlation to update our gain solution. We will model 
 the right hand side of equation~\ref{eq:Cna} by assuming our current gain estimates are 
-approximately correct, $g^{(n)}_b\approx g_b$, and replacing the ideal visibilities with a set of 
+approximately correct, $g^{(n)}_b\approx g_b$, and replacing the \textbf{ideal} visibilities with a set of 
 model visibilities, $V^M_{ab}$. These model visibilities rely on knowledge of the sky, and should 
-be precomputed before observing. We can then solve equation~\ref{eq:Cna} for $g_a$ to achieve an 
+be precomputed \textbf{before observing}. We can then solve equation~\ref{eq:Cna} for $g_a$ to achieve an 
 updated estimate.
 \begin{equation}\label{eq:cal_solution}
-%g^{(n+1)}_a = \Cna \Nant \left[ \sum_{b\ne a} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} V^M_{ab} \right]^{-1}
 g^{(n+1)}_a = \frac{\Cna \Nant }{ \sum_{b\ne a} \mathcal{W}^*_b(\spix) e^{-2\pi i \spix \cdot \rb} V^M_{ab} }
 \end{equation}
 This equation is our prescription for estimating the antenna gains of a direct imaging array. The 
-real-time computation complexity scales as $\mathcal{O}(\Nant)$ as we form 
-an antenna-pixel correlation, $\Cna$, for each 
+\textbf{real-time} computation complexity scales as $\mathcal{O}(\Nant)$ as we form 
+\textbf{an antenna-pixel correlation,} $\Cna$, for each 
 antenna. 
 
 We show schematically the process of calibrating a direct imaging correlator in 
-Fig.~\ref{fig:schematic}. Computationally expensive steps that must be performed in near real-time 
+Fig.~\ref{fig:schematic}. Computationally expensive steps that must be performed \textbf{in near real-time} 
 are shown inside the gray box. The uncalibrated antenna signals are tapped out after the 
 F-engine and correlated against the output image pixel of interest (i.e., equation~\ref{eq:Cna} is 
-computed in near real-time). The correlated values are then used to estimate the gains
-using equation~\ref{eq:cal_solution}, and additional fitting if desired. This step does not have
+\textbf{computed in near real-time}). The correlated values are then \textbf{used to estimate the gains}
+using equation~\ref{eq:cal_solution}, and additional fitting if desired. \textbf{This step does not have
 the speed requirement of the steps in the gray box because the correlations have been 
-averaged in time.
+averaged in time.}
 The gains are then passed back 
 to the correlator to update the calibration for subsequent integration intervals. 
 
@@ -464,18 +439,18 @@ to the correlator to update the calibration for subsequent integration intervals
 \includegraphics[width=\columnwidth]{fig2.pdf}
 \caption{The general data flow of the MOFF correlator, with a feedback calibration loop. A pixel 
 from the (unsquared) image is tapped out and correlated against the input antenna electric field 
-measurements to form $\Cna$ coefficients (equation~\ref{eq:Cna}). These coefficients are then 
-used to update the gain estimates using equations~\ref{eq:cal_solution}~and~\ref{eq:damping},
-and any additional fitting.
+\textbf{measurements} to form $\Cna$ coefficients (equation~\ref{eq:Cna}). These coefficients are then 
+\textbf{used to update the gain estimates using} equations~\ref{eq:cal_solution}~and~\ref{eq:damping},
+and \textbf{any additional fitting.}
 The gray box shows operations which must be done at high speed (before averaging in time),
-while the white boxes show operations which can be performed at lower speeds because
-they involve time averages quantities.
+\textbf{while the} white boxes show operations which can be performed \textbf{at lower speeds because
+they involve time averages quantities.}
 }
 \label{fig:schematic}
 \end{center}
 \end{figure}
 
-While testing we found equation~\ref{eq:cal_solution} resulted in oscillatory gain solutions over time, 
+While testing we found equation~\ref{eq:cal_solution} resulted in oscillatory gain solutions \textbf{over time,} 
 as is often the case in iterative methods. To mitigate this we 
 introduce a damping factor, $0 \leq \damp <1$, which is used to attenuate the gain update, 
 effectively giving the solutions memory of previous iterations.
@@ -490,10 +465,10 @@ essentially a weighted average over the past several iterations, giving it a lon
 integration time. 
 
 We conclude this section by connecting our calibration expression to that found in a visibility 
-framework. In the limit of a single bright calibrating source at center, we can greatly 
-simplify equations~\ref{eq:Cna} and~\ref{eq:cal_solution}. We will assume the radiation patterns are 
+framework. In the limit of a single bright calibrating source \textbf{at center,} we can greatly 
+simplify equations~\ref{eq:Cna} and~\ref{eq:cal_solution}. We will assume the \textbf{radiation patterns} are 
 normalized such that $\mathcal{W}(0)=1$. We can further drop the exponential phase terms 
-because $\spix$ is perpendicular to our planar antenna array. We then absorb the true gains into the true visibilities in 
+because $\spix$ \textbf{is perpendicular to our planar antenna array.} We then absorb the true gains into the true visibilities in 
 equation~\ref{eq:Cna} to express as a sum of measured, uncalibrated, visibilities.
 \begin{equation}
 \mathcal{C}^{(n)}_{a,0} \rightarrow \frac{1}{\Nant}\sum_{b\ne a} \frac{1}{g^{*(n)}_b} V_{ab}
@@ -508,9 +483,9 @@ g^{(n+1)}_a \rightarrow \frac{\sum_{b\ne a}  V_{ab}/g^{*(n)}_b}{\Nant S_{\mathrm
 This is simply a gain-weighted sum of the measured visibilities over the flux of the source, 
 which is indeed the limiting result from a visibility approach, for example seen in \citealt{mit08}. 
 The ability to recover the equivalent expression despite not actually forming the visibilities is a 
-result of the fact that only sums over visibilities come into the visibility-based solution, as was described in 
+result of the fact that only sums over visibilities come into the \textbf{visibility-based} solution, as was described in 
 \citealt{mor11}. We have confirmed the limiting case equivalence here, and will explore the 
-more general case in more detail in the following sections.
+more general case in more detail in \textbf{the following sections.}
 
 \section{Simulation}\label{sec:sim}
 We first demonstrate our calibration method through a controlled simulation. A complex gain is 
@@ -518,38 +493,38 @@ created for each antenna with random phase and amplitude, which is used to corru
 simulated data stream, then we attempt to recover the gains using our calibration routine. The 
 simulation software used is included in the EPIC package.
 
-The physical parameters of our simulation can be arbitrarily scaled to other cases. However, 
+\textbf{The physical parameters of our simulation can be arbitrarily scaled to other cases. However, 
 we provide typical units for an MWA observation as an example. Our simulated antenna 
-array consists of the inner 51 antennas of the MWA layout \citep{bea12}, within a bounding 
-box of 150~m. The antenna aperture illumination pattern used is a 4.4~m square tophat; a very rough 
-approximation to the square shaped tiles of the MWA. Because our algorithm treats frequency 
-channels independently, we simulate only one channel. For context we treat this as a channel
+array consists of} the inner 51 antennas of the MWA layout \citep{bea12}, within a bounding 
+box of 150~m. The \textbf{antenna aperture illumination pattern} used is a 4.4~m square tophat; \textbf{a very rough 
+approximation to the square shaped tiles of the MWA.} Because our algorithm treats frequency 
+channels independently, we simulate only one channel. For context we treat this as \textbf{a channel
 at 150~MHz with 40 kHz bandwidth, and adopt a sampling period of 25~$\mu$s. The simulated signal 
 consists of 10 random point sources with flux densitities 0.5~Jy~$\lesssim S \lesssim$~1~Jy 
-within the main lobe of the primary beam.
+within the main lobe of the primary beam.}
 
 For our unknown gains, we create a set of random complex numbers where the amplitude is 
 drawn from an approximately gaussian distribution centered around 1 with width 0.25, and 
 completely random phase. These are our ``true gains", and we apply them to the frequency
-domain simulated antenna electric field measurements as in equation~\ref{eq:apply_gain}. Our analysis is 
+domain simulated antenna electric field \textbf{measurements} as in equation~\ref{eq:apply_gain}. Our analysis is 
 blind to these values until the end of the process to check accuracy. The gain estimates are 
 initialized with unity, $g^{(0)}_a=1$.
 
-We next process and image \caliter~time samples (10~ms). We also form the correlations, 
+We next process and image \caliter~time \textbf{samples} (10~ms). We also form the correlations, 
 \Cna[0], used in our calibration loop. The pixel used for the correlation is the source with the 
 largest apparent flux (intrinsic flux attenuated by the primary beam). These correlation values 
-are used to update the gain estimates. For this simple demonstration we create perfect model 
+are used to update the gain estimates. \textbf{For this simple demonstration we create perfect model 
 visibilities of our 10 simulated sources to be used in equation~\ref{eq:damping}. 
-The updated gain estimates are used to calibrate the following 
+The updated gain estimates are} used to calibrate the following 
 \caliter~time samples. Through experimentation we found a damping factor of $\damp=0.35$ 
 resulted in the quickest convergence in this simulation.
 
-The calibration loop continues by updating the gain estimates every \caliter~time samples. The 
+The calibration loop continues by updating the gain estimates every \caliter~time \textbf{samples.} The 
 phases of our gain estimates are shown in Fig.~\ref{fig:sim_phase} for 20 such iterations. 
 The phase error plotted is the phase relative to the true gain for each antenna (various colored 
 lines). One antenna was used as a reference to fix the absolute phase, so has zero phase 
 error. The other 50 antennas are shown to have error spanning $2\pi$ initially, and after about 
-10 iterations lock into a solution, settling down to noise levels around iteration 12 (0.12~s). We 
+10 iterations lock into a solution, settling down to noise levels around iteration \textbf{12 (0.12~s)}. We 
 stop the simulation when the updated gains trace the thermal noise of the simulated sources, 
 which can be seen by the coherence of the 50 antenna gains after iteration 12.
 
@@ -558,7 +533,7 @@ which can be seen by the coherence of the 50 antenna gains after iteration 12.
 \includegraphics[width=\columnwidth]{fig3.pdf}
 \caption{Phase error of gain estimates as a function of iteration for simulated calibration. The 
 gains were initialized with random phases, but the calibration loop was able to recover the 
-correct phases after about 12 iterations. Each line represents an antenna in our 51 MWA 
+correct phases after about \textbf{12} iterations. Each line represents an antenna in our 51 MWA 
 antenna sample.
 }
 \label{fig:sim_phase}
@@ -568,8 +543,8 @@ antenna sample.
 The estimated gain amplitudes for the simulations are shown in Fig.~\ref{fig:sim_amp}. The 
 quantity plotted is the magnitude of the estimated gains over the true gains, $\left|g^{(n)}_a/
 g_a\right|$, which places all antennas on the same scale. We can see the amplitudes 
-converge toward their true values around the same time as the phases (iteration $\sim$12). At 
-the beginning of calibration we can see the importance of the damping factor. At $n=0$, a couple of 
+converge toward their true values around the same time as the phases (iteration \textbf{$\sim$12}). At 
+the beginning of calibration we can see the \textbf{importance} of the damping factor. At $n=0$, a couple of 
 gains are shown to have abnormally high amplitude estimates, notably one about 3.3 times its 
 true value (red line). These unbalanced high estimates caused the entire set of gains to be 
 under estimated at $n=1$, even with a damping factor of 0.35. By $n=5$ the unbalanced 
@@ -582,7 +557,7 @@ much longer to fade out.
 \includegraphics[width=\columnwidth]{fig4.pdf}
 \caption{Gain estimate amplitudes as a function of iteration for simulated calibration. Again, 
 each line represents an antenna in the 51 MWA antenna sample. The gain estimates were 
-initialized randomly, while the true values were unity. After about 12 iterations we see the 
+initialized randomly, while the true values were unity. After about \textbf{12} iterations we see the 
 calibration loop has settled around the correct values, with only noise remaining.}
 \label{fig:sim_amp}
 \end{center}
@@ -590,23 +565,23 @@ calibration loop has settled around the correct values, with only noise remainin
 
 After the gains have converged, we see both the phases and amplitudes to continue to 
 fluctuate coherently. This is due to the stochastic fluctuations of the sources 
-themselves, which are simulated as zero mean random processes with variance proportional
-to their flux density.
+themselves, \textbf{which are simulated as zero mean random processes with variance proportional
+to their flux density.}
 For this simulation we restricted each calibration 
 iteration to only 10~ms integration time. In principle a calibration implementation could use 
 short integration times to allow the gains to converge, then increase the integration time to 
 reduce this noise.
 
 Images created at the beginning of calibration and at the end are shown in 
-Fig.~\ref{fig:sim_images}. Each image is obtained over 400 time sample (10 ms) integration, corresponding to 
-all snapshot images created with a given set of gain estimates. The left panel shows the image 
+Fig.~\ref{fig:sim_images}. Each image is obtained over a 400 time sample \textbf{(10 ms)} integration, corresponding to 
+all snapshot images created with a given set of gain estimates. The \textbf{left} panel shows the image 
 produced with our initialized unity gains. Because the phases are completely random, the 
 image is essentially noise with the primary beam evident. After 20 calibration iterations, the image is far 
-more clear, shown in the middle panel. 
-The ten sources are visible, along with rumble throughout the image. By comparing with
+more clear, shown in the \textbf{middle} panel. 
+\textbf{The ten sources are visible, along with rumble throughout the image. By comparing with
 a perfectly calibrated image (right panel), we see that the rumble and the shapes of the
 point sources are matched between the two images. We therefore conclude that the 
-artifacts visible are dominated by the point spread function, rather than calibration errors.
+artifacts visible are dominated by the point spread function, rather than calibration errors.}
 
 \begin{figure*}
 \begin{center}
@@ -614,36 +589,36 @@ artifacts visible are dominated by the point spread function, rather than calibr
 \includegraphics[width=.3\linewidth]{fig5b.pdf}
 \includegraphics[width=.3\linewidth]{fig5c.pdf}
 \caption{Images formed during simulated calibration. \emph{Left:} An image generated from a 
-single frequency channel and 400 time sample (10 ms) integration after the gain estimates are randomized. As 
+single frequency channel and \textbf{400 time sample (10 ms)} integration after the gain estimates are randomized. As 
 expected with random phases, the image is completely noisy, with the shape of the primary 
 beam evident. \emph{Middle:} An image formed after calibration, again with a single frequency 
-channel and 400 time sample integration. Now the simulated point sources are visible in the image. 
+channel and \textbf{400 time sample} integration. \textbf{Now the simulated point sources are visible in the image. 
 \emph{Right:} An image generated from the same simulated data as the middle image, but 
 with perfect calibration correction. Many of the features seen in the middle image are also
-seen here, confirming that they are point spread function artifacts. The ten simulated (and modeled) point sources are highlighted with red circles.
+seen here, confirming that they are point spread function artifacts. The ten simulated (and modeled) point sources are highlighted with red circles.}
 \label{fig:sim_images}
 }
 \end{center}
 \end{figure*}
 
 \section{Noise trends}\label{sec:noise}
-Next we study the effect of noise in our system, and the consequences 
+\textbf{Next we} study the effect of noise in our system, and the consequences 
 of an incomplete sky model. We run a suite of simulations varying the receiver noise and 
 integration times, while forming antenna-pixel correlations, $\Cna$, for EPICal gain solutions, 
-and simultaneously forming visibilities from the same electric field measurement streams to find visibility-based 
+and simultaneously forming visibilities from the same \textbf{electric field measurement} streams to find visibility-based 
 gain solutions for comparison. 
 
 We use a simulated sky consisting of a 5~Jy calibrator source, and 49 other random sources 
 with apparent flux densities 0.2 to 0.5 Jy (total sky power $\approx$ 23 Jy). We generated 
 these sources randomly, but kept them fixed for each run. 
-We simulate the same antenna layout as in Section~\ref{sec:sim}. 
-However, we increase the number of frequency channels simulated to 64.
+\textbf{We simulate the same antenna layout as in Section~\ref{sec:sim}. 
+However, we increase the number of frequency channels simulated to 64.}
 Because our calibration loop treats 
 frequency channels independently, each channel can be treated as a separate trial of the 
 simulation, and is used to better estimate the statistics.
 
 To simulate receiver noise, we add a gaussian distributed complex random number to each 
-antenna electric field measurement at each time sample according to 
+antenna electric field measurement at each time \textbf{sample} according to 
 equation~\ref{eq:apply_gain}. The level of the receiver noise, $\sigma_r = \left<\left|
 n_a(f,t)\right|^2\right>$, is varied in different simulation runs. We include two limiting 
 cases, where the receiver noise power is subdominant to the sky power ($\sigma_r = 
@@ -664,7 +639,7 @@ point sources.
 
 For the EPICal calibration loops, we initialize our gain estimates with the true values 
 (${g^{(0)}_a=g_a=1}$), and allow the estimate to be corrupted by the noise through ten 
-iterations of the calibration loop. We again adopt a damping factor $\damp=0.35$. Because EPICal 
+iterations of the calibration loop. We \textbf{again} adopt a damping factor $\damp=0.35$. Because EPICal 
 updates the gain estimate at each calibration loop, \tcal, but retains a memory of previous 
 iterations through the damping factor, the total integration time is not straightforward. We define 
 an effective integration time by considering the relative weights of each previous $\Cna$ 
@@ -675,8 +650,8 @@ contributing to the current $g^{(n)}_a$ estimate, each with integration time \tc
 \end{equation}
 With the damping factor we adopted here, $\teff \approx 2.1 \times \tcal$. 
 
-We simultaneously form simulated visibilities, $V_{ab}$, by correlating all pairs of antenna electric field 
-measurements (including the receiver noise). The electric field measurements are correlated for a duration equal to 
+We simultaneously form simulated visibilities, $V_{ab}$, by correlating all pairs of antenna \textbf{electric field 
+measurements} (including the receiver noise). The \textbf{electric field measurements are correlated} for a duration equal to 
 the effective integration time of the EPICal loop for comparison. We then find the 
 visibility-based gain estimates by minimizing
 \begin{equation}\label{eq:vis_cal}
@@ -698,9 +673,9 @@ downward with longer integration times, as expected. The EPICal errors are sligh
 the visibility-based errors, on average about 23\% difference. This is not surprising as EPICal 
 only uses the information in a single pixel, while the visibilities use all information from the full 
 sky model. However, we see that with this perfect model the errors do behave like noise
-in the sense that they integrate down with longer integrations with the expected $t^{-1/2}$ 
-trend. 
-The same level of gain error as visibility based solutions can be achieved with a longer integration time (or larger damping 
+\textbf{in the sense that they integrate down with longer integrations with the expected $t^{-1/2}$ 
+trend. }
+The same level of \textbf{gain error as visibility based solutions} can be achieved with a longer integration time (or larger damping 
 factor).
 
 \begin{figure}
@@ -751,10 +726,10 @@ produce noise-like errors in their gains which scale down with more integration 
 
 \section{Application to LWA data}\label{sec:data}
 We next demonstrate our calibration algorithm using an observation from the LWA station in 
-New Mexico \citep{ell13}. The data is from the LWA narrow-band transient buffer (TBN), with time ordered 
-voltage data from the 255 core antennas within a 110~m x 100~m ellipse. 
+New Mexico \textbf{\citep{ell13}.} The data is from the LWA narrow-band transient buffer (TBN), with time ordered 
+voltage data from the 255 core antennas within a \textbf{110~m x 100~m ellipse. }
 The central frequency is 74.03 
-MHz, with a bandwidth of 100 kHz and sampling period of 5.12 ms (frequency channel 
+MHz, with a bandwidth of 100 kHz and \textbf{sampling period} of 5.12 ms (frequency channel 
 resolution of 195.3125 Hz). For this demonstration we limit ourselves to a single polarization.
 
 After correcting for geometric cable delays, the instrument is naturally well calibrated, as was 
@@ -762,7 +737,7 @@ seen in the demonstration of the EPIC imager in \citealt{thy15c}. However, we wi
 further improve on this calibration using our algorithm.
 
 We proceed by forming model visibilities. We model only two bright objects as point sources: 
-Cyg A with flux 20,539 Jy, and Cas A with flux 19,328 Jy \citep{lan12}. 
+Cyg A with flux \textbf{20,539 Jy, and Cas A with flux 19,328 Jy \citep{lan12}. }
 Because the raw data is attenuated by the primary beam of the instrument, we also account for 
 this in our model using beam values consistent with \cite{hic12}.
 
@@ -770,20 +745,20 @@ We made several choices while studying the behavior of the LWA data to improve o
 calibration. Through our previous imaging work, we noted that the flux scale of uncalibrated 
 images was consistent with average gain amplitudes of roughly 0.25. To allow the calibration to 
 converge quickly we initialized our gain estimates at this level. 
-We also found a boost in signal to noise is achieved easily by assuming the gains are
-constant across a range of frequencies, and averaging solutions across channels.
-Here we average solutions across 300 channels, or about 58.6 kHz. 
+We also found a boost in signal to noise is achieved easily by \textbf{assuming the gains are
+constant across a range of frequencies, and averaging solutions across channels.}
+Here we average solutions across \textbf{300} channels, or about \textbf{58.6 kHz.} 
 With a fractional bandwidth $B/f_0 = 7.9 \times 10^{-4} \ll 1$, we assume a smooth bandpass 
 across the band. 
 A damping factor of $\gamma = 0.7$ was adopted.
-The large damping factor, relative to what was used in simulations, was necessary due to
-the larger noise levels in the LWA data compared to the ideal simulations.
+\textbf{The large damping factor, relative to what was used in simulations, was necessary due to
+the larger noise levels in the LWA data compared to the ideal simulations.}
 
 Finally, we found that seven antennas\footnote{LWA antenna IDs 48, 85, 124, 148, 203, 217, 
 and 244 were omitted.} produced unstable gain solutions, and in fact corrupted the entire array. 
-We therefore omitted these antennas from our analysis, resulting in a total of 248 antennas to 
+We therefore \textbf{omitted these antennas from our analysis,} resulting in a total of 248 antennas to 
 calibrate. In each calibration loop, we form $C_{i,\hat{\boldsymbol{s}}_0}, i=1,2,\ldots N_a$ and 
-update our gain estimates over 10 samples (51.2 ms). We iterate the loop 30 times for a 
+update our gain estimates over 10 \textbf{samples} (51.2 ms). We iterate the loop 30 times for a 
 total of 1.536 seconds. The results of this calibration experiment are shown in Figs.~
 \ref{fig:data_phase}~--~\ref{fig:data_images}.
 
@@ -816,7 +791,7 @@ Fig.~\ref{fig:data_amp}. There is a fairly wide range in gain amplitudes (from 0
 However, this is not surprising due to the non-uniformity in the cables from the antennas to the 
 receivers. Again, the amplitudes are noisy but relatively flat.
 
-To ensure the level of noise in our solutions is reasonable we compared to the fractional errors
+\textbf{To ensure the level of noise in our solutions is reasonable we compared to the fractional errors
 from our simulations shown in Fig.~\ref{fig:errors}. We first use the Global Sky Model
 \citep{deo08} to generate a mock observed sky at 74.03 MHz using the PyGSM python 
 module\footnote{https://github.com/telegraphic/PyGSM} \citep{pri16}. We integrate this model
@@ -825,16 +800,16 @@ Cyg A accounts for  approximately $20,539/171,000 \approx 12\%$ of the total sky
 This places us in a regime very similar to the incomplete sky model simulations of the 
 previous section, where the calibration pixel accounted for 21.7\% of the sky power. We 
 should therefore expect our fractional gain noise levels to be at best around 0.1, the level 
-to which the simulations asymptotically approached. 
+to which the simulations asymptotically approached. }
 
-To estimate the fractional gain noise of our solutions we calculate the standard deviation of the gain
+\textbf{To estimate the fractional gain noise of our solutions we calculate the standard deviation of the gain
 estimates after iteration 15 for each antenna separately. We then divide these standard
 deviations by the respective mean gain amplitudes. This resulted in a distribution of fractional
 gain noise centered at 0.15 and a width of 0.04 ($\approx 0.15/\sqrt{15}$). This noise level
 is consistent with what we expected from the simulations.
 There were four outliers with noise levels significantly outside the distribution 
 ($\sigma_g \approx 0.29$). Upon closer inspection the gain amplitudes of these outliers had
-converged later in the calibration loop, after iteration 15.
+converged later in the calibration loop, after iteration 15.}
 
 \begin{figure}
 \begin{center}
@@ -849,16 +824,16 @@ the non-uniformity of cables between the LWA antennas and receivers.
 \end{figure}
 
 Figure~\ref{fig:data_images} shows the improvement in the images due to our calibration. The 
-left panel shows the uncalibrated image integrated over 51.2 ms, 83 kHz. Cyg~A is prominent 
+left panel shows the uncalibrated image integrated over 51.2 ms, \textbf{83 kHz.} Cyg~A is prominent 
 near the center of the image, and Cas~A is also clearly visible in the upper right. The middle 
 panel shows the image produced after calibration with identical integration time and bandwidth. 
 The sidelobes throughout the image are significantly suppressed, and the galactic plane is 
 much more evident, despite only modeling Cyg~A and Cas~A. We also note that the feature 
 just to the right of Cyg~A is dimmer in the calibrated image, better matching the expected flux 
 from the GSM. 
-For reference we show the GSM in the right panel of 
+\textbf{For reference we show the GSM in the right panel of 
 Fig.~\ref{fig:data_images}, convolved by the LWA point spread function and weighted
-by  two factors of the primary beam to match the holographic frame of the data images.
+by  two factors of the primary beam to match the holographic frame of the data images.}
 
 \begin{figure*}
 \begin{center}
@@ -866,12 +841,12 @@ by  two factors of the primary beam to match the holographic frame of the data i
 \includegraphics[width=0.3\linewidth]{fig9b.pdf}
 \includegraphics[width=0.3\linewidth]{fig9c.pdf}
 \caption{Images produced before (left) and after (middle) calibrating LWA data. These images 
-were produced with 83 kHz bandwidth and 51.2 ms integration. The calibrated image shows 
-significant reduction in rumble throughout, while retaining the prominent Cyg~A and 
+were produced with \textbf{83 kHz} bandwidth and 51.2 ms integration. The calibrated image shows 
+significant reduction in \textbf{rumble} throughout, while retaining the prominent Cyg~A and 
 Cas~A sources. The galactic plane is also substantially more evident after calibration. For 
-reference, the GSM is shown in the 
+reference, the GSM is shown \textbf{in the 
 right panel convolved with the LWA point spread function and weighted by two factors
-of the primary beam to place it in the same holographic frame as the data images. While much of the GSM is visible in the calibrated image, we 
+of the primary beam to place it in the same holographic frame as the data images.} While much of the GSM is visible in the calibrated image, we 
 note that the model used to calibrate was only the two bright sources, Cyg~A and Cas~A.
 }
 \label{fig:data_images}
@@ -880,9 +855,9 @@ note that the model used to calibrate was only the two bright sources, Cyg~A and
 
 To compare the image qualities quantitatively we compute the dynamic range, defined as the 
 peak of the image over the noise level. We estimate the noise level as the median of the 
-absolute deviation of the image, a robust statistic. With this metric we find the uncalibrated 
-and calibrated images to have dynamic ranges of 88.5 and 137, respectively, a 55\% 
-improvement.
+absolute deviation of the image, a robust statistic. With this metric we find the \textbf{uncalibrated 
+and} calibrated images to have \textbf{dynamic ranges of 88.5 and 137, respectively, a 55\% 
+improvement.}
 
 \section{Discussion}\label{sec:discussion}
 Through simulations and application to real data, we have shown that the EPICal algorithm is a 
@@ -914,7 +889,7 @@ derived here. We used this method at a rudimentary level in our demonstration to
 assuming the gains were constant over a narrow bandwidth. One could easily improve on this 
 by extending the bandwidth and fitting for a low order polynomial in phase and amplitude. 
 Additionally, with knowledge of 
-any filters applied to the data stream in the receiver chain,
+\textbf{any filters applied to the data stream in the receiver chain,}
 we could include channels closer to the edge of the band.
 
 \textbf{Improving sky model.} In this work we used a perfect sky model (for simulation), or a 
@@ -941,7 +916,7 @@ The work here will serve as a foundation for further development. We have shown 
 EPICal algorithm produces reliable calibration solutions, and have identified several aspects to 
 increase the scope. With next generation instruments in the planning and development stages, 
 EPICal is poised to greatly contribute to their success. The software is integrated into the EPIC 
-package and freely available to use in simulations or post-processing of data. Work is 
+package and freely available to use in simulations or \textbf{post-processing} of data. Work is 
 underway to port the code to real-time GPU systems for deployment. 
 
 \section*{Acknowledgements}
