@@ -496,14 +496,14 @@ normalized such that $\mathcal{W}(0)=1$. We can further drop the exponential pha
 because $\spix$ is perpendicular to our planar antenna array. We then absorb the true gains into the true visibilities in 
 equation~\ref{eq:Cna} to express as a sum of measured, uncalibrated, visibilities.
 \begin{equation}
-\mathcal{C}^{(n)}_{a,0} \rightarrow \frac{1}{\Nant}\sum_b \frac{1}{g^{*(n)}_b} V_{ab}
+\mathcal{C}^{(n)}_{a,0} \rightarrow \frac{1}{\Nant}\sum_{b\ne a} \frac{1}{g^{*(n)}_b} V_{ab}
 \end{equation}
 
 We next plug this expression into equation~\ref{eq:cal_solution} to find our simplified 
 calibration solution for a single bright point source. Because our sky is a single bright point 
 source, the model visibilities are simply the flux of the source, $S_{\mathrm{src}}$.
 \begin{equation}
-g^{(n+1)}_a \rightarrow \frac{\sum_b  V_{ab}/g^{*(n)}_b}{\Nant S_{\mathrm{src}}}
+g^{(n+1)}_a \rightarrow \frac{\sum_{b\ne a}  V_{ab}/g^{*(n)}_b}{\Nant S_{\mathrm{src}}}
 \end{equation}
 This is simply a gain-weighted sum of the measured visibilities over the flux of the source, 
 which is indeed the limiting result from a visibility approach, for example seen in \citealt{mit08}. 
@@ -529,7 +529,7 @@ consists of 10 random point sources with flux densitities 0.5~Jy~$\lesssim S \le
 within the main lobe of the primary beam.
 
 For our unknown gains, we create a set of random complex numbers where the amplitude is 
-drawn from approximately gaussian distribution centered around 1 with width 0.25, and 
+drawn from an approximately gaussian distribution centered around 1 with width 0.25, and 
 completely random phase. These are our ``true gains", and we apply them to the frequency
 domain simulated antenna electric field measurements as in equation~\ref{eq:apply_gain}. Our analysis is 
 blind to these values until the end of the process to check accuracy. The gain estimates are 
@@ -598,7 +598,7 @@ short integration times to allow the gains to converge, then increase the integr
 reduce this noise.
 
 Images created at the beginning of calibration and at the end are shown in 
-Fig.~\ref{fig:sim_images}. Each image is obtained over 400 time sample integration, corresponding to 
+Fig.~\ref{fig:sim_images}. Each image is obtained over 400 time sample (10 ms) integration, corresponding to 
 all snapshot images created with a given set of gain estimates. The left panel shows the image 
 produced with our initialized unity gains. Because the phases are completely random, the 
 image is essentially noise with the primary beam evident. After 20 calibration iterations, the image is far 
@@ -614,7 +614,7 @@ artifacts visible are dominated by the point spread function, rather than calibr
 \includegraphics[width=.3\linewidth]{fig5b.pdf}
 \includegraphics[width=.3\linewidth]{fig5c.pdf}
 \caption{Images formed during simulated calibration. \emph{Left:} An image generated from a 
-single frequency channel and 400 time sample integration after the gain estimates are randomized. As 
+single frequency channel and 400 time sample (10 ms) integration after the gain estimates are randomized. As 
 expected with random phases, the image is completely noisy, with the shape of the primary 
 beam evident. \emph{Middle:} An image formed after calibration, again with a single frequency 
 channel and 400 time sample integration. Now the simulated point sources are visible in the image. 
@@ -849,7 +849,7 @@ the non-uniformity of cables between the LWA antennas and receivers.
 \end{figure}
 
 Figure~\ref{fig:data_images} shows the improvement in the images due to our calibration. The 
-left panel shows the uncalibrated image integrated over 51.2 ms, 29 kHz. Cyg~A is prominent 
+left panel shows the uncalibrated image integrated over 51.2 ms, 83 kHz. Cyg~A is prominent 
 near the center of the image, and Cas~A is also clearly visible in the upper right. The middle 
 panel shows the image produced after calibration with identical integration time and bandwidth. 
 The sidelobes throughout the image are significantly suppressed, and the galactic plane is 
@@ -866,7 +866,7 @@ by  two factors of the primary beam to match the holographic frame of the data i
 \includegraphics[width=0.3\linewidth]{fig9b.pdf}
 \includegraphics[width=0.3\linewidth]{fig9c.pdf}
 \caption{Images produced before (left) and after (middle) calibrating LWA data. These images 
-were produced with 29 kHz bandwidth and 51.2 ms integration. The calibrated image shows 
+were produced with 83 kHz bandwidth and 51.2 ms integration. The calibrated image shows 
 significant reduction in rumble throughout, while retaining the prominent Cyg~A and 
 Cas~A sources. The galactic plane is also substantially more evident after calibration. For 
 reference, the GSM is shown in the 
@@ -941,7 +941,7 @@ The work here will serve as a foundation for further development. We have shown 
 EPICal algorithm produces reliable calibration solutions, and have identified several aspects to 
 increase the scope. With next generation instruments in the planning and development stages, 
 EPICal is poised to greatly contribute to their success. The software is integrated into the EPIC 
-package and freely available to use in simulations or offline processing of data. Work is 
+package and freely available to use in simulations or post-processing of data. Work is 
 underway to port the code to real-time GPU systems for deployment. 
 
 \section*{Acknowledgements}
