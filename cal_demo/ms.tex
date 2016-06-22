@@ -449,7 +449,7 @@ an antenna-pixel correlation, $\Cna$, for each
 antenna. 
 
 We show schematically the process of calibrating a direct imaging correlator in 
-figure~\ref{fig:schematic}. Computationally expensive steps that must be performed in near real-time 
+Fig.~\ref{fig:schematic}. Computationally expensive steps that must be performed in near real-time 
 are shown inside the gray box. The uncalibrated antenna signals are tapped out after the 
 F-engine and correlated against the output image pixel of interest (i.e., equation~\ref{eq:Cna} is 
 computed in near real-time). The correlated values are then used to estimate the gains
@@ -545,7 +545,7 @@ The updated gain estimates are used to calibrate the following
 resulted in the quickest convergence in this simulation.
 
 The calibration loop continues by updating the gain estimates every \caliter~time samples. The 
-phases of our gain estimates are shown in figure~\ref{fig:sim_phase} for 20 such iterations. 
+phases of our gain estimates are shown in Fig.~\ref{fig:sim_phase} for 20 such iterations. 
 The phase error plotted is the phase relative to the true gain for each antenna (various colored 
 lines). One antenna was used as a reference to fix the absolute phase, so has zero phase 
 error. The other 50 antennas are shown to have error spanning $2\pi$ initially, and after about 
@@ -565,7 +565,7 @@ antenna sample.
 \end{center}
 \end{figure}
 
-The estimated gain amplitudes for the simulations are shown in figure~\ref{fig:sim_amp}. The 
+The estimated gain amplitudes for the simulations are shown in Fig.~\ref{fig:sim_amp}. The 
 quantity plotted is the magnitude of the estimated gains over the true gains, $\left|g^{(n)}_a/
 g_a\right|$, which places all antennas on the same scale. We can see the amplitudes 
 converge toward their true values around the same time as the phases (iteration $\sim$12). At 
@@ -598,7 +598,7 @@ short integration times to allow the gains to converge, then increase the integr
 reduce this noise.
 
 Images created at the beginning of calibration and at the end are shown in 
-figure~\ref{fig:sim_images}. Each image is obtained over 400 time sample integration, corresponding to 
+Fig.~\ref{fig:sim_images}. Each image is obtained over 400 time sample integration, corresponding to 
 all snapshot images created with a given set of gain estimates. The left panel shows the image 
 produced with our initialized unity gains. Because the phases are completely random, the 
 image is essentially noise with the primary beam evident. After 20 calibration iterations, the image is far 
@@ -690,7 +690,7 @@ using both versions of the model visibilities described above.
 \sigma_g = \left[\frac{1}{N_f \Nant} \sum_f \sum_a \frac{\left|g^{(n)}_a(f)-g_a(f)\right|^2}{\left|g_a(f)\right|^2}\right]^{1/2}
 \end{equation}
 
-The results of our simulations are shown in Figure~\ref{fig:errors}. The gain errors from our 
+The results of our simulations are shown in Fig.~\ref{fig:errors}. The gain errors from our 
 EPICal method are shown with solid lines, while the dashed lines represent the visibility-based 
 calibration. The thick lines represent the results of using a full sky model, and the thin lines are 
 from the single point source model.  In the case of the full sky model, we see the errors trend 
@@ -731,7 +731,7 @@ expected to by about 180~K \citep{jac15}, and a bright calibrator source could b
 of this power. In this regime we found that EPICal gain noise was about 60\% higher than 
 visibility-based gain noise for the same effective integration time.
 
-When using the single point source model, all calibration methods in figure~\ref{fig:errors} trend 
+When using the single point source model, all calibration methods in Fig.~\ref{fig:errors} trend 
 downward until they reach an error floor due to the confusion sources that were not modeled. 
 The EPICal and visibility-based solutions reach a similar floor, but EPICal achieves a 
 marginally lower level (on average 5\% lower). This can be attributed to the same reason 
@@ -784,7 +784,7 @@ and 244 were omitted.} produced unstable gain solutions, and in fact corrupted t
 We therefore omitted these antennas from our analysis, resulting in a total of 248 antennas to 
 calibrate. In each calibration loop, we form $C_{i,\hat{\boldsymbol{s}}_0}, i=1,2,\ldots N_a$ and 
 update our gain estimates over 10 samples (51.2 ms). We iterate the loop 30 times for a 
-total of 1.536 seconds. The results of this calibration experiment are shown in figures~
+total of 1.536 seconds. The results of this calibration experiment are shown in Figs.~
 \ref{fig:data_phase}~--~\ref{fig:data_images}.
 
 Figure~\ref{fig:data_phase} shows the phase of our gain estimates over 30 calibration 
@@ -812,12 +812,12 @@ not surprising given the fairly good quality image produced from uncalibrated da
 \end{figure}
 
 The gain amplitudes as a function of calibration iteration are shown in 
-figure~\ref{fig:data_amp}. There is a fairly wide range in gain amplitudes (from 0.12 to 0.59). 
+Fig.~\ref{fig:data_amp}. There is a fairly wide range in gain amplitudes (from 0.12 to 0.59). 
 However, this is not surprising due to the non-uniformity in the cables from the antennas to the 
 receivers. Again, the amplitudes are noisy but relatively flat.
 
 To ensure the level of noise in our solutions is reasonable we compared to the fractional errors
-from our simulations shown in Figure~\ref{fig:errors}. We first use the Global Sky Model
+from our simulations shown in Fig.~\ref{fig:errors}. We first use the Global Sky Model
 \citep{deo08} to generate a mock observed sky at 74.03 MHz using the PyGSM python 
 module\footnote{https://github.com/telegraphic/PyGSM} \citep{pri16}. We integrate this model
 to estimate a total sky flux power of 171,000~Jy, meaning our calibration pixel containing
@@ -857,7 +857,7 @@ much more evident, despite only modeling Cyg~A and Cas~A. We also note that the 
 just to the right of Cyg~A is dimmer in the calibrated image, better matching the expected flux 
 from the GSM. 
 For reference we show the GSM in the right panel of 
-Figure~\ref{fig:data_images}, convolved by the LWA point spread function and weighted
+Fig.~\ref{fig:data_images}, convolved by the LWA point spread function and weighted
 by  two factors of the primary beam to match the holographic frame of the data images.
 
 \begin{figure*}
@@ -893,7 +893,7 @@ of antennas, which will be necessary for future radio transient and cosmology ex
 
 EPICal can be further improved through several extensions. Here we name a few potential 
 considerations for further study. These topics can be thought of as extensions to the white 
-``estimate gains" box in figure~\ref{fig:schematic}, which can be performed at a much lower 
+``estimate gains" box in Fig.~\ref{fig:schematic}, which can be performed at a much lower 
 cadence than the actual correlations.
 
 \textbf{Multiple pixel correlations.} As was seen in section~\ref{sec:noise}, the single pixel 
