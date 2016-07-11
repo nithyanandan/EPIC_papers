@@ -88,9 +88,13 @@ $\mathcal{O}(\Nant^2)$ computational bottleneck typical in radio correlators, an
 consisting of hundreds to thousands of antennas. However, because signals are mixed in the 
 correlator, gain correction must be applied \textbf{prior to correlation, rather than on visibilities post-correlation.} We develop the EPICal algorithm 
 to form gain solutions in real time without ever forming visibilities. This method scales as the 
-number of antennas, and produces results comparable to those from visibilities. Through 
-simulations and application to Long Wavelength Array data we show this algorithm is a 
-promising solution for next generation instruments.
+number of antennas, and produces results comparable to those from visibilities. 
+\textbf{We use simulations to demonstrate the EPICal technique and study the noise properties of
+our gain solutions, showing they are similar to visibility based solutions in realistic 
+situations.
+By applying EPICal to Long Wavelength Array data we achieve a 65\% dynamic range
+improvement compared to uncalibrated images, showing this algorithm is a promising
+solution for next generation instruments.}
 \end{abstract}
 
 \begin{keywords}
@@ -149,7 +153,7 @@ optimal map without placing constraints on array layout or requiring identical a
 \citep{mor09,bha08,teg97a}.
 
 A challenge common to all direct imaging algorithms is calibration of the antenna gains. With a 
-traditional \textbf{cross correlator}, pair-wise visibilities are written to disk and used to calibrate 
+traditional \textbf{cross correlator}, visibilities are written to disk and used to calibrate 
 \textbf{after observing and before further processing} such as imaging. However, a direct imaging correlator mixes 
 the signals from all antennas before averaging and writing to disk, making calibration a 
 requirement at the front end, before imaging and averaging. Previous solutions have involved 
@@ -497,10 +501,12 @@ created for each antenna with random phase and amplitude, which is used to corru
 simulated data stream, then we attempt to recover the gains using our calibration routine. The 
 simulation software used is included in the EPIC package.
 
-\textbf{The physical parameters of our simulation can be arbitrarily scaled to other cases. However, 
-we provide typical units for an MWA observation as an example. Our simulated antenna 
+\textbf{Our simulated antenna 
 array consists of} the inner 51 antennas of the MWA layout \citep{bea12}, within a bounding 
-box of 150~m. The \textbf{antenna aperture illumination pattern} used is a 4.4~m square tophat; \textbf{a very rough 
+box of 150~m. 
+\textbf{The physical parameters of our simulation can be arbitrarily scaled to other cases. However, 
+we provide typical units for an MWA observation as an example. 
+The antenna aperture illumination pattern} used is a 4.4~m square tophat; \textbf{a very rough 
 approximation to the square shaped tiles of the MWA.} Because our algorithm treats frequency 
 channels independently, we simulate only one channel. For context we treat this as \textbf{a channel
 at 150~MHz with 40 kHz bandwidth, and adopt a sampling period of 25~$\mu$s. The simulated signal 
@@ -508,8 +514,8 @@ consists of 10 random point sources with flux densitities 0.5~Jy~$\lesssim S \le
 within the main lobe of the primary beam.}
 
 For our unknown gains, we create a set of random complex numbers where the amplitude is 
-drawn from an approximately gaussian distribution centered around \textbf{unity} with width 0.25, and 
-completely random phase. These are our ``true gains", and we apply them to the frequency
+drawn from \textbf{a gaussian distribution centered around unity with width 0.25, and truncated at zero. The gain phases are drawn from a uniform distribution between $\pm \pi$. }
+These are our ``true gains", and we apply them to the frequency
 domain simulated antenna electric field \textbf{measurements} as in equation~\ref{eq:apply_gain}. Our analysis is 
 blind to these values until the end of the process to check accuracy. The gain estimates are 
 initialized with unity, $g^{(0)}_a=1$.
@@ -517,7 +523,7 @@ initialized with unity, $g^{(0)}_a=1$.
 We next process and image \caliter~time \textbf{samples} (10~ms). We also form the correlations, 
 \Cna[0], used in our calibration loop. The pixel used for the correlation is the source with the 
 largest apparent flux (intrinsic flux attenuated by the primary beam). These correlation values 
-are used to update the gain estimates. \textbf{For this simple demonstration we create perfect model 
+are used to update the gain estimates. \textbf{We create perfect model 
 visibilities of our 10 simulated sources to be used in equation~\ref{eq:damping}. 
 The updated gain estimates are} used to calibrate the following 
 \caliter~time samples. Through experimentation we found a damping factor of $\damp=0.35$ 
@@ -559,9 +565,10 @@ much longer to fade out.
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{fig4.pdf}
-\caption{Gain estimate amplitudes as a function of iteration for simulated calibration. Again, 
-each line represents an antenna in the 51 MWA antenna sample. The gain estimates were 
-initialized randomly, while the true values were unity. After about \textbf{12} iterations we see the 
+\caption{\textbf{Same as Fig.~\ref{fig:sim_phase}, but for gain amplitudes.
+Each} line represents an antenna in the 51 MWA antenna sample. 
+\textbf{The relative amplitude plotted is the magnitude of the estimated gains divided by the true gains.}
+After about \textbf{12} iterations we see the 
 calibration loop has settled around the correct values, with only noise remaining.}
 \label{fig:sim_amp}
 \end{center}
@@ -669,18 +676,16 @@ using both versions of the model visibilities described above.
 \sigma_g = \left[\frac{1}{N_f \Nant} \sum_f \sum_a \frac{\left|g^{(n)}_a(f)-g_a(f)\right|^2}{\left|g_a(f)\right|^2}\right]^{1/2}
 \end{equation}
 
-The results of our simulations are shown in Fig.~\ref{fig:errors}. The gain errors from our 
-EPICal method are shown with solid lines, while the dashed lines represent the visibility-based 
-calibration. The thick lines represent the results of using a full sky model, and the thin lines are 
-from the single point source model.  In the case of the full sky model, we see the errors trend 
+The results of our simulations \textbf{for all four calibration methods are shown in Fig.~\ref{fig:errors}. }
+In the case of the full sky model, we see the errors trend 
 downward with longer integration times, as expected. The EPICal errors are slightly higher than 
 the visibility-based errors, on average about 23\% difference. This is not surprising as EPICal 
 only uses the information in a single pixel, while the visibilities use all information from the full 
 sky model. However, we see that with this perfect model the errors do behave like noise
 \textbf{in the sense that they integrate down with longer integrations with the expected $t^{-1/2}$ 
 trend. }
-The same level of \textbf{gain error as visibility based solutions} can be achieved with a longer integration time (or larger damping 
-factor).
+\textbf{With longer integration time (or larger damping factor), EPICal can achieve the same 
+level of gain error as visibility based solutions.}
 
 \begin{figure}
 \begin{center}
@@ -710,6 +715,9 @@ expected to by about 180~K \citep{jac15}, and a bright calibrator source could b
 of this power. In this regime we found that EPICal gain noise was about 60\% higher than 
 visibility-based gain noise for the same effective integration time.
 
+\textbf{In a more realistic situation, the observer will not have a perfectly complete model of the sky.
+A common method is to instead model the brightest sources in the field,
+or even a single dominant source.}
 When using the single point source model, all calibration methods in Fig.~\ref{fig:errors} trend 
 downward until they reach an error floor due to the confusion sources that were not modeled. 
 The EPICal and visibility-based solutions reach a similar floor, but EPICal achieves a 
@@ -718,7 +726,10 @@ EPICal underperformed with the full sky model: EPICal only used a single pixel i
 form its solutions. When using the full sky model, it was \textbf{under utilizing} the information in the 
 rest of the sky. But when the sky model only contains the bright point source, the single pixel 
 used in EPICal is the location where this model is most accurate, effectively down weighting 
-the pixels with incomplete sky model. In the regime typical of HERA discussed above, EPICal's 
+the pixels with incomplete sky model. 
+\textbf{In contrast, the visibility-based calibration method weights the apparent sky equally,
+and experiences a more harsh penalty for missing sources in the model.}
+In the regime typical of HERA discussed above, EPICal's 
 error floor was 10\% lower than that of visibility-based solutions.
 
 Any realistic sky model will lie somewhere between the two extremes explored here. In the 
@@ -820,7 +831,8 @@ converged later in the calibration loop, after iteration 15.}
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{fig8.pdf}
-\caption{Gain amplitudes as a function of calibration iteration for an LWA TBN observation. The 
+\caption{\textbf{Same as Fig.~\ref{fig:data_phase}, but for gain amplitudes.}
+The 
 gains estimates were initialized with amplitude 0.25 after inspection of the electric field values 
 compared to our model sky. The solutions are noisy, but flat. The range in amplitudes is due to 
 the non-uniformity of cables between the LWA antennas and receivers.
@@ -830,7 +842,7 @@ the non-uniformity of cables between the LWA antennas and receivers.
 \end{figure}
 
 Figure~\ref{fig:data_images} shows the improvement in the images due to our calibration. The 
-left panel shows the uncalibrated image integrated over 51.2 ms, \textbf{83 kHz.} Cyg~A is prominent 
+left panel shows the uncalibrated image integrated over 51.2 ms, \textbf{58.6 kHz.} Cyg~A is prominent 
 near the center of the image, and Cas~A is also clearly visible in the upper right. The middle 
 panel shows the image produced after calibration with identical integration time and bandwidth. 
 The sidelobes throughout the image are significantly suppressed, and the galactic plane is 
@@ -847,7 +859,7 @@ by  two factors of the primary beam to match the holographic frame of the data i
 \includegraphics[width=0.3\linewidth]{fig9b.pdf}
 \includegraphics[width=0.3\linewidth]{fig9c.pdf}
 \caption{Images produced before (left) and after (middle) calibrating LWA data. These images 
-were produced with \textbf{83 kHz} bandwidth and 51.2 ms integration. The calibrated image shows 
+were produced with \textbf{58.6 kHz} bandwidth and 51.2 ms integration. The calibrated image shows 
 significant reduction in \textbf{rumble} throughout, while retaining the prominent Cyg~A and 
 Cas~A sources. The galactic plane is also substantially more evident after calibration. For 
 reference, the GSM is shown \textbf{in the 
@@ -862,7 +874,7 @@ note that the model used to calibrate was only the two bright sources, Cyg~A and
 To compare the image qualities quantitatively we compute the dynamic range, defined as the 
 peak of the image over the noise level. We estimate the noise level as the median of the 
 absolute deviation of the image. With this metric we find the \textbf{uncalibrated 
-and} calibrated images to have \textbf{dynamic ranges of 88.5 and 137, respectively, a 55\% 
+and} calibrated images to have \textbf{dynamic ranges of 80.4 and 133.1, respectively, a 65\% 
 improvement.}
 
 \section{Discussion}\label{sec:discussion}
@@ -902,8 +914,9 @@ we could include channels closer to the edge of the band.
 very simple sky model (for LWA data). In principle the images produced by the EPIC correlator 
 can be used to improve the sky model used in calibration -- similar to a major loop in 
 self-calibration. This can be especially useful for compact, widefield arrays which require a model of 
-both compact and diffuse sources over a large patch of sky. In addition to requiring the sky 
-model, the calibration also requires this model to be attenuated by the primary beam, which 
+both compact and diffuse sources over a large patch of sky. 
+\textbf{As with any sky-based calibration scheme, EPICal requires that the sky model be attenuated
+by the primary beam,} which 
 can be difficult to measure at the precision necessary \citep[e.g.][]{neb15,vir14,thy15b}. 
 However, the direct imaging correlator provides exactly the \textbf{product of the sky and beam} necessary in real time, and 
 can be iterated over to improve the images and gain solutions, \textbf{leaving final beam
