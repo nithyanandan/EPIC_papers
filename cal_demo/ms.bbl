@@ -17,15 +17,14 @@
   {mn@eprint@\@tempb}{\@tempb:\@tempc}{\expandafter \expandafter \csname
   mn@eprint@\@tempb\endcsname \expandafter{\@tempc}}}
 
-\bibitem[\protect\citeauthoryear{{Abbott} et~al.,}{{Abbott}
-  et~al.}{2016a}]{abb16b}
-{Abbott} B.~P.,  et~al., 2016a, preprint, \href
-  {http://adsabs.harvard.edu/abs/2016arXiv160208492A} {} (\mn@eprint {arXiv}
-  {1602.08492})
-
-\bibitem[\protect\citeauthoryear{Abbott et~al.,}{Abbott et~al.}{2016b}]{abb16a}
-Abbott B.~P.,  et~al., 2016b, \mn@doi [Phys. Rev. Lett.]
+\bibitem[\protect\citeauthoryear{Abbott et~al.,}{Abbott et~al.}{2016a}]{abb16a}
+Abbott B.~P.,  et~al., 2016a, \mn@doi [Phys. Rev. Lett.]
   {10.1103/PhysRevLett.116.061102}, 116, 061102
+
+\bibitem[\protect\citeauthoryear{{Abbott} et~al.,}{{Abbott}
+  et~al.}{2016b}]{abb16b}
+{Abbott} B.~P.,  et~al., 2016b, \mn@doi [\apjl] {10.3847/2041-8205/826/1/L13},
+  \href {http://adsabs.harvard.edu/abs/2016ApJ...826L..13A} {826, L13}
 
 \bibitem[\protect\citeauthoryear{Bandura et~al.,}{Bandura et~al.}{2014}]{ban14}
 Bandura K.,  et~al., 2014, \mn@doi [Proc. SPIE] {10.1117/12.2054950}, 9145,
@@ -152,6 +151,10 @@ Parsons A.~R.,  et~al., 2010, The Astronomical Journal, 139, 1468
 {Romney} J.~D.,  1999, in {Taylor} G.~B.,  {Carilli} C.~L.,   {Perley} R.~A.,
   eds,  Astronomical Society of the Pacific Conference Series Vol. 180,
   Synthesis Imaging in Radio Astronomy II. p.~57
+
+\bibitem[\protect\citeauthoryear{Sullivan et~al.,}{Sullivan
+  et~al.}{2012}]{sul12}
+Sullivan I.~S.,  et~al., 2012, The Astrophysical Journal, 759, 17
 
 \bibitem[\protect\citeauthoryear{Tegmark}{Tegmark}{1997a}]{teg97b}
 Tegmark M.,  1997a, \mn@doi [Phys. Rev. D] {10.1103/PhysRevD.55.5895}, 55, 5895
