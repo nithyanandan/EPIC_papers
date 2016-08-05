@@ -1,3 +1,12 @@
+From df79977 (mnras):
+====================
+
+Update figures as per referee report
+
+In ms.tex,
+
+(*) Add, remove and update figures as per referee report
+
 From 2add9d8 (mnras):
 ====================
 

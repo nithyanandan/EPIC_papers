@@ -27,7 +27,7 @@
 % MNRAS is set in Times font. If you don't have this installed (most LaTeX
 % installations will be fine) or prefer the old Computer Modern fonts, comment
 % out the following line
-\usepackage{newtxtext,newtxmath}
+% \usepackage{newtxtext,newtxmath}
 % Depending on your LaTeX fonts installation, you might get better results with one of these:
 % \usepackage{mathptmx}
 % \usepackage{txfonts}
@@ -45,6 +45,7 @@
 \usepackage{amsmath}	% Advanced maths commands
 \usepackage{amssymb}	% Extra maths symbols
 \usepackage[flushleft]{threeparttable} % For table notes
+\usepackage[caption=false]{subfig} % For subfloats
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -617,7 +618,7 @@ shows the estimated weights from antenna auto-correlations in the $uv$-plane
 is simply the directional antenna power response. 
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{figure5}
+  \includegraphics[width=\columnwidth]{figure4}
   % \includegraphics[width=\columnwidth]{autocorr_uvwts_pbeam}
   % \includegraphics[width=\columnwidth]{autocorr_uvwts_pbeam.png}
   \caption{The auto-correlation of weights of a square shaped antenna aperture
@@ -659,7 +660,7 @@ Their fluxes are modulated by a multiplicative power pattern corresponding to
 that of a uniform square aperture. 
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{figure6}
+  \includegraphics[width=\columnwidth]{figure5}
   % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_10_random_source_positions_4_iterations_test_aperture_zoomed}
   % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_10_random_source_positions_4_iterations_test_aperture_zoomed.eps}
   \caption{Dirty images (top) and synthesized beams (bottom) obtained from 
@@ -673,6 +674,12 @@ that of a uniform square aperture.
     shape. The overall modulation by the power pattern is seen clearly in both
     images.}
   \label{fig:MOFF-FX-image}
+\end{figure}
+
+\begin{figure}
+  \includegraphics[width=\columnwidth]{figure6}
+  \caption{.}
+  \label{fig:f-engine}
 \end{figure}
 
 Now we investigate the gridded cross-correlation weights in the $uv$-plane. 
@@ -717,12 +724,7 @@ antenna arrays and is under active development for EPIC.
   \includegraphics[width=\columnwidth]{figure7}
   % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_uvwts_test_aperture_zero_spacing_removed}
   % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_uvwts_test_aperture_zero_spacing_removed.eps}
-  \caption{Comparison of $uv$ plane antenna power response with MOFF (left) and 
-    visibility-based imaging (right). The zero-spacing footprint from the $uv$ 
-    weights obtained with MOFF has been subtracted. Differences in the void 
-    centreed around zero-spacing and other outer regions is due to loss of 
-    sampled antenna footprint precision due to coarseness of grid spacing 
-    further made severe by the correlation process.}
+  \caption{.}
   \label{fig:MOFF-FX-uvwts}
 \end{figure}
 
@@ -800,6 +802,15 @@ thus validating the functionality of EPIC.
     Locations of Cyg~A and Cas~A are annotated.}
   \label{fig:LWA-image}
 \end{figure}
+
+\section{Imaging with Heterogeneous Antenna Array}\label{sec:versatility}
+
+\begin{figure*}
+\subfloat[][Simulated Image]{\label{fig:nonphysical-image}\includegraphics[width=0.5\linewidth]{figure10a.eps}}
+\subfloat[][Normalized Radial Flux Density Profile]{\label{fig:norm-flux-density}\includegraphics[width=0.42\linewidth]{figure10b.eps}}
+\caption{.}
+\label{fig:versatility}
+\end{figure*}
 
 \section{Analysis and Feasibility}\label{sec:analysis}
 
@@ -923,7 +934,7 @@ instruments such as MWA and LOFAR lie in parameter space favouring
 visibility-based imaging. 
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{figure10}
+  \includegraphics[width=\columnwidth]{figure11}
   % \includegraphics[width=\columnwidth]{MOFF_FX_computations_fov_gridding_annotated}
   % \includegraphics[width=\columnwidth]{MOFF_FX_computations_fov_gridding_annotated.eps}
   \caption{Current and planned instruments in parameter space of
@@ -985,7 +996,7 @@ algorithm tend to be towards large $\Nant$ indicating large-N dense array
 layouts with smaller antenna elements are best suited for deploying EPIC.
 
 \begin{figure}
-  \includegraphics[width=\columnwidth]{figure11}
+  \includegraphics[width=\columnwidth]{figure12}
   % \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended}
   % \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended.eps}
   \caption{Current and planned instruments in parameter space of
