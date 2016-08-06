@@ -215,123 +215,73 @@ from visibilities to the electric fields of astrophysical sources, then show tha
 operations can be reordered to produce the same images at a lower 
 computational cost.
 
-Electric fields from astrophysical sources, $E(\hat{\mathbf{s}})$, in the sky
-coordinate system denoted by sine-projected unit vector $\hat{\mathbf{s}}$, 
-propagate towards the observer as:
+Electric fields from astrophysical sources, $\mathcal{E}(\hat{\mathbf{s}}, f, t)$, in the sky coordinate system denoted by the unit vector $\hat{\mathbf{s}}$, propagate towards the observer as:
 \begin{align}
-  \widetilde{E}(\mathbf{r}) &= \int E(\hat{\mathbf{s}})\,e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\,\dif^2\hat{\mathbf{s}},
+  E(\mathbf{r}, f, t) &= \int E(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}\cdot\hat{\mathbf{s}}/c}\,\dif\Omega,
 \end{align}
-where, $\mathbf{r}$ denotes the observer's location (measured in wavelengths 
-relative to some arbitrary origin) and $\widetilde{E}
-(\mathbf{r})$ is the propagated electric field. Thus the propagated electric
-field is a linear superposition of the electric fields emanating from
-astronomical sources with appropriate complex phases. It can also be described
-as a Fourier transform of the electric fields in the sky coordinates. 
+where, $\mathbf{r}$ denotes the observer's location, {\bf $f$ is the frequency of radiation, $c$ is the speed of light, $t$ denotes time} and $E(\mathbf{r}, f, t)$ is the propagated electric field. Thus the propagated electric field is a linear superposition of the electric fields emanating from astronomical sources with appropriate complex phases. {\bf Ignoring wide-field effects}, it can be {\bf simplified as} a Fourier transform of the electric fields in the sky coordinates. 
 
-An antenna, $a$, measures a phased sum of these propagated electric fields over
-its effective collecting area with an additive receiver noise:
+An antenna, {\bf located at $\mathbf{r}_a$ (indexed by $a$)}, measures a phased sum of these propagated electric fields over its effective collecting area with an additive receiver noise:
 \begin{align}\label{eqn:measured-E-field}
-  \widetilde{E}_a &= \int \widetilde{W}_a(\mathbf{r}-\mathbf{r}_a)\,\widetilde{E}(\mathbf{r})\,\dif^2\mathbf{r} + \widetilde{n}_a \\
-                  &= \int \widetilde{W}_a(\mathbf{r}-\mathbf{r}_a) \left[ \int E(\hat{\mathbf{s}})\,e^{-i2\pi\mathbf{r}\cdot\hat{\mathbf{s}}}\,\dif^2\hat{\mathbf{s}} \right] \dif^2\mathbf{r} + \widetilde{n}_a \\
-                  &= \int {W}_a(\hat{\mathbf{s}})\,E(\hat{\mathbf{s}})\,e^{-i2\pi\mathbf{r}_a\!\cdot\,\hat{\mathbf{s}}}\,\dif^2\hat{\mathbf{s}} + \widetilde{n}_a
+  E_a(f,t) &= \int W_a(\mathbf{r}-\mathbf{r}_a,f,t)\,E(\mathbf{r},f,t)\,\dif^2\mathbf{r} + n_a(f,t) \\
+           &= \int W_a(\mathbf{r}-\mathbf{r}_a,f,t) \nonumber \\
+           &\quad \times \left[ \int \mathcal{E}(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}\cdot\hat{\mathbf{s}}/c}\,\dif\Omega \right] \dif^2\mathbf{r} + n_a(f,t) \\
+           &= \int \mathcal{W}_a(\hat{\mathbf{s}},f,t)\,\mathcal{E}(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}_a\!\cdot\,\hat{\mathbf{s}}/c}\,\dif\Omega + n_a(f,t)
 \end{align}
-where, $\widetilde{W}_a(\mathbf{r})$ is the aperture electric field illumination
-pattern of the antenna and its Fourier transform, $W_a(\hat{\mathbf{s}})$, is the
-directional antenna voltage response.
+where, {\bf $W_a(\mathbf{r},f,t)$ is the aperture electric field illumination pattern of the antenna and its Fourier transform, $\mathcal{W}_a(\hat{\mathbf{s}},f,t)$, is the directional antenna voltage response at a given frequency and time}.
 
-Interferometers measure {\it visibilities} -- the degree of coherence between
-electric fields measured by a pair of antennas \citep{van34,zer38,tho01}.
-A visibility, $\widetilde{V}_p$, can be written as:
+Interferometers measure {\it visibilities} -- the degree of coherence between electric fields measured by a pair of antennas \citep{van34,zer38,tho01}. A visibility, $V_{ab}$, can be written as:
 \begin{align}
-  \widetilde{V}_p &= \left\langle \widetilde{E}_a\widetilde{E}_b^\star \right\rangle_t \label{eqn:cc-vis}\hfill\\
-  		&= \left\langle \left[ \int {W}_a(\hat{\mathbf{s}})\,E(\hat{\mathbf{s}})\,e^{-i2\pi\mathbf{r}_a\!\cdot\,\hat{\mathbf{s}}}\,\dif^2\hat{\mathbf{s}} + \widetilde{n}_a \right] \right. \nonumber\\
-		&\qquad \times \left.\left[ \int {W}^\star_b(\hat{\mathbf{s'}})\,E^\star (\hat{\mathbf{s'}})\,e^{i2\pi\mathbf{r}_b\!\cdot\,\hat{\mathbf{s'}}}\,\dif^2\hat{\mathbf{s'}} + \widetilde{n}^\star_b \right] \right\rangle_t \\
-                  &= \iint {W}_a(\hat{\mathbf{s}}) {W}^\star_b(\hat{\mathbf{s'}}) \left\langle E(\hat{\mathbf{s}}) E^\star(\hat{\mathbf{s'}}) \right\rangle_t e^{-i2\pi(\mathbf{r}_a\!\cdot\,\hat{\mathbf{s}}-\mathbf{r}_b\!\cdot\,\hat{\mathbf{s'}})}\,\dif^2\hat{\mathbf{s}}\,\dif^2\hat{\mathbf{s'}},
+  V_{ab}(f,t) &= \left\langle E_a(f,t)E_b^\star(f,t) \right\rangle_t \label{eqn:cc-vis}\hfill\\
+              &= \left\langle \left[ \int \mathcal{W}_a(\hat{\mathbf{s}},f,t)\,\mathcal{E}(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}_a\!\cdot\,\hat{\mathbf{s}}/c}\,\dif\Omega\right.\right. \nonumber\\
+              &\qquad\qquad\qquad\qquad\qquad\qquad\qquad\quad + \left. n_a(f,t) \vphantom{\int}\right] \nonumber\\
+              &\quad \times \left[ \int \mathcal{W}^\star_b(\hat{\mathbf{s'}},f,t)\,\mathcal{E}^\star (\hat{\mathbf{s'}},f,t)\,e^{2\pi i f\mathbf{r}_b\!\cdot\,\hat{\mathbf{s'}}/c}\,\dif\Omega^\prime \right. \nonumber\\
+              &\qquad\qquad\qquad\qquad\qquad\qquad\qquad\quad + \left.\left. n^\star_b(f,t) \vphantom{\int}\right] \right\rangle_t \\
+              &= \iint \mathcal{W}_a(\hat{\mathbf{s}},f,t) \mathcal{W}^\star_b(\hat{\mathbf{s'}},f,t) \left\langle \mathcal{E}(\hat{\mathbf{s}},f,t) \mathcal{E}^\star(\hat{\mathbf{s'}},f,t) \right\rangle_t \nonumber\\
+              &\qquad\qquad\qquad\qquad \times e^{-2\pi i f(\mathbf{r}_a\!\cdot\,\hat{\mathbf{s}}-\mathbf{r}_b\!\cdot\,\hat{\mathbf{s'}})/c}\,\dif\Omega\,\dif\Omega^\prime \nonumber\\
+              &\qquad +\textrm{noise-like cross-terms.}
 \end{align}
-where we have brought the time average into the integral under the assumption that 
-the aperture illumination pattern does not change over the time-scale of the 
-averaging and $\star$ denotes complex conjugation. This expression can be further 
-simplified with the sky brightness, 
-$I(\hat{\mathbf{s}})= \left\langle E(\hat{\mathbf{s}}) E^\star(\hat{\mathbf{s'}}) 
-\right\rangle_t  \delta(\hat{\mathbf{s}}-\hat{\mathbf{s'}})$, and defining the 
-antenna pair sky power response function (or the directional antenna power pattern), 
-$B_p(\hat{\mathbf{s}})~\equiv~{W}_a(\hat{\mathbf{s}})~{W}^\star_b(\hat{\mathbf{s}})$. 
-The result is the visibility expressed in terms of the sky brightness, the power 
-response, and uncorrelated noise terms which we group into $\widetilde{n}_p$.
-\begin{equation}
-\widetilde{V}_p = \int e^{-i2\pi\mathbf{u}_p\!\cdot\,\hat{\mathbf{s}}}\,B_p(\hat{\mathbf{s}})\,I(\hat{\mathbf{s}})\,\dif^2\hat{\mathbf{s}} + \widetilde{n}_p,
-\end{equation}
-where, the baseline coordinate $\mathbf{u}_p=\mathbf{r}_a-\mathbf{r}_b$ is the 
-vector separation between the two antennas. This signifies that the visibility 
-($\widetilde{V}_p$) measured between a
-pair of antennas ($p$) is obtained by the multiplying the sky brightness
-$I(\hat{\mathbf{s}})$ by the antenna power response $B_p(\hat{\mathbf{s}})$ and
-Fourier transforming from the directional coordinates ($\hat{\mathbf{s}}$) to $uv$
-coordinates, which are then sampled at the locations of the antenna spacings (or
-baselines), namely, $\mathbf{u}_p$, and added to the receiver noise $n_p$. 
+where we have brought the time average into the integral under the assumption that the aperture illumination pattern does not change over the time-scale of the averaging and $\star$ denotes complex conjugation. {\bf The noise-like cross-terms ideally have zero mean}. This expression can be further simplified with the sky brightness, $\mathcal{I}(\hat{\mathbf{s}},f,t)= \left\langle \mathcal{E}(\hat{\mathbf{s}},f,t)\,\mathcal{E}^\star(\hat{\mathbf{s'}},f,t) \right\rangle_t \delta(\hat{\mathbf{s}}-\hat{\mathbf{s'}})$, and defining the antenna-pair sky power response function (or the directional antenna-pair power pattern), $\mathcal{W}_{ab}(\hat{\mathbf{s}})~\equiv~\mathcal{W}_a(\hat{\mathbf{s}},f,t)~\mathcal{W}^\star_b(\hat{\mathbf{s}},f,t)$. The result is the visibility expressed in terms of the sky brightness, the power response, and uncorrelated noise terms which we group into $n_{ab}(f,t)$.
+\begin{align}
+V_{ab}(f,t) &= \int \mathcal{W}_{ab}(\hat{\mathbf{s}},f,t)\,\mathcal{I}(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}_{ab}\!\cdot\,\hat{\mathbf{s}}/c}\,\dif\Omega \nonumber\\
+  &\qquad\qquad + n_{ab}(f,t),
+\end{align}
+where, the baseline coordinate $\mathbf{r}_{ab}\equiv\mathbf{r}_a-\mathbf{r}_b$ is the vector separation between the two antennas. This signifies that the visibility ($V_{ab}$) measured between a pair of antennas is obtained by the multiplying the sky brightness $\mathcal{I}(\hat{\mathbf{s}},f,t)$ by the antenna power response $\mathcal{W}_{ab}(\hat{\mathbf{s}},f,t)$ and Fourier transforming from the directional coordinates ($\hat{\mathbf{s}}$) to {\bf the measurement plane}, which are then sampled at the locations of the antenna spacings (or baselines), namely, $\mathbf{r}_{ab}$, and added to the noise $n_{ab}$. 
 
 This can be equivalently re-written as:
 \begin{align}\label{eqn:software-holography}
-  \widetilde{V}_p &= \int \widetilde{B}(\mathbf{u}^\prime-\mathbf{u}) \left[\int e^{-i2\pi\mathbf{u}.\hat{\mathbf{s}}}\,I(\hat{\mathbf{s}})\,\dif^2\hat{\mathbf{s}}\right]\dif^2\mathbf{u} + n_p,
+  V_{ab}(f,t) &= \int W_{ab}(\mathbf{r}_{ab}^\prime-\mathbf{r},f,t) \nonumber\\ 
+              &\qquad \times \left[\int I(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}.\hat{\mathbf{s}}/c}\,\dif\Omega\right]\dif^2\mathbf{r}\,+\, n_{ab}(f,t),
 \end{align}
-where, $\widetilde{B}(\mathbf{u})$ denotes the $uv$-space antenna power response
-obtained by a Fourier transform of $B(\hat{\mathbf{s}})$. Effectively, the
-multiplication in image space by $B(\hat{\mathbf{s}})$ has been replaced by a
-convolution with $\widetilde{B}(\mathbf{u})$ in $uv$-space. This is the software
-holographic equivalent of a traditional FX correlator output. 
+where, $W_{ab}(\mathbf{r},f,t)$ denotes the {\bf power response of the antenna pair obtained in the measurement plane} by a spatial Fourier transform of $\mathcal{W}_{ab}(\hat{\mathbf{s}},f,t)$. Effectively, the multiplication in image space by $\mathcal{W}_{ab}(\hat{\mathbf{s}},f,t)$ has been replaced by a convolution with $W_{ab}(\mathbf{r},f,t)$ in {\bf measurement plane}. This is the software holographic equivalent of a traditional FX correlator output. 
 
-Hereafter, we adopt the matrix notation of \citet{mor11}, where vectors are 
-represented with single coordinates, and matrices are represented by two 
-coordinates denoting the spaces the operator transforms between. 
-In this notation, the above measurement equation can be expressed as:
+Hereafter, we adopt the matrix notation of \citet{mor11}, where vectors are represented with single coordinates, and matrices are represented by two coordinates denoting the spaces the operator transforms between. Since each frequency is processed independently, we drop the dependence on $f$. In this notation, the above measurement equation can be expressed as:
 \begin{align}
-  \mathbf{m}(\mathbf{v}) &= \widetilde{\mathbf{B}}(\mathbf{v},\mathbf{u})\,\mathbf{F}(\mathbf{u},\hat{\mathbf{s}})\,\mathbf{I}(\hat{\mathbf{s}}) + \mathbf{n}(\mathbf{v}),
+  \mathbf{m}(\mathbf{v}) &= \mathbf{B}(\mathbf{v},\mathbf{u})\,\mathbf{F}(\mathbf{u},\hat{\mathbf{s}})\,\boldsymbol{\mathcal{I}}(\hat{\mathbf{s}}) + \mathbf{n}(\mathbf{v}),
 \end{align}
-where the sky brightness $\mathbf{I}(\hat{\mathbf{s}})$ is Fourier transformed using
-$\mathbf{F}(\mathbf{u},\hat{\mathbf{s}})$ and the resultant spatial coherence
-function is weighted and summed using the antenna power response,
-$\widetilde{\mathbf{B}}(\mathbf{v},\mathbf{u})$ in $uv$-space sampled at the baseline
-location to obtain the measured visibilities:
+where the sky brightness $\boldsymbol{\mathcal{I}}(\hat{\mathbf{s}})$ is Fourier transformed using $\mathbf{F}(\mathbf{u},\hat{\mathbf{s}})$ and the resultant spatial coherence function is weighted and summed using the antenna power response, $\mathbf{B}(\mathbf{v},\mathbf{u})$ in $uv$-space sampled at the baseline location to obtain the measured visibilities:
 \begin{align}
-  \mathbf{m}(\mathbf{v}) &= \left\langle \widetilde{\mathbf{E}}(\mathbf{a})\,\widetilde{\mathbf{E}}^\star(\mathbf{a}^\prime)\right\rangle_t, \label{eqn:matrix-cc-vis}
+  \mathbf{m}(\mathbf{v}) &= \left\langle \mathbf{E}(\mathbf{a})\,\mathbf{E}^\star(\mathbf{a}^\prime)\right\rangle_t, \label{eqn:matrix-cc-vis}
 \end{align}
-where $\mathbf{m}(\mathbf{v})$ denotes visibilities measured by cross-correlating
-measured antenna electric fields over all possible pairs of $\mathbf{a}$ and
-$\mathbf{a}^\prime$. It is the same as equation~\ref{eqn:cc-vis} written in
-matrix notation.
+where $\mathbf{m}(\mathbf{v})$ denotes visibilities measured by cross-correlating measured antenna electric fields over all possible pairs of $\mathbf{a}$ and $\mathbf{a}^\prime$. It is the same as equation~\ref{eqn:cc-vis} written in matrix notation.
 
-Using the optimal map-making formalism \citep{teg97a,teg97b}, a software
-holography image is formed using \citep{mor09}:
+Using the optimal map-making formalism \citep{teg97a,teg97b}, a software holography image is formed using \citep{mor09}:
 \begin{align}
-  \mathbf{I}^\prime(\hat{\mathbf{s}}) &= \mathbf{F}^\textrm{T}(\hat{\mathbf{s}},\mathbf{u})\,\widetilde{\mathbf{B}}^{\,\textrm{T}}(\mathbf{u},\mathbf{v})\,\mathbf{N}^{-1}(\mathbf{v},\mathbf{v})\,\mathbf{m}(\mathbf{v}) \label{eqn:dirty-image-FX}
+  \boldsymbol{\mathcal{I}}^\prime(\hat{\mathbf{s}}) &= \mathbf{F}^\textrm{T}(\hat{\mathbf{s}},\mathbf{u})\,\mathbf{B}^{\,\textrm{T}}(\mathbf{u},\mathbf{v})\,\mathbf{N}^{-1}(\mathbf{v},\mathbf{v})\,\mathbf{m}(\mathbf{v}) \label{eqn:dirty-image-FX}
 \end{align}
-where the measured visibilities are weighted by the inverse of the system noise,
-followed by a gridding process using the holographic antenna power response as 
-the gridding kernel, followed by a Fourier transform to create an image
-$\mathbf{I}^\prime(\hat{\mathbf{s}})$. This is the optimal estimate of the true 
-image $\mathbf{I}(\hat{\mathbf{s}})$ given the visibility measurements.
+where the measured visibilities are weighted by the inverse of the system noise, followed by a gridding process using the holographic antenna power response as the gridding kernel, followed by a Fourier transform to create an image $\boldsymbol{\mathcal{I}}^\prime(\hat{\mathbf{s}})$. This is the optimal estimate of the true image $\boldsymbol{\mathcal{I}}(\hat{\mathbf{s}})$ given the visibility measurements.
 
-The intermediate step of gridding with the antenna power response can be 
-expressed as a convolution of a data vector generated by gridding the electric 
-fields directly with the antenna illumination pattern.
+The intermediate step of gridding with the antenna power response can be expressed as a convolution of a data vector generated by gridding the electric fields directly with the antenna illumination pattern.
 \begin{align}
-\widetilde{\mathbf{B}}^{\,\textrm{T}}(\mathbf{u},\mathbf{v})\,\mathbf{N}^{-1}(\mathbf{v} ,\mathbf{v})\,\mathbf{m}(\mathbf{v}) &= \left\langle \left[\widetilde{\mathbf{W}}^\textrm{T}_a(\mathbf{r},\mathbf{a})\, \widetilde{\mathbf{N}}^{-1}\!(\mathbf{a},\mathbf{a})\, \widetilde{\mathbf{E}}(\mathbf{a})\right]\right. \nonumber\\ 
-&\quad\ast\left.\left[\widetilde{\mathbf{W}}_a(\mathbf{r},\mathbf{a})\, \mathbf{N}^{-1}\!(\mathbf{a},\mathbf{a})\, \widetilde{\mathbf{E}}^\star(\mathbf{a})\right]\right\rangle_t\label{eqn:e-field-conv}
+\mathbf{B}^{\,\textrm{T}}(\mathbf{u},\mathbf{v})\,\mathbf{N}^{-1}(\mathbf{v} ,\mathbf{v})\,\mathbf{m}(\mathbf{v}) &= \left\langle \left[\mathbf{W}_a(\mathbf{r},\mathbf{a})\,\mathbf{N}^{-\mathrm{T}}\!(\mathbf{a},\mathbf{a})\, \mathbf{E}^\star(\mathbf{a})\right]\right. \nonumber\\ 
+&\quad\ast\left.\left[\mathbf{W}^\textrm{T}_a(\mathbf{r},\mathbf{a})\,\mathbf{N}^{-1}\!(\mathbf{a},\mathbf{a})\,\mathbf{E}(\mathbf{a})\right]\right\rangle_t\label{eqn:e-field-conv}
 \end{align}
 
-We can then use the multiplication-convolution theorem to move the convolution in 
-Equation \ref{eqn:e-field-conv} to a square after the Fourier transform in 
-Equation 
-\ref{eqn:dirty-image-FX}.
+We can then use the multiplication-convolution theorem to move the convolution in Equation \ref{eqn:e-field-conv} to a square after the Fourier transform in Equation~\ref{eqn:dirty-image-FX}.
 \begin{align}
-  \mathbf{I}^\prime(\hat{\mathbf{s}}) &= \left\langle \left|\,\mathbf{F}^\textrm{T}(\hat{\mathbf{s}},\mathbf{r})\,\widetilde{\mathbf{W}}^\textrm{T}(\mathbf{r},\mathbf{a})\,\widetilde{\mathbf{N}}^{-1}(\mathbf{a},\mathbf{a})\,\widetilde{\mathbf{E}}(\mathbf{a})\,\right|^2\right\rangle_t. \label{eqn:dirty-image-MOFF}
+  \boldsymbol{\mathcal{I}}^\prime(\hat{\mathbf{s}}) &= \left\langle \left|\,\mathbf{F}^\textrm{T}(\hat{\mathbf{s}},\mathbf{r})\,\mathbf{W}^\textrm{T}(\mathbf{r},\mathbf{a})\,\mathbf{N}^{-1}(\mathbf{a},\mathbf{a})\,\mathbf{E}(\mathbf{a})\,\right|^2\right\rangle_t. \label{eqn:dirty-image-MOFF}
 \end{align}
-The term inside the angular brackets before squaring has a very similar form as
-that in equation~\ref{eqn:dirty-image-FX}. It signifies that the measured antenna
-electric fields are weighted by the antenna noise, weighted and gridded by the
-antenna aperture kernel, Fourier transformed and finally squared to obtain the
-same image estimate that would have been obtained using equation~
-\ref{eqn:dirty-image-FX}. 
+The term inside the angular brackets before squaring has a very similar form as that in equation~\ref{eqn:dirty-image-FX}. It signifies that the measured antenna electric fields are weighted by the antenna noise, weighted and gridded by the antenna aperture kernel, Fourier transformed and finally squared to obtain the same image estimate that would have been obtained using equation~\ref{eqn:dirty-image-FX}. 
 
 Equation \ref{eqn:dirty-image-MOFF} is the optimal imaging equation used by the 
 MOFF algorithm. While mathematically equivalent to Equation~
@@ -363,8 +313,6 @@ implementing the MOFF imaging algorithm it also includes visibility-based imagin
 using the software holography technique and a simulator for generating electric 
 fields from a sky model. 
 
-% \subsection{Data Flow}
-
 EPIC can accept dual-polarization inputs and produce images of all four 
 instrumental cross-polarizations. Currently two data input formats exist for 
 reading in the 
@@ -372,57 +320,23 @@ electric field time samples measured by the antennas -- simulated electric
 fields based on a sky model using the simulator packaged with EPIC; and LWA 
 data. Efforts to build interfaces for data from other telescopes are underway.
 
-Fig.~\ref{fig:MOFF-flowchart} shows the flowchart for MOFF imaging. The
-propagated electric fields are shown on the left at different time stamps,
-$t_1\ldots t_\textrm{M}$. At each time stamp, the electric fields measured by
-antennas are denoted by $E_1(t)\ldots E_\textrm{N}(t)$. The F-engine performs a
-temporal Fourier transform on the electric field time-series to obtain electric
-field spectra $\widetilde{E}_1(f)\ldots \widetilde{E}_\textrm{N}(f)$ 
-($\widetilde{\mathbf{E}}(\mathbf{a})$ in matrix notation) for each of the 
-antennas. Each of the complex antenna gains are calibrated to correct the 
-corresponding electric field spectra. These calibrated electric fields are 
-gridded using an antenna-based gridding convolution function after which it is 
-spatially Fourier transformed and squared to obtain an image cube for every time 
-stamp. These images are then time-averaged to obtain the accumulated image 
-$I(f)$ ($\mathbf{I}(\hat{\mathbf{s}})$ in matrix notation).
+Fig.~\ref{fig:MOFF-flowchart} shows the flowchart for MOFF imaging. The propagated electric fields are shown on the left at different time stamps, $t_1\ldots t_\textrm{M}$. At each time stamp, the electric fields measured by antennas are denoted by $\widetilde{E}_1(t)\ldots \widetilde{E}_\textrm{N}(t)$. The F-engine performs a temporal Fourier transform on the electric field time-series to obtain electric field spectra $E_1(f)\ldots E_\textrm{N}(f)$ ($\mathbf{E}(\mathbf{a})$ in matrix notation) for each of the antennas. Each of the complex antenna gains are calibrated to correct the corresponding electric field spectra. These calibrated electric fields are gridded using an antenna-based gridding convolution function after which it is spatially Fourier transformed and squared to obtain an image cube for every time stamp. These images are then time-averaged to obtain the accumulated image $\mathcal{I}^\prime(f)$ ($\boldsymbol{\mathcal{I}}(\hat{\mathbf{s}})$ in matrix notation).
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{figure1}
   % \includegraphics[width=\columnwidth]{MOFF_flowchart}
   % \includegraphics[width=\columnwidth]{MOFF_flowchart.eps}
-  \caption{A flowchart of MOFF imaging in EPIC. The propagated electric fields
-    shown on the left are measured as time-series $E_1(t)\ldots E_\textrm{N}(t)$
-    by the antennas $\textrm{A}_1\ldots \textrm{A}_\textrm{N}$ which are then 
-    Fourier transformed by the F-engine to produce electric field spectra 
-    $\widetilde{E}_1(f)\ldots \widetilde{E}_\textrm{N}(f)$. They are calibrated 
-    and gridded. The gridded electric fields $\widetilde{E}_\textrm{g}(f)$ from 
-    each time series are imaged to produce images 
-    $I_1(f)\ldots I_\textrm{M}(f)$. These images are time-averaged to obtain the 
-    final image $I(f)$.}
+  \caption{A flowchart of MOFF imaging in EPIC. The propagated electric fields shown on the left are measured as time-series $\widetilde{E}_1(t)\ldots \widetilde{E}_\textrm{N}(t)$ by the antennas $\textrm{A}_1\ldots \textrm{A}_\textrm{N}$ which are then Fourier transformed by the F-engine to produce electric field spectra $E_1(f)\ldots E_\textrm{N}(f)$. They are calibrated and gridded. The gridded electric fields $E_\textrm{g}(f)$ from each time series are imaged to produce images $\mathcal{I}^\prime_1(f)\ldots \mathcal{I}^\prime_\textrm{M}(f)$. These images are time-averaged to obtain the final image $\mathcal{I}^\prime(f)$.}
   \label{fig:MOFF-flowchart}
 \end{figure}
 
-Fig.~\ref{fig:FX-flowchart} shows the flowchart for a visibility-based software 
-holographic imaging from a FX correlator. The antenna-based F-engine is identical 
-to that in the MOFF processing. The electric field spectra from each antenna are 
-then cross-multiplied in the X-engine with those from all other antennas to 
-obtain the visibilities $\widetilde{V}_\textrm{p}(f)$ ($\mathbf{m}(\mathbf{v})$ 
-in matrix notation). They are calibrated and time-averaged to obtain 
-$\langle \widetilde{V}_\textrm{p}(f)\rangle$ which are then gridded and imaged to 
-obtain the image $I(f)$. The $I(f)$ obtained from both techniques are 
-theoretically identical as explained in \S\ref{sec:math}.
+Fig.~\ref{fig:FX-flowchart} shows the flowchart for a visibility-based software holographic imaging from a FX correlator. The antenna-based F-engine is identical to that in the MOFF processing. The electric field spectra from each antenna are then cross-multiplied in the X-engine with those from all other antennas to obtain the visibilities $V_\textrm{ab}(f,t)$ ($\mathbf{m}(\mathbf{v})$ in matrix notation). They are calibrated and time-averaged to obtain $\langle V_\textrm{ab}(f)\rangle$ which are then gridded and imaged to obtain the image $\mathcal{I}^\prime(f)$. The $\mathcal{I}^\prime(f)$ obtained from both techniques are theoretically identical as explained in \S\ref{sec:math}.
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{figure2}
   % \includegraphics[width=\columnwidth]{FX_flowchart}
   % \includegraphics[width=\columnwidth]{FX_flowchart.eps}
-  \caption{A flowchart of visibility-based software holographic imaging in EPIC. 
-    The FX process flow shares the F-engine with the MOFF process. Following the 
-    F-engine, the electric fields pass through the X-engine to produce 
-    visibilities $\widetilde{V}_\textrm{p}(f)$ which are calibrated and 
-    time-averaged. Then they are gridded to obtain the gridded visibilities 
-    $\widetilde{V}_\textrm{g}(f)$ which are then Fourier transformed to obtain 
-    the image, $I(f)$.}
+  \caption{A flowchart of visibility-based software holographic imaging in EPIC. The FX process flow shares the F-engine with the MOFF process. Following the F-engine, the electric fields pass through the X-engine to produce visibilities $V_\textrm{ab}(f,t)$ which are calibrated and time-averaged. Then they are gridded to obtain the gridded visibilities $V_\textrm{g}(f)$ which are then Fourier transformed to obtain the image, $\mathcal{I}^\prime(f)$.}
   \label{fig:FX-flowchart}
 \end{figure}
 
@@ -439,7 +353,7 @@ far away from the field of view. The number of locations on the grid is
 restricted to be a power of 2 for efficient use of FFT. 
 
 The gridding kernel in the simplest case is given by the antenna aperture
-illumination function, $\widetilde{B}(\mathbf{r}-\mathbf{r}_a)$, which can
+illumination function, $W(\mathbf{r}-\mathbf{r}_a)$, which can
 be specified either by a functional form or as a table of values against 
 locations around the antennas. A nearest neighbor mapping from all antenna 
 footprints to grid locations is created using an efficient k-d tree algorithm 
@@ -528,22 +442,17 @@ algorithm.
 \par\medskip
 \noindent {\bf Gridding Convolution}
 \par\medskip
-\noindent The antenna array aperture illumination over the entire grid,
-$\widetilde{\mathbf{W}}(\mathbf{r})$, is obtained by a projection of the 
-individual antenna aperture illuminations:
+\noindent The antenna array aperture illumination over the entire grid, $W(\mathbf{r})$, is obtained by a projection of the individual antenna aperture illuminations:
 \begin{align}\label{eqn:gridding-convolution}
-  \widetilde{\mathbf{W}}(\mathbf{r}) &= \sum_a \widetilde{\mathbf{W}}_a(\mathbf{r}-\mathbf{r}_a) \\
-                            &= \mathbf{M}(\mathbf{r},\mathbf{a})\,\mathcal{I}(\mathbf{a}),
+  W(\mathbf{r}) &= \sum_a W_a(\mathbf{r}-\mathbf{r}_a),
 \end{align}
-where, $\mathcal{I}(\mathbf{a})$ is a row of ones. This is achieved by
-efficient multiplication with the sparse matrix created in the antenna-to-grid
-mapping process using the sparse matrices module in Python SciPy package. 
-Unless $\widetilde{\mathbf{W}}(\mathbf{r})$ includes time-dependent
-effects of the ionosphere or the instrument, it needs to be computed just once
-for the entire observation. However, the gridding of electric fields must be
-computed at every readout of the electric field spectra,
+or in matrix notation,
 \begin{align}
-  \widetilde{\mathbf{E}}(\mathbf{r}) &= \mathbf{M}(\mathbf{r},\mathbf{a})\,\widetilde{\mathbf{E}}(\mathbf{a}).
+  \mathbf{W}(\mathbf{r}) &= \mathbf{M}(\mathbf{r},\mathbf{a})\,\mathbf{I}(\mathbf{a}),
+\end{align}
+where, $\mathbf{I}(\mathbf{a})$ is a row of ones denoting coverage of the grid by kernel footprints of antennas. This is achieved by efficient multiplication with the sparse matrix created in the antenna-to-grid mapping process using the sparse matrices module in Python SciPy package. Unless $\mathbf{W}(\mathbf{r})$ includes time-dependent effects of the ionosphere or the instrument, it needs to be computed just once for the entire observation. However, the gridding of electric fields must be computed at every readout of the electric field spectra,
+\begin{align}
+  \mathbf{E}(\mathbf{r}) &= \mathbf{M}(\mathbf{r},\mathbf{a})\,\mathbf{E}(\mathbf{a}).
 \end{align}
 
 \par\medskip
@@ -634,7 +543,7 @@ is simply the directional antenna power response.
 
 We inverse Fourier transform the squared images and beams back to the $uv$ 
 plane and subtract the estimated auto-correlation kernel scaled to the peak 
-value centreed at the zero spacing pixel. The final averaged image is obtained 
+value centred at the zero spacing pixel. The final averaged image is obtained 
 by Fourier transforming the $uv$ plane data and weights with the 
 auto-correlations subtracted to the image plane. These images are now comparable 
 to those obtained from visibility-based imaging. This step of removing 
@@ -707,14 +616,14 @@ weights may suffer further loss of precision in their sampled footprint after
 correlation of two footprints each of which could be less precise to first 
 order. On the other hand, in visibility-based imaging, a directly sampled $uv$ 
 plane antenna power response (which is theoretically identical to the correlation 
-of individual antenna footprints) centreed on a baseline has a loss in precision 
+of individual antenna footprints) centred on a baseline has a loss in precision 
 at most to first order. Thus, although in the limit of infinitesimally small 
 grid spacing they should be identical, the coarseness of grid spacing introduces 
 subtle differences between the two.
 
 These differences which are dependent on the coarseness of grid spacing can be 
 mitigated by making the grid spacing finer at the expense of increased 
-computational cost. Residuals centreed around zero spacing can also be lowered 
+computational cost. Residuals centred around zero spacing can also be lowered 
 by subtracting each auto-correlation of antenna weights separately by using the 
 shape and extent of the sampled footprint appropriate for that specific antenna 
 aperture. This is a general solution applicable even in case of heterogeneous 
@@ -772,7 +681,7 @@ gridding do not affect the statistics of the images or the synthesized beams.
 
 Here we demonstrate our software using narrow band data from the LWA station 
 in New Mexico. This data is in LWA narrow-band transient buffer (TBN) format 
-from 255 antennas within roughly a diameter of 100~m. The data is centreed at a 
+from 255 antennas within roughly a diameter of 100~m. The data is centred at a 
 frequency of 74.03~MHz, with a sample rate (equal to the bandwidth) of 100~kHz 
 with 512 complex time samples per antenna in a A/D writeout time-scale of 
 5.12~ms, a frequency resolution of 195.3125~Hz and dual polarization. There are 
@@ -1296,7 +1205,7 @@ is an additional step of squaring the holographic electric field images.
 
 Besides its core functions of spatial Fourier transform and squaring, it can 
 stack, accumulate and average images, and optionally remove the antenna
-auto-correlations centreed around the zero-spacing pixel in the $uv$ plane. 
+auto-correlations centred around the zero-spacing pixel in the $uv$ plane. 
 It also handles all four cross-polarization products. Currently, it supports 
 writing data out in standard FITS format. 
 
