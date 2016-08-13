@@ -1,3 +1,9 @@
+From e6e6612 (mnras):
+====================
+
+(*) Add section on imaging with heterogeneous arrays
+(*) Make associated changes in Abstract, Introduction and Conclusions
+
 From 8448190 (mnras):
 ====================
 
