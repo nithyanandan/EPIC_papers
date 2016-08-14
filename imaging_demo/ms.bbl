@@ -67,6 +67,12 @@ Cooley J.~W.,  Tukey J.~W.,  1965, Math. Comput., 19, 297
   et~al.}{2000}]{dai00}
 Daishido T.,  et~al., 2000, \mn@doi [Proc. SPIE] {10.1117/12.390458}, 4015, 73
 
+\bibitem[\protect\citeauthoryear{{DeBoer} et~al.,}{{DeBoer}
+  et~al.}{2016}]{deb16}
+{DeBoer} D.~R.,  et~al., 2016, preprint, \href
+  {http://adsabs.harvard.edu/abs/2016arXiv160607473D} {} (\mn@eprint {arXiv}
+  {1606.07473})
+
 \bibitem[\protect\citeauthoryear{{Ellingson} et~al.,}{{Ellingson}
   et~al.}{2013}]{ell13}
 {Ellingson} S.~W.,  et~al., 2013, \mn@doi [IEEE Transactions on Antennas and

@@ -1,3 +1,14 @@
+From 3f838e8 (mnras):
+====================
+
+In ms.tex,
+
+(*) Make minor revisions throughout
+
+In epic.bib,
+
+(*) Add reference to HERA paper by DeBoer et al. (2016)
+
 From e6e6612 (mnras):
 ====================
 
