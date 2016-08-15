@@ -1,3 +1,8 @@
+From 65210aa (mnras):
+====================
+
+(*) Update notation in block diagram figures
+
 From 3f838e8 (mnras):
 ====================
 
