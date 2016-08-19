@@ -1,3 +1,10 @@
+From 357d600 (Adam-v1):
+======================
+
+In ms.tex,
+
+(*) Update sections 2 and 3 with Adam's suggestions
+
 From 0c31757 (mnras):
 ====================
 
