@@ -1,3 +1,10 @@
+From 0c31757 (mnras):
+====================
+
+In ms.tex,
+
+(*) Update abstract and Introduction with Adam's suggestions
+
 From 65210aa (mnras):
 ====================
 
