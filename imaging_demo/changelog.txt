@@ -1,3 +1,8 @@
+From 7ffd480 (mnras):
+====================
+
+(*) Update MOFF, FX flowcharts for correct notation
+
 From 1d980f4 (mnras):
 ====================
 
