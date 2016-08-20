@@ -1,3 +1,10 @@
+From 8bce8b2 (Adam-v1):
+======================
+
+In ms.tex,
+
+(*) Simplify notation in section 5 further
+
 From 60cde0b (Adam-v1):
 ======================
 

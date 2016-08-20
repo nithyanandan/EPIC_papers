@@ -579,7 +579,7 @@ thus validating the functionality of EPIC.
 
 One of the advanced features of the MOFF algorithm and its implementation via EPIC is the ability to naturally account for heterogeneity of antennas while still producing images with maximal information \citep{mor11}. Unlike the assumption frequently made in standard radio interferometry that all antennas are identical, EPIC can implement the most generic case where no such assumption can be made. In other words, EPIC does not assume $W_a(\mathbf{r}-\mathbf{r}_a)$ or $B_{ab}(\mathbf{r}-\mathbf{r}_{ab})$ for different antennas are identical. However, any {\it a priori} knowledge available that certain sets of antennas have identical illumination patterns can be easily passed on to EPIC to avoid redundant computations and thus increase efficiency.
 
-We present a methodology to understand the effective angular weighting in the image obtained with EPIC from a heterogeneous array and compare it with that from standard interferometry that assumes a homogeneous array (all antennas are identical). We also demonstrate how the assumption in the latter results in a mis-estimation of the recovered sky model.
+We present a methodology to understand the effective angular weighting in the image obtained with EPIC from a heterogeneous array and compare it with that from standard interferometry which assumes a homogeneous array (all antennas are identical). We also demonstrate how the assumption in the latter results in a mis-estimation of the recovered sky model.
 
 Dropping the noise term and time dependence, the visibility measured by an antenna pair can be written from equation~\ref{eqn:measurement-eqn-1} as:
 \begin{align}\label{eqn:measurement-eqn-2}
@@ -630,87 +630,57 @@ If all antennas are identically weighted ($W^\textrm{G} \equiv W^\textrm{G}_a \e
 \end{align}
 Thus, the dirty image, which is already attenuated by the instrumental power pattern, gets further attenuated by the power pattern introduced in the gridding step in EPIC imager. This is consistent with \citet{mor09}. 
 
-{\bf For a heterogeneous array, it is necessary to keep track of antennas and antenna pairs of different types which will determine the final weighting in the synthesized image.} We consider a heterogeneous array consisting of a total of $\Nant$ antennas under $N_\textrm{T}$ different types. And under each antenna type $i$, there are $n_i$ antennas such that $\sum_i n_i = \Nant$. The total number of unique non-zero spacing antenna pairs is $\Nant(\Nant-1)/2$ and there are potentially $N_\textrm{T}(N_\textrm{T}+1)/2$ unique antenna pair types obtained by pairwise combination of the $N_\textrm{T}$ antenna types. Thus, the total number of antenna pairs, 
+{\bf We note that all quantities in the celestial plane (calligraphic fonts) are functions of position, $\hat{\mathbf{s}}$, and frequency, $f$. For convenience, we drop writing this dependence explicitly hereafter.}
+
+{\bf For a heterogeneous array, it is necessary to keep track of antennas and antenna pairs of different types which will determine the final weighting in the synthesized image.} We consider a heterogeneous array consisting of a total of $\Nant$ antennas under $N_\textrm{T}$ different types. And under each antenna type $i$, there are $n_i$ antennas such that $\sum_i n_i = \Nant$. The total number of unique non-zero spacing antenna pairs is $\Nant(\Nant-1)/2$ and there are potentially up to $N_\textrm{T}(N_\textrm{T}+1)/2$ unique antenna pair types obtained by pairwise combination of the $N_\textrm{T}$ antenna types. Thus, the total number of antenna pairs, 
 \begin{align}\label{eqn:total-baselines}
   \frac{1}{2}\Nant(\Nant-1) &= \frac{1}{2}\,\sum_{ij} n_{ij}, \\
   \textrm{where}, \quad   n_{ij} &= \begin{cases}
     n_i\,n_j & i\ne i \\
     n_i(n_i-1) & i=j, 
   \end{cases}
-  % \frac{1}{2}\Nant(\Nant-1) &= \frac{1}{2}\,\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j} n_i\,n_j + \frac{1}{2}\,\sum_{i=1}^{N_\textrm{T}} n_i(n_i-1) \nonumber\\
 \end{align}
 is obtained by counting antenna pairs, $n_{ij}$, in different antenna pair types, $ij$.
 
 Since equation~\ref{eqn:wt-dirty-image-EPIC} is obtained by averaging weighted fringes over all unique antenna pairs, it can be expressed as: 
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp}
-  \mathcal{I}^\prime(\hat{\mathbf{s}},f) &= \frac{1/2}{\Nant(\Nant-1)/2}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\,\mathcal{I}^\prime_{ab}(\hat{\mathbf{s}},f)
+  \mathcal{I}^\prime &= \frac{1/2}{\Nant(\Nant-1)/2}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\,\mathcal{I}^\prime_{ab}
 \end{align}
-% \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp}
-%   \mathcal{I}^\prime(\hat{\mathbf{s}},f) &= \frac{1}{\Nant(\Nant-1)/2}\,\left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\,\mathcal{I}^\prime_{ab}(\hat{\mathbf{s}},f)\right. \nonumber\\ 
-%   &\qquad\qquad\qquad\qquad\qquad\quad + \left.\frac{1}{2}\sum_{i=1}^{N_\textrm{T}}\sum_{\substack{ab\\a\ne b\\a,b\in i}}\,\mathcal{I}^\prime_{ab}(\hat{\mathbf{s}},f)\right]. 
-% \end{align}
 Here, equation~\ref{eqn:wt-dirty-image-EPIC} has been decomposed as the sum of fringes over all unique antenna pairs in an antenna pair type (innermost summation) and subsequently summed over all antenna pair types. 
 
-{\bf For purposes of demonstration in this specific study, we make the following simplification.} We assume that the spatial distribution of antenna pairs in each antenna pair type are similar and thus result in a similar dirty image, $\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)$. This usually holds when $\Nant$ is large and antennas under each antenna type are chosen randomly such that differences in the point spread functions are insignificant. Under this assumption, equation~\ref{eqn:wt-dirty-image-EPIC-decomp} can be written as:
+{\bf For purposes of demonstration in this study, we make the following simplification.} We assume that the spatial distribution of antenna pairs in each antenna pair type are similar and thus result in a similar dirty image, $\mathcal{I}_\textrm{D}^\textrm{iso}$. This usually holds when $\Nant$ is large and antennas under each antenna type are chosen randomly such that differences in the point spread functions are insignificant. Under this assumption, equation~\ref{eqn:wt-dirty-image-EPIC-decomp} can be written as:
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx1}
-  \mathcal{I}^\prime(\hat{\mathbf{s}},f) &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)}{\Nant(\Nant-1)}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}} \left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right.\nonumber\\
-  &\qquad\qquad\qquad\qquad\qquad\qquad \left.\times\mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\}
-  % &\,\times \left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right.\right.\nonumber\\
-  % &\qquad\qquad\qquad\qquad\qquad\qquad \left. \times \mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\} \nonumber\\ 
-  % &\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}\sum_{\substack{ab\\a\ne b\\a,b\in i}}\left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right. \nonumber\\
-  % &\qquad\qquad\qquad\qquad\qquad\qquad \left.\left.\times\mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\}\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right], 
+  \mathcal{I}^\prime &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}}{\Nant(\Nant-1)}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}} \mathcal{W}^{\textrm{G}\star}_a\,\mathcal{W}^\textrm{G}_b\,\mathcal{W}^\textrm{I}_a\,\mathcal{W}^{\textrm{I}\star}_b,
 \end{align}
-% \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx1}
-%   \mathcal{I}^\prime(\hat{\mathbf{s}},f) &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)}{\Nant(\Nant-1)/2} \nonumber\\
-%   &\,\times \left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right.\right.\nonumber\\
-%   &\qquad\qquad\qquad\qquad\qquad\qquad \left. \times \mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\} \nonumber\\ 
-%   &\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}\sum_{\substack{ab\\a\ne b\\a,b\in i}}\left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right. \nonumber\\
-%   &\qquad\qquad\qquad\qquad\qquad\qquad \left.\left.\times\mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\}\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right], 
-% \end{align}
-where, $\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)$ is approximately the same for all terms and has been pulled outside the summations. For all antennas indexed by $a$ that belong to a particular type $i$, we replace $\mathcal{W}_a$ with $\mathcal{W}_{(i)}$ {\bf and is applicable to those} that arise from both instrumental (superscript `$I$') and gridding (superscript `$G$') origins. Using arguments similar to those in equation~\ref{eqn:total-baselines}, equation~\ref{eqn:wt-dirty-image-EPIC-decomp-approx1} can be further simplified to:
+where, $\mathcal{I}_\textrm{D}^\textrm{iso}$ is approximately the same for all terms and has been pulled outside the summations. For all antennas indexed by $a$ that belong to a particular type $i$, we replace $\mathcal{W}_a$ with $\mathcal{W}_{(i)}$ {\bf and is applicable to those arising} from both instrumental (superscript `$I$') and gridding (superscript `$G$') origins. Using arguments similar to those in equation~\ref{eqn:total-baselines}, equation~\ref{eqn:wt-dirty-image-EPIC-decomp-approx1} can be further simplified to:
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx2}
-  \mathcal{I}^\prime(\hat{\mathbf{s}},f) &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)}{\Nant(\Nant-1)}\,\sum_{ij}n_{ij}\left\{\mathcal{W}^{\textrm{G}\star}_{(i)}(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_{(j)}(\hat{\mathbf{s}},f)\right.\nonumber\\
-  &\qquad\qquad\qquad\qquad\qquad\qquad \left. \times \mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_{(j)}(\hat{\mathbf{s}},f)\right\}.
+  \mathcal{I}^\prime &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}}{\Nant(\Nant-1)}\,\sum_{ij}n_{ij}\,\mathcal{W}^{\textrm{G}\star}_{(i)}\,\mathcal{W}^\textrm{G}_{(j)}\,\mathcal{W}^\textrm{I}_{(i)}\,\mathcal{W}^{\textrm{I}\star}_{(j)}.
 \end{align}
-% \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx2}
-%   \mathcal{I}^\prime(\hat{\mathbf{s}},f) &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)}{\Nant(\Nant-1)/2} \nonumber\\
-%   &\,\times \left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}n_in_j\left\{\mathcal{W}^{\textrm{G}\star}_{(i)}(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_{(j)}(\hat{\mathbf{s}},f)\right.\right.\nonumber\\
-%   &\qquad\qquad\qquad\qquad\qquad\qquad \left. \times \mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_{(j)}(\hat{\mathbf{s}},f)\right\} \nonumber\\ 
-%   &\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}n_i(n_i-1)\,\left|\mathcal{W}^\textrm{G}_{(i)}(\hat{\mathbf{s}},f)\right|^2\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^2\left.\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right].
-% \end{align}
 Then the effective attenuation of the dirty image due to instrumental and gridding weights is:
 \begin{align}\label{eqn:effective-weighting}
-  \mathcal{W}_\textrm{eff} &= \mathcal{I}^\prime(\hat{\mathbf{s}},f)\, / \,\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f).
+  \mathcal{W}_\textrm{eff} &= \mathcal{I}^\prime\, / \,\mathcal{I}_\textrm{D}^\textrm{iso}.
 \end{align}
 This means that the effective attenuation of the dirty image is obtained by combinations of the fourth power of antenna voltage patterns each weighted by the number of antenna pairs in those antenna pair types. In an optimally weighted image, $\mathcal{W}^\textrm{G}_{(i)} \equiv \mathcal{W}^\textrm{I}_{(i)}$ and thus, equation~\ref{eqn:effective-weighting} reduces to:
 \begin{align}\label{eqn:effective-weighting-optimal}
-  \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{ij} n_{ij}\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^2\left|\mathcal{W}^\textrm{I}_{(j)}(\hat{\mathbf{s}},f)\right|^2,
-  % &\qquad\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}n_i(n_i-1)\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^4\left.\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right],
+  \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{ij} n_{ij}\,\left|\mathcal{W}^\textrm{I}_{(i)}\right|^2\left|\mathcal{W}^\textrm{I}_{(j)}\right|^2,
 \end{align}
-% \begin{align}\label{eqn:effective-weighting-optimal}
-%   \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)/2} \nonumber\\
-%   &\quad \times \left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}n_in_j\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^2\left|\mathcal{W}^\textrm{I}_{(j)}(\hat{\mathbf{s}},f)\right|^2\right.\nonumber\\
-%   &\qquad\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}n_i(n_i-1)\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^4\left.\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right],
-% \end{align}
-where the superscript `$\textrm{opt}$' denotes 'optimal'.
+where the superscript `$\textrm{opt}$' denotes `optimal'.
 
-For purposes of illustration, we consider a simple scenario in which there are two antenna types each containing roughly equal numbers of antennas with similar layouts but the analysis is performed under the wrong assumption that all antennas are identical and are all of the first type. In an optimally weighted image, the optimal effective weighting given by equation~\ref{eqn:effective-weighting} will be:
+For purposes of illustration, we consider a simple scenario in which there are two antenna types each containing roughly equal numbers of antennas with similar layouts but the analysis is performed under the wrong assumption that all antennas are identical and are all of the first type. In an optimally weighted image, the optimal effective weighting given by equation~\ref{eqn:effective-weighting-optimal} will be:
 \begin{align}\label{eqn:effective-weighting-optimal-example}
-  \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)}\,\left[n_1n_2\,\left|\mathcal{W}^\textrm{I}_{(1)}(\hat{\mathbf{s}},f)\right|^2\,\left|\mathcal{W}^\textrm{I}_{(2)}(\hat{\mathbf{s}},f)\right|^2\right.\nonumber\\
-  &\qquad\qquad\qquad\qquad + n_1(n_1-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}(\hat{\mathbf{s}},f)\right|^4 \nonumber\\
-  &\qquad\qquad\qquad\qquad \left. + n_2(n_2-1)\,\left|\mathcal{W}^\textrm{I}_{(2)}(\hat{\mathbf{s}},f)\right|^4\right].
+  \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)}\,\left[n_1(n_1-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^4 \right.\nonumber\\
+  &\qquad\qquad\qquad\qquad + n_2(n_2-1)\,\left|\mathcal{W}^\textrm{I}_{(2)}\right|^4 \nonumber\\
+  &\qquad\qquad\qquad\qquad \left. + n_1n_2\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^2\,\left|\mathcal{W}^\textrm{I}_{(2)}\right|^2\right].
 \end{align}
-On the other hand, $\mathcal{W}^\textrm{G}_{(1)}(\hat{\mathbf{s}},f) = \mathcal{W}^\textrm{I}_{(1)}(\hat{\mathbf{s}},f)$ and $\mathcal{W}^\textrm{G}_{(2)}(\hat{\mathbf{s}},f) = \mathcal{W}^\textrm{I}_{(1)}(\hat{\mathbf{s}},f)$ for an image obtained in the erroneous case in which all antennas are assumed to be identical. It will be sub-optimal whose effective weighting will be:
+On the other hand, $\mathcal{W}^\textrm{G}_{(1)} = \mathcal{W}^\textrm{I}_{(1)}$ and $\mathcal{W}^\textrm{G}_{(2)} = \mathcal{W}^\textrm{I}_{(1)}$ for an image obtained in the erroneous case in which all antennas are assumed to be identical. It will be sub-optimal with effective weighting:
 \begin{align}\label{eqn:effective-weighting-optimal-example}
-  \mathcal{W}_\textrm{eff}^\textrm{sub} &\approx \frac{1}{\Nant(\Nant-1)}\,\left[\left\{n_1n_2\,\left|\mathcal{W}^\textrm{I}_{(1)}(\hat{\mathbf{s}},f)\right|^2 \right.\right. \nonumber\\
-  &\qquad\qquad\qquad\qquad\qquad \left.\times\mathcal{W}^\textrm{I}_{(1)}(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_{(2)}(\hat{\mathbf{s}},f)\right\}\nonumber\\
-  &\qquad\qquad\qquad\qquad + n_1(n_1-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}(\hat{\mathbf{s}},f)\right|^4 \nonumber\\
-  &\qquad\qquad\qquad\qquad + n_2(n_2-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}(\hat{\mathbf{s}},f)\right|^2\nonumber\\
-  &\qquad\qquad\qquad\qquad\qquad\qquad\qquad \left.\times\left|\mathcal{W}^\textrm{I}_{(2)}(\hat{\mathbf{s}},f)\right|^2\right].
+  \mathcal{W}_\textrm{eff}^\textrm{sub} &\approx \frac{1}{\Nant(\Nant-1)}\,\left[n_1(n_1-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^4\right.\nonumber\\
+  &\qquad\qquad\qquad\qquad + n_2(n_2-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^2\,\left|\mathcal{W}^\textrm{I}_{(2)}\right|^2 \nonumber\\
+  &\qquad\qquad\qquad\qquad \left. + n_1n_2\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^2 \,\mathcal{W}^\textrm{I}_{(1)}\,\mathcal{W}^{\textrm{I}\star}_{(2)}\right].
 \end{align}
-Finally, since no {\it a priori} information will be available about the heterogeneous array in case of the erroneous assumption, the effective weighting in the image will be believed to be $\mathrm{W}_\textrm{eff}^\textrm{err} = \left|\mathcal{W}_{(1)}^\textrm{I}\right|^4$. 
+Finally, since no {\it a priori} information will be available about the heterogeneous array in case of the erroneous assumption, the effective weighting in the image will be believed to be $\mathcal{W}_\textrm{eff}^\textrm{err} = \left|\mathcal{W}_{(1)}^\textrm{I}\right|^4$. 
 
-Estimates of the dirty images with uniform, isotropic weighting in the optimal and erroneous cases will be obtained by dividing the respective weighted images by their assumed effective weights $\mathrm{W}_\textrm{eff}^\textrm{opt}$ and $\mathrm{W}_\textrm{eff}^\textrm{err}$ respectively as:
+Estimates of the dirty images with uniform, isotropic weighting in the optimal and erroneous cases will be obtained by dividing the respective weighted images by their assumed effective weights $\mathcal{W}_\textrm{eff}^\textrm{opt}$ and $\mathcal{W}_\textrm{eff}^\textrm{err}$ respectively as:
 \begin{align}
   \widehat{\mathcal{I}}_\textrm{D}^\textrm{iso} &\approx \begin{cases}
     \mathcal{I}_\textrm{D}^\textrm{iso} &\textrm{, \qquad optimal case} \\
@@ -718,18 +688,18 @@ Estimates of the dirty images with uniform, isotropic weighting in the optimal a
   \end{cases}
 \end{align}
 
-If $\mathcal{I}_\textrm{M}(\hat{\mathbf{s}},f)$ is the sky model, then $\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)$ can be expressed as:
+If $\mathcal{I}_\textrm{M}$ is the sky model, then $\mathcal{I}_\textrm{D}^\textrm{iso}$ can be expressed as:
 \begin{align}\label{eqn:img-uncertainties}
-  \mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f) &= \mathcal{I}_\textrm{M}(\hat{\mathbf{s}},f) + \delta\mathcal{I}_\textrm{S}(\hat{\mathbf{s}},f) + \delta\mathcal{I}_\textrm{M}(\hat{\mathbf{s}},f),
+  \mathcal{I}_\textrm{D}^\textrm{iso} &= \mathcal{I}_\textrm{M} + \delta\mathcal{I}_\textrm{S} + \delta\mathcal{I}_\textrm{M},
 \end{align}
 where the second and third terms on the right hand side denote fluctuations due to sidelobes and those intrinsic to the model, respectively. We define the normalized estimates of the sky model $\widehat{\mathcal{I}}_\textrm{M}^\textrm{norm} \equiv \widehat{\mathcal{I}}_\textrm{D}^\textrm{iso} / \mathcal{I}_\textrm{M}$. Ideally, $\widehat{\mathcal{I}}_\textrm{M}^\textrm{norm}$ should be consistent with unity and not exceed beyond levels of uncertainty as determined by equation~\ref{eqn:img-uncertainties}.
 
-In our simulations, the antenna layout, duration of observation, center frequency and bandwidth used are the same as in \S\ref{sec:sim}. Antennas have square apertures. Those of the first and second types, which have roughly equal numbers of antennas with similar layouts, have 1.1~m and 6.6~m on their sides respectively. $\mathcal{I}_\textrm{M}(\hat{\mathbf{s}},f)$ consists of point sources of random flux densities brighter than 10~Jy along westward and south-westward directions as seen in Fig.~\ref{fig:nonphysical-image}, which shows an optimally weighted image, $\mathcal{I}^\prime(\hat{\mathbf{s}},f)$, obtained with EPIC using the MOFF algorithm after averaging over the entire bandwidth and duration of simulated observation. 
+In our simulations, the antenna layout, duration of observation, center frequency and bandwidth used are the same as in \S\ref{sec:sim}. Antennas have square apertures. Those of the first and second types, which have roughly equal numbers of antennas with similar layouts, have 1.1~m and 6.6~m on their sides respectively. $\mathcal{I}_\textrm{M}$ consists of point sources of random flux densities brighter than 10~Jy along westward and south-westward directions as seen in Fig.~\ref{fig:nonphysical-image}, which shows an optimally weighted image, $\mathcal{I}^\prime$, obtained with EPIC using the MOFF algorithm after averaging over the entire bandwidth and duration of simulated observation. 
 
 \begin{figure*}
 \subfloat[][Optimally weighted EPIC image]{\label{fig:nonphysical-image}\includegraphics[width=0.5\linewidth]{figure10a.eps}}
 \subfloat[][Estimates of normalized radial flux density profile]{\label{fig:norm-flux-density}\includegraphics[width=0.42\linewidth]{figure10b.eps}}
-\caption{(a)~Optimally weighted image, $\mathcal{I}^\prime(\hat{\mathbf{s}},f)$, of simulated sky model obtained by EPIC using MOFF algorithm after averaging over entire bandwidth and duration of simulated observation. 51 antennas in the inner core of the MWA layout were used with uniformly illuminated square apertures. Roughly half of them were squares with 1.1~m sides (first type) and the rest with 6.6~m (second type). Point sources were simulated along westward and south-westward directions with random flux densities brighter than 10~Jy. Black boxes around point sources are for purposes of collecting image statistics. (b)~Normalized flux density estimates, $\widehat{\mathcal{I}}_\textrm{M}^\textrm{norm}$, as a function of distance from image center. Bands indicate an approximate ``$1\sigma$'' uncertainty arising from sidelobe confusion and intrinsic randomness of electric fields simulated for point sources in the sky model. Gray and red bands correspond to optimal and erroneous cases respectively, where in the latter, all antennas were erroneously assumed to be identical and of the first type. The dashed and solid line styles correspond to point sources in the westward and south-westward directions respectively. In the optimal case, the normalized estimates are consistent with unity to within ``$1\sigma$'' in almost all regions of the image, whereas in the erroneous case, they are mis-estimated (underestimated) with high significance ($\gtrsim 5\sigma$) in most regions of the image. There is no significant difference in estimates between the two different directions of point sources studied.}
+\caption{(a)~Optimally weighted image, $\mathcal{I}^\prime$, of simulated sky model obtained by EPIC using MOFF algorithm after averaging over entire bandwidth and duration of simulated observation. 51 antennas in the inner core of the MWA layout were used with uniformly illuminated square apertures. Roughly half of them were squares with 1.1~m sides (first type) and the rest with 6.6~m (second type). Point sources were simulated along westward and south-westward directions with random flux densities brighter than 10~Jy. Black boxes shown around point sources are for purposes of collecting image statistics. (b)~Normalized flux density estimates, $\widehat{\mathcal{I}}_\textrm{M}^\textrm{norm}$, as a function of distance from image center. Bands indicate an approximate ``$1\sigma$'' uncertainty arising from sidelobe confusion and intrinsic randomness of electric fields simulated for point sources in the sky model. Gray and red bands correspond to optimal and erroneous cases respectively, where in the latter, all antennas were erroneously assumed to be identical and of the first type. The dashed and solid line styles correspond to point sources in the westward and south-westward directions respectively. In the optimal case, the normalized estimates are consistent with unity to within ``$1\sigma$'' in almost all regions of the image, whereas in the erroneous case, they are mis-estimated (underestimated) with high significance ($\gtrsim 5\sigma$) in most regions of the image. There is no significant difference in estimates between the two different directions of point sources studied.}
 \label{fig:versatility}
 \end{figure*}
 
