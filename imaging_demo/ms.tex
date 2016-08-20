@@ -194,19 +194,19 @@ Interferometers measure {\it visibilities} -- the degree of coherence between el
               &\qquad\qquad\qquad\qquad \times e^{-2\pi i f(\mathbf{r}_a\!\cdot\,\hat{\mathbf{s}}-\mathbf{r}_b\!\cdot\,\hat{\mathbf{s'}})/c}\,\dif\Omega\,\dif\Omega^\prime \nonumber\\
               &\qquad +\textrm{noise-like cross-terms.}
 \end{align}
-where we have brought the time average into the integral under the assumption that the aperture illumination pattern does not change over the time-scale of the averaging and $\star$ denotes complex conjugation. The noise-like cross-terms ideally have zero mean. This expression can be further simplified using the sky brightness, $\mathcal{I}(\hat{\mathbf{s}},f,t)$, as $\left\langle \mathcal{E}(\hat{\mathbf{s}},f,t)\,\mathcal{E}^\star(\hat{\mathbf{s'}},f,t) \right\rangle_t = \mathcal{I}(\hat{\mathbf{s}},f,t)\,\delta(\hat{\mathbf{s}}-\hat{\mathbf{s'}})$, and defining the antenna-pair sky power response function (or the directional antenna-pair power pattern), $\mathcal{W}_{ab}(\hat{\mathbf{s}})~\equiv~\mathcal{W}_a(\hat{\mathbf{s}},f,t)~\mathcal{W}^\star_b(\hat{\mathbf{s}},f,t)$. The result is the visibility expressed in terms of the sky brightness, the power pattern, and uncorrelated noise terms which we group into $n_{ab}(f,t)$.
+where we have brought the time average into the integral under the assumption that the aperture illumination pattern does not change over the time-scale of the averaging and $\star$ denotes complex conjugation. The noise-like cross-terms ideally have zero mean. This expression can be further simplified using the sky brightness, $\mathcal{I}(\hat{\mathbf{s}},f,t)$, as $\left\langle \mathcal{E}(\hat{\mathbf{s}},f,t)\,\mathcal{E}^\star(\hat{\mathbf{s'}},f,t) \right\rangle_t = \mathcal{I}(\hat{\mathbf{s}},f,t)\,\delta(\hat{\mathbf{s}}-\hat{\mathbf{s'}})$, and defining the antenna-pair sky power response function (or the directional antenna-pair power pattern), $\mathcal{B}_{ab}(\hat{\mathbf{s}})~\equiv~\mathcal{W}_a(\hat{\mathbf{s}},f,t)~\mathcal{W}^\star_b(\hat{\mathbf{s}},f,t)$. The result is the visibility expressed in terms of the sky brightness, the power pattern, and uncorrelated noise terms which we group into $n_{ab}(f,t)$.
 \begin{align}\label{eqn:measurement-eqn-1}
-  V_{ab}(f,t) &= \int \mathcal{W}_{ab}(\hat{\mathbf{s}},f,t)\,\mathcal{I}(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}_{ab}\!\cdot\,\hat{\mathbf{s}}/c}\,\dif\Omega \nonumber\\
+  V_{ab}(f,t) &= \int \mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)\,\mathcal{I}(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}_{ab}\!\cdot\,\hat{\mathbf{s}}/c}\,\dif\Omega \nonumber\\
   &\qquad\qquad + n_{ab}(f,t),
 \end{align}
-where, the baseline coordinate $\mathbf{r}_{ab}\equiv\mathbf{r}_a-\mathbf{r}_b$ is the vector separation between the two antennas. This signifies that the visibility ($V_{ab}$) measured between a pair of antennas is obtained by multiplying the sky brightness $\mathcal{I}(\hat{\mathbf{s}},f,t)$ by the antenna power response $\mathcal{W}_{ab}(\hat{\mathbf{s}},f,t)$ and Fourier transforming from the directional coordinates ($\hat{\mathbf{s}}$) to {\bf the measurement plane}, which are then sampled at the locations of the antenna spacings (or baselines), namely, $\mathbf{r}_{ab}$, and added to the noise $n_{ab}$. 
+where, the baseline coordinate $\mathbf{r}_{ab}\equiv\mathbf{r}_a-\mathbf{r}_b$ is the vector separation between the two antennas. This signifies that the visibility ($V_{ab}$) measured between a pair of antennas is obtained by multiplying the sky brightness $\mathcal{I}(\hat{\mathbf{s}},f,t)$ by the antenna power response $\mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)$ and Fourier transforming from the directional coordinates ($\hat{\mathbf{s}}$) to {\bf the measurement plane}, which are then sampled at the locations of the antenna spacings (or baselines), namely, $\mathbf{r}_{ab}$, and added to the noise $n_{ab}$. 
 
 This can be equivalently re-written as:
 \begin{align}\label{eqn:software-holography}
-  V_{ab}(f,t) &= \int W_{ab}(\mathbf{r}_{ab}-\mathbf{r},f,t) \nonumber\\ 
+  V_{ab}(f,t) &= \int B_{ab}(\mathbf{r}_{ab}-\mathbf{r},f,t) \nonumber\\ 
               &\qquad \times \left[\int I(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}.\hat{\mathbf{s}}/c}\,\dif\Omega\right]\dif^2\mathbf{r}\,+\, n_{ab}(f,t),
 \end{align}
-where, $W_{ab}(\mathbf{r},f,t)$ denotes the {\bf power response of the antenna pair obtained in the measurement plane} by a spatial Fourier transform of $\mathcal{W}_{ab}(\hat{\mathbf{s}},f,t)$. Effectively, the multiplication in image space by $\mathcal{W}_{ab}(\hat{\mathbf{s}},f,t)$ has been replaced by a convolution with $W_{ab}(\mathbf{r},f,t)$ in {\bf measurement plane}. This is the software holographic equivalent of a traditional FX correlator output. 
+where, $B_{ab}(\mathbf{r},f,t)$ denotes the {\bf power response of the antenna pair obtained in the measurement plane} by a spatial Fourier transform of $\mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)$. Effectively, the multiplication in image space by $\mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)$ has been replaced by a convolution with $B_{ab}(\mathbf{r},f,t)$ in {\bf measurement plane}. This is the software holographic equivalent of a traditional FX correlator output. 
 
 Hereafter, we adopt the matrix notation of \citet{mor11}, where vectors are represented with single coordinates, and matrices are represented by two coordinates denoting the spaces the operator transforms between. Since each frequency is processed independently, we drop the dependence on $f$. In this notation, the above measurement equation can be expressed as:
 \begin{align}
@@ -577,7 +577,7 @@ thus validating the functionality of EPIC.
 
 \section{Imaging with Heterogeneous Antenna Arrays}\label{sec:versatility}
 
-One of the advanced features of the MOFF algorithm and its implementation via EPIC is the ability to naturally account for heterogeneity of antennas while still producing images with maximal information \citep{mor11}. Unlike the assumption frequently made in standard radio interferometry that all antennas are identical, EPIC can implement the most generic case where no such assumption can be made. In other words, EPIC does not assume $W_a(\mathbf{r}-\mathbf{r}_a)$ or $W_{ab}(\mathbf{r}-\mathbf{r}_{ab})$ for different antennas are identical. However, any {\it a priori} knowledge available that certain sets of antennas have identical illumination patterns can be easily passed on to EPIC to avoid redundant computations and thus increase efficiency.
+One of the advanced features of the MOFF algorithm and its implementation via EPIC is the ability to naturally account for heterogeneity of antennas while still producing images with maximal information \citep{mor11}. Unlike the assumption frequently made in standard radio interferometry that all antennas are identical, EPIC can implement the most generic case where no such assumption can be made. In other words, EPIC does not assume $W_a(\mathbf{r}-\mathbf{r}_a)$ or $B_{ab}(\mathbf{r}-\mathbf{r}_{ab})$ for different antennas are identical. However, any {\it a priori} knowledge available that certain sets of antennas have identical illumination patterns can be easily passed on to EPIC to avoid redundant computations and thus increase efficiency.
 
 We present a methodology to understand the effective angular weighting in the image obtained with EPIC from a heterogeneous array and compare it with that from standard interferometry that assumes a homogeneous array (all antennas are identical). We also demonstrate how the assumption in the latter results in a mis-estimation of the recovered sky model.
 
@@ -587,16 +587,17 @@ Dropping the noise term and time dependence, the visibility measured by an anten
 \end{align}
 where, superscript `$\textrm{I}$' in the $\mathcal{W}$ term indicates the weighting is inherently introduced by the instrument during the measurement process. The beam-weighted dirty image is:
 \begin{align}
-  \mathcal{I}_\textrm{D}(\hat{\mathbf{s}},f) &= \frac{1}{\Nant(\Nant-1)/2}\,\sum_{ab}\, V_{ab}(f)\,e^{2\pi i f\mathbf{r}_{ab}\!\cdot\,\hat{\mathbf{s}}/c}.
+  \mathcal{I}_\textrm{D}(\hat{\mathbf{s}},f) &= \frac{1}{\Nant(\Nant-1)/2}\,\sum_{ab}\, V_{ab}(f)\,e^{2\pi i f\mathbf{r}_{ab}\!\cdot\,\hat{\mathbf{s}}/c},
 \end{align}
+{\bf where, we have assumed equal weighting for each antenna pair}.
 
 When the array is homogeneous, $\mathcal{W}^\textrm{I} \equiv \mathcal{W}^\textrm{I}_a \equiv \mathcal{W}^\textrm{I}_b$ and the above equation reduces to:
 \begin{align}\label{eqn:dirty-image-homogeneous}
   \mathcal{I}_\textrm{D}(\hat{\mathbf{s}},f) &= |\mathcal{W}^\textrm{I}(\hat{\mathbf{s}},f)|^2\,\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f),
 \end{align}
-where, $\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)$ is the dirty image with no beam weighting (isotropic uniform weighting) determined only by the array layout and $|\mathcal{W}^\textrm{I}|^2$ is the directional power pattern of the antenna pair familiar in standard interferometry.
+where, $\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)$ is the dirty image with no beam weighting (isotropic, uniform weighting {\bf of the sky}) determined only by the array layout and $|\mathcal{W}^\textrm{I}|^2$ is the directional power pattern of the antenna pair familiar in standard interferometry.
 
-While imaging, EPIC introduces a weighting to each antenna during gridding as given by equations~\ref{eqn:dirty-image-FX} and \ref{eqn:e-field-conv}, and equivalently, the weighted visibility from antenna pair $ab$ projected on the grid is:
+{\bf In order to understand an image from a heterogeneous array, we start by looking at the contribution to the image from the visibility, $V_{ab}$, from each antenna pair.} While imaging, EPIC introduces a weighting to each antenna during gridding as given by equations~\ref{eqn:dirty-image-FX} and \ref{eqn:e-field-conv}, and equivalently, the weighted visibility from {\bf an} antenna pair $ab$ projected on the grid is:
 \begin{align}
   V^\prime_{ab}(\mathbf{r},f) &= B^{\textrm{G}\star}_{ab}(\mathbf{r}-\mathbf{r}_{ab},f)\,V_{ab},
 \end{align}
@@ -627,46 +628,70 @@ If all antennas are identically weighted ($W^\textrm{G} \equiv W^\textrm{G}_a \e
   &= \left|\mathcal{W}^\textrm{G}(\hat{\mathbf{s}},f)\right|^2\,\mathcal{I}_\textrm{D}(\hat{\mathbf{s}},f) \nonumber\\
   &= \left|\mathcal{W}^\textrm{G}(\hat{\mathbf{s}},f)\right|^2\,\left|\mathcal{W}^\textrm{I}(\hat{\mathbf{s}},f)\right|^2\,\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f).
 \end{align}
-Thus, the dirty image, which is already attenuated by the instrumental power pattern, gets further attenuated by the power pattern introduced in the gridding step in EPIC imager. This is consistent with \citet{mor09}.
+Thus, the dirty image, which is already attenuated by the instrumental power pattern, gets further attenuated by the power pattern introduced in the gridding step in EPIC imager. This is consistent with \citet{mor09}. 
 
-We consider a heterogeneous array consisting of a total of $\Nant$ antennas under $N_\textrm{T}$ different types. And under each antenna type $i$, there are $n_i$ antennas such that $\sum_i n_i = \Nant$. The total number of unique non-zero spacing antenna pairs is $\Nant(\Nant-1)/2$ and there are potentially $N_\textrm{T}(N_\textrm{T}+1)/2$ unique antenna pair types obtained by pairwise combination of the $N_\textrm{T}$ antenna types. Thus,
+{\bf For a heterogeneous array, it is necessary to keep track of antennas and antenna pairs of different types which will determine the final weighting in the synthesized image.} We consider a heterogeneous array consisting of a total of $\Nant$ antennas under $N_\textrm{T}$ different types. And under each antenna type $i$, there are $n_i$ antennas such that $\sum_i n_i = \Nant$. The total number of unique non-zero spacing antenna pairs is $\Nant(\Nant-1)/2$ and there are potentially $N_\textrm{T}(N_\textrm{T}+1)/2$ unique antenna pair types obtained by pairwise combination of the $N_\textrm{T}$ antenna types. Thus, the total number of antenna pairs, 
 \begin{align}\label{eqn:total-baselines}
-  \frac{1}{2}\Nant(\Nant-1) &= \frac{1}{2}\,\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j} n_i\,n_j + \frac{1}{2}\,\sum_{i=1}^{N_\textrm{T}} n_i(n_i-1)
+  \frac{1}{2}\Nant(\Nant-1) &= \frac{1}{2}\,\sum_{ij} n_{ij}, \\
+  \textrm{where}, \quad   n_{ij} &= \begin{cases}
+    n_i\,n_j & i\ne i \\
+    n_i(n_i-1) & i=j, 
+  \end{cases}
+  % \frac{1}{2}\Nant(\Nant-1) &= \frac{1}{2}\,\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j} n_i\,n_j + \frac{1}{2}\,\sum_{i=1}^{N_\textrm{T}} n_i(n_i-1) \nonumber\\
 \end{align}
-is obtained by counting antenna pairs from different antenna types (first term) and those from the same antenna type (second term). 
+is obtained by counting antenna pairs, $n_{ij}$, in different antenna pair types, $ij$.
 
 Since equation~\ref{eqn:wt-dirty-image-EPIC} is obtained by averaging weighted fringes over all unique antenna pairs, it can be expressed as: 
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp}
-  \mathcal{I}^\prime(\hat{\mathbf{s}},f) &= \frac{1}{\Nant(\Nant-1)/2}\,\left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\,\mathcal{I}^\prime_{ab}(\hat{\mathbf{s}},f)\right. \nonumber\\ 
-  &\qquad\qquad\qquad\qquad\qquad\quad + \left.\frac{1}{2}\sum_{i=1}^{N_\textrm{T}}\sum_{\substack{ab\\a\ne b\\a,b\in i}}\,\mathcal{I}^\prime_{ab}(\hat{\mathbf{s}},f)\right]. 
+  \mathcal{I}^\prime(\hat{\mathbf{s}},f) &= \frac{1/2}{\Nant(\Nant-1)/2}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\,\mathcal{I}^\prime_{ab}(\hat{\mathbf{s}},f)
 \end{align}
+% \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp}
+%   \mathcal{I}^\prime(\hat{\mathbf{s}},f) &= \frac{1}{\Nant(\Nant-1)/2}\,\left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\,\mathcal{I}^\prime_{ab}(\hat{\mathbf{s}},f)\right. \nonumber\\ 
+%   &\qquad\qquad\qquad\qquad\qquad\quad + \left.\frac{1}{2}\sum_{i=1}^{N_\textrm{T}}\sum_{\substack{ab\\a\ne b\\a,b\in i}}\,\mathcal{I}^\prime_{ab}(\hat{\mathbf{s}},f)\right]. 
+% \end{align}
 Here, equation~\ref{eqn:wt-dirty-image-EPIC} has been decomposed as the sum of fringes over all unique antenna pairs in an antenna pair type (innermost summation) and subsequently summed over all antenna pair types. 
 
-In order to simplify the analysis, we assume that the spatial distribution of antenna pairs in each antenna pair type are similar and thus result in a similar dirty image, $\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)$. This usually holds when $\Nant$ is large and antennas under each antenna type are chosen randomly such that differences in the point spread functions are insignificant. Under this assumption, equation~\ref{eqn:wt-dirty-image-EPIC-decomp} can be written as:
+{\bf For purposes of demonstration in this specific study, we make the following simplification.} We assume that the spatial distribution of antenna pairs in each antenna pair type are similar and thus result in a similar dirty image, $\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)$. This usually holds when $\Nant$ is large and antennas under each antenna type are chosen randomly such that differences in the point spread functions are insignificant. Under this assumption, equation~\ref{eqn:wt-dirty-image-EPIC-decomp} can be written as:
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx1}
-  \mathcal{I}^\prime(\hat{\mathbf{s}},f) &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)}{\Nant(\Nant-1)/2} \nonumber\\
-  &\,\times \left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right.\right.\nonumber\\
-  &\qquad\qquad\qquad\qquad\qquad\qquad \left. \times \mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\} \nonumber\\ 
-  &\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}\sum_{\substack{ab\\a\ne b\\a,b\in i}}\left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right. \nonumber\\
-  &\qquad\qquad\qquad\qquad\qquad\qquad \left.\left.\times\mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\}\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right], 
+  \mathcal{I}^\prime(\hat{\mathbf{s}},f) &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)}{\Nant(\Nant-1)}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}} \left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right.\nonumber\\
+  &\qquad\qquad\qquad\qquad\qquad\qquad \left.\times\mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\}
+  % &\,\times \left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right.\right.\nonumber\\
+  % &\qquad\qquad\qquad\qquad\qquad\qquad \left. \times \mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\} \nonumber\\ 
+  % &\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}\sum_{\substack{ab\\a\ne b\\a,b\in i}}\left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right. \nonumber\\
+  % &\qquad\qquad\qquad\qquad\qquad\qquad \left.\left.\times\mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\}\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right], 
 \end{align}
-where, $\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)$ is approximately the same for all terms and has been pulled outside the summations. For all antennas indexed by $a$ that belong to a particular type $i$, we replace $\mathcal{W}_a$ with $\mathcal{W}_{(i)}$ that arise from both instrumental (superscript `$I$') and gridding (superscript `$G$') origins. Using arguments similar to those in equation~\ref{eqn:total-baselines}, equation~\ref{eqn:wt-dirty-image-EPIC-decomp-approx1} can be further simplified to:
+% \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx1}
+%   \mathcal{I}^\prime(\hat{\mathbf{s}},f) &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)}{\Nant(\Nant-1)/2} \nonumber\\
+%   &\,\times \left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right.\right.\nonumber\\
+%   &\qquad\qquad\qquad\qquad\qquad\qquad \left. \times \mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\} \nonumber\\ 
+%   &\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}\sum_{\substack{ab\\a\ne b\\a,b\in i}}\left\{\mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\right. \nonumber\\
+%   &\qquad\qquad\qquad\qquad\qquad\qquad \left.\left.\times\mathcal{W}^\textrm{I}_a(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_b(\hat{\mathbf{s}},f)\right\}\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right], 
+% \end{align}
+where, $\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)$ is approximately the same for all terms and has been pulled outside the summations. For all antennas indexed by $a$ that belong to a particular type $i$, we replace $\mathcal{W}_a$ with $\mathcal{W}_{(i)}$ {\bf and is applicable to those} that arise from both instrumental (superscript `$I$') and gridding (superscript `$G$') origins. Using arguments similar to those in equation~\ref{eqn:total-baselines}, equation~\ref{eqn:wt-dirty-image-EPIC-decomp-approx1} can be further simplified to:
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx2}
-  \mathcal{I}^\prime(\hat{\mathbf{s}},f) &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)}{\Nant(\Nant-1)/2} \nonumber\\
-  &\,\times \left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}n_in_j\left\{\mathcal{W}^{\textrm{G}\star}_{(i)}(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_{(j)}(\hat{\mathbf{s}},f)\right.\right.\nonumber\\
-  &\qquad\qquad\qquad\qquad\qquad\qquad \left. \times \mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_{(j)}(\hat{\mathbf{s}},f)\right\} \nonumber\\ 
-  &\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}n_i(n_i-1)\,\left|\mathcal{W}^\textrm{G}_{(i)}(\hat{\mathbf{s}},f)\right|^2\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^2\left.\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right].
+  \mathcal{I}^\prime(\hat{\mathbf{s}},f) &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)}{\Nant(\Nant-1)}\,\sum_{ij}n_{ij}\left\{\mathcal{W}^{\textrm{G}\star}_{(i)}(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_{(j)}(\hat{\mathbf{s}},f)\right.\nonumber\\
+  &\qquad\qquad\qquad\qquad\qquad\qquad \left. \times \mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_{(j)}(\hat{\mathbf{s}},f)\right\}.
 \end{align}
+% \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx2}
+%   \mathcal{I}^\prime(\hat{\mathbf{s}},f) &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f)}{\Nant(\Nant-1)/2} \nonumber\\
+%   &\,\times \left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}n_in_j\left\{\mathcal{W}^{\textrm{G}\star}_{(i)}(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_{(j)}(\hat{\mathbf{s}},f)\right.\right.\nonumber\\
+%   &\qquad\qquad\qquad\qquad\qquad\qquad \left. \times \mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\mathcal{W}^{\textrm{I}\star}_{(j)}(\hat{\mathbf{s}},f)\right\} \nonumber\\ 
+%   &\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}n_i(n_i-1)\,\left|\mathcal{W}^\textrm{G}_{(i)}(\hat{\mathbf{s}},f)\right|^2\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^2\left.\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right].
+% \end{align}
 Then the effective attenuation of the dirty image due to instrumental and gridding weights is:
 \begin{align}\label{eqn:effective-weighting}
   \mathcal{W}_\textrm{eff} &= \mathcal{I}^\prime(\hat{\mathbf{s}},f)\, / \,\mathcal{I}_\textrm{D}^\textrm{iso}(\hat{\mathbf{s}},f).
 \end{align}
 This means that the effective attenuation of the dirty image is obtained by combinations of the fourth power of antenna voltage patterns each weighted by the number of antenna pairs in those antenna pair types. In an optimally weighted image, $\mathcal{W}^\textrm{G}_{(i)} \equiv \mathcal{W}^\textrm{I}_{(i)}$ and thus, equation~\ref{eqn:effective-weighting} reduces to:
 \begin{align}\label{eqn:effective-weighting-optimal}
-  \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)/2} \nonumber\\
-  &\quad \times \left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}n_in_j\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^2\left|\mathcal{W}^\textrm{I}_{(j)}(\hat{\mathbf{s}},f)\right|^2\right.\nonumber\\
-  &\qquad\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}n_i(n_i-1)\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^4\left.\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right],
+  \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{ij} n_{ij}\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^2\left|\mathcal{W}^\textrm{I}_{(j)}(\hat{\mathbf{s}},f)\right|^2,
+  % &\qquad\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}n_i(n_i-1)\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^4\left.\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right],
 \end{align}
+% \begin{align}\label{eqn:effective-weighting-optimal}
+%   \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)/2} \nonumber\\
+%   &\quad \times \left[\frac{1}{2}\mathop{\sum_{i=1}^{N_\textrm{T}}\sum_{j=1}^{N_\textrm{T}}}_{i\ne j}n_in_j\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^2\left|\mathcal{W}^\textrm{I}_{(j)}(\hat{\mathbf{s}},f)\right|^2\right.\nonumber\\
+%   &\qquad\qquad + \frac{1}{2}\sum_{i=1}^{N_\textrm{T}}n_i(n_i-1)\,\left|\mathcal{W}^\textrm{I}_{(i)}(\hat{\mathbf{s}},f)\right|^4\left.\vphantom{\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}}\right],
+% \end{align}
 where the superscript `$\textrm{opt}$' denotes 'optimal'.
 
 For purposes of illustration, we consider a simple scenario in which there are two antenna types each containing roughly equal numbers of antennas with similar layouts but the analysis is performed under the wrong assumption that all antennas are identical and are all of the first type. In an optimally weighted image, the optimal effective weighting given by equation~\ref{eqn:effective-weighting} will be:
