@@ -1,3 +1,11 @@
+From 1d980f4 (mnras):
+====================
+
+In ms.tex,
+
+(*) Use boldface to mark changes compared to previous submitted
+version
+
 From 8bce8b2 (Adam-v1):
 ======================
 
