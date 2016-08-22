@@ -206,7 +206,7 @@ This can be equivalently re-written as:
   V_{ab}(f,t) &= \int B_{ab}(\mathbf{r}_{ab}-\mathbf{r},f,t) \nonumber\\ 
               &\qquad \times \left[\int I(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}.\hat{\mathbf{s}}/c}\,\dif\Omega\right]\dif^2\mathbf{r}\,+\, n_{ab}(f,t),
 \end{align}
-where, $B_{ab}(\mathbf{r},f,t)$ denotes the {\bf power response of the antenna pair obtained in the measurement plane} by a spatial Fourier transform of $\mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)$. Effectively, the multiplication in image space by $\mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)$ has been replaced by a convolution with $B_{ab}(\mathbf{r},f,t)$ in {\bf measurement plane}. This is the software holographic equivalent of a traditional FX correlator output. 
+where, $B_{ab}(\mathbf{r},f,t)$ denotes the {\bf power response of the antenna pair obtained in the measurement plane} by a spatial Fourier transform of $\mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)$. Effectively, the multiplication in image space by $\mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)$ has been replaced by a convolution with $B_{ab}(\mathbf{r},f,t)$ in {\bf measurement plane}. This is the software holographic equivalent of a traditional FX correlator output. {\bf For context, the term ``holography'' is derived from holographic measurements of the complex antenna aperture illumination pattern \citep{ben76,sco77}. In the present context, ``software holography'' refers to the application of this antenna aperture illumination pattern in software for imaging.}
 
 Hereafter, we adopt the matrix notation of \citet{mor11}, where vectors are represented with single coordinates, and matrices are represented by two coordinates denoting the spaces the operator transforms between. Since each frequency is processed independently, we drop the dependence on $f$. In this notation, the above measurement equation can be expressed as:
 \begin{align}
@@ -247,20 +247,9 @@ There are some important differences between the two techniques:
 
 \section{Software Implementation}\label{sec:software}
 
-We have implemented the MOFF imaging technique in our ``E-field Parallel Imaging
-Correlator'' -- a highly parallelized Object Oriented Python 
-package,\footnote{The E-field Parallel Imaging Correlator (EPIC) package can be 
-accessed at https://github.com/nithyanandan/EPIC} now publicly available. Besides 
-implementing the MOFF imaging algorithm it also includes visibility-based imaging 
-using the software holography technique and a simulator for generating electric 
-fields from a sky model. 
+We have implemented the MOFF imaging technique in our ``E-field Parallel Imaging Correlator'' -- a highly parallelized Object Oriented Python package,\footnote{The E-field Parallel Imaging Correlator (EPIC) package can be accessed at https://github.com/nithyanandan/EPIC} now publicly available. Besides implementing the MOFF imaging algorithm it also includes {\bf a simulator for generating electric fields from a sky model and a visibility-based imaging using the software holography technique.}
 
-EPIC can accept dual-polarization inputs and produce images of all four 
-instrumental cross-polarizations. Currently two data input formats exist for 
-reading in the 
-electric field time samples measured by the antennas -- simulated electric 
-fields based on a sky model using the simulator packaged with EPIC; and LWA 
-data. Efforts to build interfaces for data from other telescopes are underway.
+EPIC can accept dual-polarization inputs and produce images of all four instrumental cross-polarizations. Currently two data input formats exist for reading in the electric field time samples measured by the antennas -- simulated electric fields based on a sky model using the simulator packaged with EPIC; and LWA data. Efforts to build interfaces for data from other telescopes are underway.
 
 Fig.~\ref{fig:MOFF-flowchart} shows the flowchart for MOFF imaging. The propagated electric fields are shown on the left at different time stamps, $t_1\ldots t_\textrm{M}$. At each time stamp, the electric fields measured by antennas are denoted by $\widetilde{E}_1(t)\ldots \widetilde{E}_\textrm{N}(t)$. The F-engine performs a temporal Fourier transform on the electric field time-series to obtain electric field spectra $E_1(f)\ldots E_\textrm{N}(f)$ ($\mathbf{E}(\mathbf{a})$ in matrix notation) for each of the antennas. Each of the complex antenna gains are calibrated to correct the corresponding electric field spectra. These calibrated electric fields are gridded using an antenna-based gridding convolution function after which it is spatially Fourier transformed and squared to obtain an image cube for every time stamp. These images are then time-averaged to obtain the accumulated image $\mathcal{I}^\prime(f)$ ($\boldsymbol{\mathcal{I}^\prime}(\hat{\mathbf{s}})$ in matrix notation).
 
@@ -633,8 +622,8 @@ Thus, the dirty image, which is already attenuated by the instrumental power pat
 \begin{align}\label{eqn:total-baselines}
   \frac{1}{2}\Nant(\Nant-1) &= \frac{1}{2}\,\sum_{ij} n_{ij}, \\
   \textrm{where}, \quad   n_{ij} &= \begin{cases}
-    n_i\,n_j & i\ne i \\
-    n_i(n_i-1) & i=j, 
+    n_i\,n_j, & i\ne i \\
+    n_i(n_i-1), & i=j, 
   \end{cases}
 \end{align}
 is obtained by counting antenna pairs, $n_{ij}$, in different antenna pair types, $ij$.
@@ -643,9 +632,9 @@ Since equation~\ref{eqn:wt-dirty-image-EPIC} is obtained by averaging weighted f
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp}
   \mathcal{I}^\prime &= \frac{1/2}{\Nant(\Nant-1)/2}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\,\mathcal{I}^\prime_{ab}
 \end{align}
-Here, equation~\ref{eqn:wt-dirty-image-EPIC} has been decomposed as the sum of fringes over all unique antenna pairs in an antenna pair type (innermost summation) and subsequently summed over all antenna pair types. 
+Here, equation~\ref{eqn:wt-dirty-image-EPIC} has been decomposed as the sum of fringes over all unique antenna pairs in an antenna pair type (inner sum) and subsequently summed over all antenna pair types (outer sum). 
 
-{\bf For purposes of demonstration in this study, we make the following simplification.} We assume that the spatial distribution of antenna pairs in each antenna pair type are similar and thus result in a similar dirty image, $\mathcal{I}_\textrm{D}^\textrm{iso}$. This usually holds when $\Nant$ is large and antennas under each antenna type are chosen randomly such that differences in the point spread functions are insignificant. Under this assumption, equation~\ref{eqn:wt-dirty-image-EPIC-decomp} can be written as:
+For purposes of demonstration in this study, we make the following simplification. We assume that the spatial distribution of antenna pairs in each antenna pair type are similar and thus result in a similar dirty image, $\mathcal{I}_\textrm{D}^\textrm{iso}$. This usually holds when $\Nant$ is large and antennas under each antenna type are chosen randomly such that differences in the point spread functions are insignificant. Under this assumption, equation~\ref{eqn:wt-dirty-image-EPIC-decomp} can be written as:
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx1}
   \mathcal{I}^\prime &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}}{\Nant(\Nant-1)}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}} \mathcal{W}^{\textrm{G}\star}_a\,\mathcal{W}^\textrm{G}_b\,\mathcal{W}^\textrm{I}_a\,\mathcal{W}^{\textrm{I}\star}_b,
 \end{align}
@@ -670,7 +659,7 @@ For purposes of illustration, we consider a simple scenario in which there are t
   &\qquad\qquad\qquad\qquad \left. + n_1n_2\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^2\,\left|\mathcal{W}^\textrm{I}_{(2)}\right|^2\right].
 \end{align}
 On the other hand, $\mathcal{W}^\textrm{G}_{(1)} = \mathcal{W}^\textrm{I}_{(1)}$ and $\mathcal{W}^\textrm{G}_{(2)} = \mathcal{W}^\textrm{I}_{(1)}$ for an image obtained in the erroneous case in which all antennas are assumed to be identical. It will be sub-optimal with effective weighting:
-\begin{align}\label{eqn:effective-weighting-optimal-example}
+\begin{align}\label{eqn:effective-weighting-suboptimal-example}
   \mathcal{W}_\textrm{eff}^\textrm{sub} &\approx \frac{1}{\Nant(\Nant-1)}\,\left[n_1(n_1-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^4\right.\nonumber\\
   &\qquad\qquad\qquad\qquad + n_2(n_2-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^2\,\left|\mathcal{W}^\textrm{I}_{(2)}\right|^2 \nonumber\\
   &\qquad\qquad\qquad\qquad \left. + n_1n_2\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^2 \,\mathcal{W}^\textrm{I}_{(1)}\,\mathcal{W}^{\textrm{I}\star}_{(2)}\right].
@@ -696,7 +685,7 @@ In our simulations, the antenna layout, duration of observation, center frequenc
 \begin{figure*}
 \subfloat[][Optimally weighted EPIC image]{\label{fig:nonphysical-image}\includegraphics[width=0.5\linewidth]{figure10a.eps}}
 \subfloat[][Estimates of normalized radial flux density profile]{\label{fig:norm-flux-density}\includegraphics[width=0.42\linewidth]{figure10b.eps}}
-\caption{(a)~Optimally weighted image, $\mathcal{I}^\prime$, of simulated sky model obtained by EPIC using MOFF algorithm after averaging over entire bandwidth and duration of simulated observation. 51 antennas in the inner core of the MWA layout were used with uniformly illuminated square apertures. Roughly half of them were squares with 1.1~m sides (first type) and the rest with 6.6~m (second type). Point sources were simulated along westward and south-westward directions with random flux densities brighter than 10~Jy. Black boxes shown around point sources are for purposes of collecting image statistics. (b)~Normalized flux density estimates, $\widehat{\mathcal{I}}_\textrm{M}^\textrm{norm}$, as a function of distance from image center. Bands indicate an approximate ``$1\sigma$'' uncertainty arising from sidelobe confusion and intrinsic randomness of electric fields simulated for point sources in the sky model. Gray and red bands correspond to optimal and erroneous cases respectively, where in the latter, all antennas were erroneously assumed to be identical and of the first type. The dashed and solid line styles correspond to point sources in the westward and south-westward directions respectively. In the optimal case, the normalized estimates are consistent with unity to within ``$1\sigma$'' in almost all regions of the image, whereas in the erroneous case, they are mis-estimated (underestimated) with high significance ($\gtrsim 5\sigma$) in most regions of the image. There is no significant difference in estimates between the two different directions of point sources studied.}
+\caption{{\bf (a)~Optimally weighted image, $\mathcal{I}^\prime$, of simulated sky model obtained by EPIC using MOFF algorithm after averaging over entire bandwidth and duration of simulated observation. 51 antennas in the inner core of the MWA layout were used with uniformly illuminated square apertures. Roughly half of them were squares with 1.1~m sides (first type) and the rest with 6.6~m (second type). Point sources were simulated along westward and south-westward directions with random flux densities brighter than 10~Jy. Black boxes shown around point sources are for purposes of collecting image statistics. (b)~Normalized flux density estimates, $\widehat{\mathcal{I}}_\textrm{M}^\textrm{norm}$, as a function of distance from image center. Bands indicate an approximate ``$1\sigma$'' uncertainty arising from sidelobe confusion and intrinsic randomness of electric fields simulated for point sources in the sky model. Gray and red bands correspond to optimal and erroneous cases respectively, where in the latter, all antennas were erroneously assumed to be identical and of the first type. The dashed and solid line styles correspond to point sources in the westward and south-westward directions respectively. In the optimal case, the normalized estimates are consistent with unity to within ``$1\sigma$'' in almost all regions of the image, whereas in the erroneous case, they are mis-estimated (underestimated) with high significance ($\gtrsim 5\sigma$) in most regions of the image. There is no significant difference in estimates between the two different directions of point sources studied.}}
 \label{fig:versatility}
 \end{figure*}
 
@@ -765,9 +754,9 @@ $\Ngrid\simeq b_\textrm{max}^2/A_\textrm{a}$.
   \begin{threeparttable}
   \begin{tabular}{ccccc} 
     \hline
-    Telescope & Core & Number & Antenna & Frequency \\
-              & size & of Antennas & size & \\
-              & $b_\textrm{max}$ (in m) & $\Nant$ & $A_\textrm{a}$ (in m$^2$) & $f_0$ (in MHz) \\
+    Telescope & Core & Number of & Antenna & Frequency \\
+              & size & Antennas & size & \\
+              & $b_\textrm{max}$ (m) & $\Nant$ & $A_\textrm{a}$ (m$^2$) & $f_0$ (MHz) \\
     \hline
     MWA-112\tnote{a} & 1400 & 112 & 16 & 150 \\
     MWA-240\tnote{a} & 1400 & 240 & 16 & 150 \\
