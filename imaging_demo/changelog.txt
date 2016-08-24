@@ -1,3 +1,10 @@
+From e1be335 (Judd-v1):
+======================
+
+In ms.tex,
+
+(*) Make corrections suggested by Judd
+
 From 601fdcb (Judd-v1):
 ======================
 

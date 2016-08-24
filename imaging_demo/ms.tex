@@ -95,7 +95,7 @@ $^{2}$University of Washington, Department of Physics, Seattle, WA 98195, USA\\
 
 % Abstract of the paper
 \begin{abstract}
-Modern radio telescopes are favouring densely packed array layouts with large numbers of antennas ($\Nant\gtrsim 1000$). Since the complexity of traditional correlators scales as $\mathcal{O}(\Nant^2)$, there will be a steep cost for realizing the full imaging potential of these powerful instruments. Through our generic and efficient E-field Parallel Imaging Correlator (EPIC), we present the first software demonstration of a generalized direct imaging algorithm, namely, the Modular Optimal Frequency Fourier (MOFF) imager. It takes advantage of the multiplication-convolution theorem of Fourier transforms. Not only does it bring down the cost for dense layouts to $\mathcal{O}(\Nant\log_2\Nant)$ but can also image from irregular layouts and heterogeneous arrays of antennas. EPIC is highly modular and parallelizable, implemented in object oriented Python, and publicly available. We have verified the images produced to be equivalent to those produced using traditional techniques to within a precision set by gridding coarseness. We have also validated our implementation on data observed with the Long Wavelength Array (LWA). {\bf We have demonstrated its versatility to image with heterogeneous arrays by showing that it robustly estimates the input sky model while wrong assumptions about array homogeneity lead to systematic mis-estimates.} Antenna layouts with dense filling factors consisting of a large number of antennas such as LWA, the Square Kilometre Array, Hydrogen Epoch of Reionization Array, and Canadian Hydrogen Intensity Mapping Experiment will gain significant computational advantage by deploying EPIC. Inherent availability of calibrated time-domain images on digitizer writeout time-scales and vastly lower I/O bandwidth relative to visibility-based systems will make it a prime candidate for transient searches of Fast Radio Bursts (FRB) as well as planetary and exoplanetary phenomena. 
+Modern radio telescopes are favouring densely packed array layouts with large numbers of antennas ($\Nant\gtrsim 1000$). Since the complexity of traditional correlators scales as $\mathcal{O}(\Nant^2)$, there will be a steep cost for realizing the full imaging potential of these powerful instruments. Through our generic and efficient E-field Parallel Imaging Correlator (EPIC), we present the first software demonstration of a generalized direct imaging algorithm, namely, the Modular Optimal Frequency Fourier (MOFF) imager. It takes advantage of the multiplication-convolution theorem of Fourier transforms. Not only does it bring down the cost for dense layouts to $\mathcal{O}(\Nant\log_2\Nant)$ but can also image from irregular layouts and heterogeneous arrays of antennas. EPIC is highly modular and parallelizable, implemented in object oriented Python, and publicly available. We have verified the images produced to be equivalent to those produced using traditional techniques to within a precision set by gridding coarseness. We have also validated our implementation on data observed with the Long Wavelength Array (LWA). {\bf We show that it robustly estimates the input sky model for heterogeneous arrays.} Antenna layouts with dense filling factors consisting of a large number of antennas such as LWA, the Square Kilometre Array, Hydrogen Epoch of Reionization Array, and Canadian Hydrogen Intensity Mapping Experiment will gain significant computational advantage by deploying {\bf an optimized version of} EPIC. {\bf The algorithm is a strong candidate for instruments targeting transient searches of Fast Radio Bursts (FRB) as well as planetary and exoplanetary phenomena due to the availability of high-speed calibrated time-domain images and low output bandwidth relative to visibility-based systems.}
 \end{abstract}
 
 % Select between one and six entries from the list of approved keywords.
@@ -108,7 +108,7 @@ instrumentation: interferometers -- techniques: image processing -- techniques: 
 
 \section{Introduction}
 
-Radio astronomy is entering an era in which interferometers of hundreds to thousands of individual antennas are needed to achieve desired survey speeds. Nowhere is this more apparent than at radio frequencies below 1.4 GHz. The study of the history of hydrogen gas throughout the universe's evolution is pushing technology development towards arrays of low-cost antennas with large fields of view and densely packed layouts. Similarly, the search for transient objects and regular monitoring of the time-dependent sky is driving instruments in the same direction with the added requirement of fast read-outs. A number of new telescopes are being or were developed around the world based on this new paradigm, including the Hydrogen Epoch of Reionization Array\footnote{http://reionization.org} (HERA; \citealt{deb16}), the Murchison Widefield Array (MWA; \citealt{tin13,bow13}), the {\bf Donald~C.~Backer} Precision Array for Probing the Epoch of Reionization (PAPER; \citealt{par10}), the LOw Frequency ARray (LOFAR; \citealt{van13}), the Canadian Hydrogen Intensity Mapping Experiment (CHIME; \citealt{ban14}), the Long Wavelength Array (LWA; \citealt{ell13}), and the low frequency Square Kilometer Array (SKA1-Low; \citealt{mel13}).
+Radio astronomy is entering an era in which interferometers of hundreds to thousands of individual antennas are needed to achieve desired survey speeds. Nowhere is this more apparent than at radio frequencies below 1.4 GHz. The study of the history of hydrogen gas throughout the universe's evolution is pushing technology development towards arrays of low-cost antennas with large fields of view and densely packed layouts. Similarly, the search for transient objects and regular monitoring of the time-dependent sky is driving instruments in the same direction with the added requirement of fast read-outs. A number of new telescopes around the world {\bf are} based on this new paradigm, including the Hydrogen Epoch of Reionization Array\footnote{http://reionization.org} (HERA; \citealt{deb16}), the Murchison Widefield Array (MWA; \citealt{tin13,bow13}), the {\bf Donald~C.~Backer} Precision Array for Probing the Epoch of Reionization (PAPER; \citealt{par10}), the LOw Frequency ARray (LOFAR; \citealt{van13}), the Canadian Hydrogen Intensity Mapping Experiment (CHIME; \citealt{ban14}), the Long Wavelength Array (LWA; \citealt{ell13}), and the low frequency Square Kilometer Array (SKA1-Low; \citealt{mel13}).
 
 This paradigm shift requires a fundamentally new approach to the design of
 digital correlators \citep{lon00}. Modern correlators calculate the cross-power
@@ -130,7 +130,7 @@ antenna in the array at each time step, removing the cross-correlation step.
 This relieves the computational scaling from the harsh $\Nant^2$ to the more 
 gentle envelope of $\sim\Ngrid\log_2\Ngrid$, where $\Ngrid$ is the number of 
 grid points in the Fourier transform \citep[e.g.][]{mor11,teg09,teg10}. This 
-architecture is often referred to as a ``direct imaging'' correlator because it 
+architecture is often referred to as a ``direct imaging correlator'' because it 
 eliminates the intermediate cross-correlation data products of the FX and XF 
 correlators, but instead directly forms images from the electric field 
 measurements.
@@ -139,26 +139,26 @@ Direct imaging correlators have begun to be explored on deployed arrays includin
 the Basic Element for SKA Training II (BEST-2) array \citep{fos14}, the Omniscope
 \citep{zhe14}, and an earlier incarnation at higher frequencies with the intent
 of pulsar timing \citep{oto94, dai00}. However, each of these examples make
-assumptions about the redundancy of the array layout, and require the collecting
+assumptions about the redundancy of the array layout, and require that the collecting
 elements are identical. On the other hand, the MOFF algorithm achieves the same
 $\Ngrid \log_2 \Ngrid$ computational scaling without placing any restriction on
 antenna placement, can accommodate non-identical antennas, and is provably 
 optimal \citep{mor11}. This algorithm uses the antenna beam patterns to 
 grid the electric field measurements to a regular grid in the software 
 holography/A-transpose fashion \citep{mor09,bha08,teg97b} before performing the
-spatial FFT. This process has been shown to theoretically produce a data product
+spatial FFT. This process has been shown to mathematically produce a data product
 identical to images produced from traditional visibility-based techniques.
 
 Here we present the first software implementation of the MOFF correlator, and
 announce the public release of the E-field Parallel Imaging Correlator (EPIC)
 code. EPIC is a highly parallel, object oriented Python package that primarily 
-implements the MOFF imaging algorithm besides emulating real-life telescopes and 
+implements the MOFF imaging algorithm {\bf as well as} emulating real-life telescopes and 
 FX/XF correlators in software, and includes a visibility-based imaging technique 
 for reference. It is intended to provide a development platform to test different 
 imaging approaches, characterize scaling relations and serve as a stepping stone 
 for real-life GPU/FPGA-based implementation on telescopes.
 
-We begin with a technical description of the algorithm in \S\ref{sec:math}, then discuss our particular implementation in \S\ref{sec:software}. We then verify the output data quality from our code in \S\ref{sec:verify} by presenting simulated images from both the EPIC correlator and comparing to a simulated FX correlator. We also demonstrate the performance with real-world data from the LWA. {\bf \S\ref{sec:versatility} demonstrates its ability to robustly image data from heterogeneous arrays.} In \S\ref{sec:analysis}, we explore the scalability of the algorithm in the context of several array design choices. We identify specific array design classes where the EPIC correlator -- is computationally more efficient; and in the field of transients, demands significantly lesser I/O bandwidth relative to visibility-based approaches. We conclude and discuss future research prospects in \S\ref{sec:conclusions}.
+We begin with a technical description of the algorithm in \S\ref{sec:math}, then discuss our particular implementation in \S\ref{sec:software}. We then verify the output data quality from our code in \S\ref{sec:verify} by presenting simulated images from both the EPIC correlator and comparing to a simulated FX correlator. We also demonstrate the performance with real-world data from the LWA. {\bf \S\ref{sec:versatility} demonstrates its ability to robustly image data from heterogeneous arrays.} In \S\ref{sec:analysis}, we explore the scalability of the algorithm in the context of several array design choices. We identify specific array design classes where the EPIC correlator is computationally more efficient, and in the field of transients, demands significantly lesser I/O bandwidth relative to visibility-based approaches. We conclude and discuss future research prospects in \S\ref{sec:conclusions}.
 
 \section{Mathematical Framework}\label{sec:math}
 
@@ -206,7 +206,7 @@ This can be equivalently re-written as:
   V_{ab}(f,t) &= \int B_{ab}(\mathbf{r}_{ab}-\mathbf{r},f,t) \nonumber\\ 
               &\qquad \times \left[\int I(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}.\hat{\mathbf{s}}/c}\,\dif\Omega\right]\dif^2\mathbf{r}\,+\, n_{ab}(f,t),
 \end{align}
-where, $B_{ab}(\mathbf{r},f,t)$ denotes the {\bf power response of the antenna pair obtained in the measurement plane} by a spatial Fourier transform of $\mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)$. Effectively, the multiplication in image space by $\mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)$ has been replaced by a convolution with $B_{ab}(\mathbf{r},f,t)$ in {\bf measurement plane}. This is the software holographic equivalent of a traditional FX correlator output. {\bf For context, the term ``holography'' is derived from holographic measurements of the complex antenna aperture illumination pattern \citep{ben76,sco77}. In the present context, ``software holography'' refers to the application of this antenna aperture illumination pattern in software for imaging.}
+where, $B_{ab}(\mathbf{r},f,t)$ denotes the {\bf power response of the antenna pair obtained in the measurement plane} by a spatial Fourier transform of $\mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)$. Effectively, the multiplication in image space by $\mathcal{B}_{ab}(\hat{\mathbf{s}},f,t)$ has been replaced by a convolution with $B_{ab}(\mathbf{r},f,t)$ in {\bf the measurement plane}. This is the software holographic equivalent of a traditional FX correlator output. {\bf For context, the term ``holography'' is derived from holographic measurements of the complex antenna aperture illumination pattern \citep{ben76,sco77}. In the present context, ``software holography'' refers to the application of this antenna aperture illumination pattern in software for imaging.}
 
 Hereafter, we adopt the matrix notation of \citet{mor11}, where vectors are represented with single coordinates, and matrices are represented by two coordinates denoting the spaces the operator transforms between. Since each frequency is processed independently, we drop the dependence on $f$. In this notation, the above measurement equation can be expressed as:
 \begin{align}
@@ -242,14 +242,14 @@ Equation~\ref{eqn:dirty-image-MOFF} is the optimal imaging equation used by the 
 There are some important differences between the two techniques:
 \begin{enumerate}
 \item The time-averaging cannot be performed on a stochastic measurement but only on its statistical properties. In visibility-based imaging, the visibilities measured between antenna pairs represent spatial correlations which can be time-averaged followed by gridding and imaging. However, in MOFF imaging both antenna and gridded electric fields are stochastic and therefore must be imaged and squared before time-averaging. 
-\item In visibility-based imaging, electric fields measured by antennas are not correlated with themselves and hence lack zero spacing measurements. In contrast, in MOFF imaging, since the gridded electric fields are imaged and squared, they retain information from auto-correlated electric fields at zero spacing {\bf but can be removed in EPIC.}
+\item In visibility-based imaging, electric fields measured by antennas are not correlated with themselves and hence lack zero spacing measurements. In contrast, in MOFF imaging, since the gridded electric fields are imaged and squared, they retain information from auto-correlated electric fields at zero spacing. {\bf However, we will show in \S\ref{sec:rm-autocorr} that they can be removed by fitting and subtracting the zero-spacing contribution during imaging.}
 \end{enumerate} 
 
 \section{Software Implementation}\label{sec:software}
 
-We have implemented the MOFF imaging technique in our ``E-field Parallel Imaging Correlator'' -- a highly parallelized Object Oriented Python package,\footnote{The E-field Parallel Imaging Correlator (EPIC) package can be accessed at https://github.com/nithyanandan/EPIC} now publicly available. Besides implementing the MOFF imaging algorithm it also includes {\bf a simulator for generating electric fields from a sky model and a visibility-based imaging using the software holography technique.}
+We have implemented the MOFF imaging technique in our ``E-field Parallel Imaging Correlator'' -- a highly parallelized Object Oriented Python package,\footnote{The E-field Parallel Imaging Correlator (EPIC) package can be accessed at https://github.com/nithyanandan/EPIC} now publicly available. Besides implementing the MOFF imaging algorithm it also includes {\bf a simulator for generating electric fields from a sky model and a visibility-based imaging routine using the software holography technique.}
 
-EPIC can accept dual-polarization inputs and produce images of all four instrumental cross-polarizations. Currently two data input formats exist for reading in the electric field time samples measured by the antennas -- simulated electric fields based on a sky model using the simulator packaged with EPIC; and LWA data. Efforts to build interfaces for data from other telescopes are underway.
+EPIC can accept dual-polarization inputs and produce images of all four instrumental cross-polarizations. Currently, two data input formats exist for reading in the electric field time samples measured by the antennas -- simulated electric fields based on a sky model using the simulator packaged with EPIC; and LWA data. Efforts to build interfaces for data from other telescopes are underway.
 
 Fig.~\ref{fig:MOFF-flowchart} shows the flowchart for MOFF imaging. The propagated electric fields are shown on the left at different time stamps, $t_1\ldots t_\textrm{M}$. At each time stamp, the electric fields measured by antennas are denoted by $\widetilde{E}_1(t)\ldots \widetilde{E}_\textrm{N}(t)$. The F-engine performs a temporal Fourier transform on the electric field time-series to obtain electric field spectra $E_1(f)\ldots E_\textrm{N}(f)$ ($\mathbf{E}(\mathbf{a})$ in matrix notation) for each of the antennas. Each of the complex antenna gains are calibrated to correct the corresponding electric field spectra. These calibrated electric fields are gridded using an antenna-based gridding convolution function after which it is spatially Fourier transformed and squared to obtain an image cube for every time stamp. These images are then time-averaged to obtain the accumulated image $\mathcal{I}^\prime(f)$ ($\boldsymbol{\mathcal{I}^\prime}(\hat{\mathbf{s}})$ in matrix notation).
 
@@ -257,27 +257,28 @@ Fig.~\ref{fig:MOFF-flowchart} shows the flowchart for MOFF imaging. The propagat
   \includegraphics[width=\columnwidth]{figure1}
   % \includegraphics[width=\columnwidth]{MOFF_flowchart}
   % \includegraphics[width=\columnwidth]{MOFF_flowchart.eps}
-  \caption{A flowchart of MOFF imaging in EPIC. The propagated electric fields shown on the left are measured as time-series $\widetilde{E}_1(t)\ldots \widetilde{E}_\textrm{N}(t)$ by the antennas $\textrm{A}_1\ldots \textrm{A}_\textrm{N}$ which are then Fourier transformed by the F-engine to produce electric field spectra $E_1(f)\ldots E_\textrm{N}(f)$. They are calibrated and gridded. The gridded electric fields $E_\textrm{g}(f)$ from each time series are imaged to produce images $\mathcal{I}^\prime_1(f)\ldots \mathcal{I}^\prime_\textrm{M}(f)$. These images are time-averaged to obtain the final image $\mathcal{I}^\prime(f)$.}
+  \caption{Flowchart of MOFF imaging in EPIC. The propagated electric fields shown on the left are measured as time-series $\widetilde{E}_1(t)\ldots \widetilde{E}_\textrm{N}(t)$ by the antennas $\textrm{A}_1\ldots \textrm{A}_\textrm{N}$ which are then Fourier transformed by the F-engine to produce electric field spectra $E_1(f)\ldots E_\textrm{N}(f)$. They are calibrated and gridded. The gridded electric fields $E_\textrm{g}(f)$ from each time series are imaged to produce images $\mathcal{I}^\prime_1(f)\ldots \mathcal{I}^\prime_\textrm{M}(f)$. These images are time-averaged to obtain the final image $\mathcal{I}^\prime(f)$.}
   \label{fig:MOFF-flowchart}
 \end{figure}
 
-Fig.~\ref{fig:FX-flowchart} shows the flowchart for a visibility-based software holographic imaging from a FX correlator. The antenna-based F-engine is identical to that in the MOFF processing. The electric field spectra from each antenna are then cross-multiplied in the X-engine with those from all other antennas to obtain the visibilities $V_\textrm{ab}(f,t)$ ($\mathbf{m}(\mathbf{v})$ in matrix notation). They are calibrated and time-averaged to obtain $\langle V_\textrm{ab}(f)\rangle$ which are then gridded and imaged to obtain the image $\mathcal{I}^\prime(f)$. The $\mathcal{I}^\prime(f)$ obtained from both techniques are theoretically identical as explained in \S\ref{sec:math}.
+Fig.~\ref{fig:FX-flowchart} shows the flowchart for a visibility-based software holographic imaging from a FX correlator. The antenna-based F-engine is identical to that in the MOFF processing. The electric field spectra from each antenna are then cross-multiplied in the X-engine with those from all other antennas to obtain the visibilities $V_\textrm{ab}(f,t)$ ($\mathbf{m}(\mathbf{v})$ in matrix notation). They are calibrated and time-averaged to obtain $\langle V_\textrm{ab}(f)\rangle$ which are then gridded and imaged to obtain the image $\mathcal{I}^\prime(f)$. The $\mathcal{I}^\prime(f)$ obtained from both techniques are mathematically identical as explained in \S\ref{sec:math}.
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{figure2}
   % \includegraphics[width=\columnwidth]{FX_flowchart}
   % \includegraphics[width=\columnwidth]{FX_flowchart.eps}
-  \caption{A flowchart of visibility-based software holographic imaging in EPIC. The FX process flow shares the F-engine with the MOFF process. Following the F-engine, the electric fields pass through the X-engine to produce visibilities $V_\textrm{ab}(f,t)$ which are calibrated and time-averaged. Then they are gridded to obtain the gridded visibilities $V_\textrm{g}(f)$ which are then Fourier transformed to obtain the image, $\mathcal{I}^\prime(f)$.}
+  \caption{Flowchart of visibility-based software holographic imaging in EPIC. The FX process flow shares the F-engine with the MOFF process. Following the F-engine, the electric fields pass through the X-engine to produce visibilities $V_\textrm{ab}(f,t)$ which are calibrated and time-averaged. Then they are gridded to obtain the gridded visibilities $V_\textrm{g}(f)$ which are then Fourier transformed to obtain the image, $\mathcal{I}^\prime(f)$.}
   \label{fig:FX-flowchart}
 \end{figure}
 
-Here we discuss the components of these architectures in detail. 
+{\bf A high level software architecture of the EPIC package is described in the 
+appendix~\ref{sec:software-modules} for the interested reader.} Here we discuss the components of these architectures in detail. 
 
 \par\medskip
 \noindent {\bf Antenna-to-Grid Mapping}
 \par\medskip
 \noindent A grid is generated on the coordinate system in which antenna 
-locations are specified with a grid spacing. The grid spacing can be controlled 
+locations are specified. The grid spacing can be controlled 
 by the user. By default, it is set to be $\le\lambda/2$ even at the 
 lowest wavelength to ensure there is no aliasing even from regions of the sky 
 far away from the field of view. The number of locations on the grid is 
@@ -416,9 +417,6 @@ before imaging because the repeated cost of spatial FFT can be avoided. Since
 this averaging has been performed already on the visibilities over an integration 
 time-scale, the imaging step has to be performed only once per integration cycle. 
 
-A high level software architecture of the EPIC package is described in the 
-appendix~\ref{sec:software-modules} for the interested reader.
-
 \section{Verification}\label{sec:verify}
 
 In order to verify the accuracy of the EPIC code, we characterize the images 
@@ -445,7 +443,7 @@ is simply the directional antenna power response.
   \includegraphics[width=\columnwidth]{figure4}
   % \includegraphics[width=\columnwidth]{autocorr_uvwts_pbeam}
   % \includegraphics[width=\columnwidth]{autocorr_uvwts_pbeam.png}
-  \caption{The auto-correlation of weights of a square shaped antenna aperture
+  \caption{Auto-correlation of weights of a square shaped antenna aperture
     in the $uv$ plane (left) and the corresponding directional antenna power 
     response on the sky (right) in coordinates specified by direction cosines. 
     The antenna auto-correlation weights are normalized to a sum
@@ -492,7 +490,7 @@ Fig.~\ref{fig:MOFF-FX-image} shows the weighted dirty images (top) and synthesiz
   \label{fig:MOFF-FX-uvwts-diff}
 \end{figure}
 
-The gridding step in MOFF imaging samples the antenna footprint (either in analytic or lookup table formats) at the grid locations. Coverage of grid pixels by an antenna footprint may be $\sim 1$ pixel narrower particularly at the edge of the footprint along one or both directions relative to that from another identical antenna but with a fractionally different location relative to the grid. This depends on the exact location of the centre of the antenna relative to the grid and the coarseness of grid spacing. This first order loss of precision of the sampled footprint propagates to second order ($\sim 2$ pixels) upon correlation of the discretized weights. In other words, the correlated weights may suffer further loss of precision in their sampled footprint after correlation of two footprints each of which could be less precise to first order. On the other hand, in visibility-based imaging, a directly sampled $uv$ plane antenna power response (which is theoretically identical to the correlation of individual antenna footprints) centred on a baseline has a loss in precision at most to first order. Thus, although in the limit of infinitesimally small grid spacing they should be identical, the coarseness of grid spacing introduces subtle differences between the two.
+The gridding step in MOFF imaging samples the antenna footprint (either in analytic or lookup table formats) at the grid locations. Coverage of grid pixels by an antenna footprint may be $\sim 1$ pixel narrower particularly at the edge of the footprint along one or both directions relative to that from another identical antenna but with a fractionally different location relative to the grid. This depends on the exact location of the centre of the antenna relative to the grid and the coarseness of grid spacing. This first order loss of precision of the sampled footprint propagates to second order ($\sim 2$ pixels) upon correlation of the discretized weights. In other words, the correlated weights may suffer further loss of precision in their sampled footprint after correlation of two footprints each of which could be less precise to first order. On the other hand, in visibility-based imaging, a directly sampled $uv$ plane antenna power response (which is mathematically identical to the correlation of individual antenna footprints) centred on a baseline has a loss in precision at most to first order. Thus, although in the limit of infinitesimally small grid spacing they should be identical, the coarseness of grid spacing introduces subtle differences between the two.
 
 These differences which are dependent on the coarseness of grid spacing can be mitigated by making the grid spacing finer at the expense of increased computational cost. Residuals centred around zero spacing can also be lowered by subtracting each auto-correlation of antenna weights separately by using the shape and extent of the sampled footprint appropriate for that specific antenna aperture. This is a general solution applicable even in case of heterogeneous antenna arrays and is under active development for EPIC.
 
@@ -563,13 +561,13 @@ thus validating the functionality of EPIC.
 
 \section{Imaging with Heterogeneous Antenna Arrays}\label{sec:versatility}
 
-{\bf One of the advanced features of the MOFF algorithm and its implementation via EPIC is the ability to naturally account for heterogeneity of antennas while still producing images with maximal information \citep{mor11}. Unlike the assumption frequently made in existing direct imaging techniques that all antennas are identical, EPIC can implement the most generic case where no such assumption can be made. In other words, EPIC does not assume $W_a(\mathbf{r}-\mathbf{r}_a)$ or $B_{ab}(\mathbf{r}-\mathbf{r}_{ab})$ for different antennas are identical. However, any {\it a priori} knowledge available that certain sets of antennas have identical illumination patterns can be easily passed on to EPIC to avoid redundant computations and thus increase efficiency. Here we present key highlights from the generic methodology detailed in appendix~\ref{sec:math-versatility} to understand the effective angular weighting in the image obtained with EPIC from a heterogeneous array. 
+{\bf One of the advanced features of the MOFF algorithm and its implementation via EPIC is the ability to naturally account for heterogeneity of antennas while still producing images with maximal information \citep{mor11}. Unlike the assumption frequently made in existing direct imaging techniques that all antennas are identical, EPIC does not assume $W_a(\mathbf{r}-\mathbf{r}_a)$ or $B_{ab}(\mathbf{r}-\mathbf{r}_{ab})$ for different antennas are identical. However, any {\it a priori} knowledge available that certain sets of antennas have identical illumination patterns can be easily passed on to EPIC to avoid redundant computations and thus increase efficiency. Here we present key highlights from the generic methodology detailed in appendix~\ref{sec:math-versatility} to understand the effective angular weighting in the image obtained with EPIC from a heterogeneous array. 
 
 We look at the contribution to the image from the visibility, $V_{ab}$, from each antenna pair. While imaging, EPIC introduces a weighting to each antenna during gridding as given by equations~\ref{eqn:dirty-image-FX} and \ref{eqn:e-field-conv}, and equivalently, the weighted visibility from {\bf an} antenna pair $ab$ projected on the grid is:
 \begin{align}
   V^\prime_{ab}(\mathbf{r},f) &= B^{\textrm{G}\star}_{ab}(\mathbf{r}-\mathbf{r}_{ab},f)\,V_{ab},
 \end{align}
-where, $B^\textrm{G}_{ab}(\mathbf{r}-\mathbf{r}_{ab},f)$ is obtained by the spatial cross-correlation of weighting kernels associated with the individual antennas. The superscript `$\textrm{G}$' denotes the weighting introduced in analysis during the gridding process. We will use superscript `I' to denote the inherent weighting applied by the instrument during the measurement process in obtaining $V_{ab}$ from the true sky model. Optimal imaging requires $W^\textrm{G}_a = W^\textrm{I}_a$ \citep{mor09,mor11}. However, we keep the two superscripts separately to describe output images under the wrong assumption that the array is homogeneous when instead it is actually not.
+where, $B^\textrm{G}_{ab}(\mathbf{r}-\mathbf{r}_{ab},f)$ is obtained by the spatial cross-correlation of weighting kernels associated with the individual antennas. The superscript `$\textrm{G}$' denotes the weighting introduced in analysis during the gridding process. We will use superscript `I' to denote the inherent weighting applied by the instrument during the measurement process in obtaining $V_{ab}$ from the true sky model. Optimal imaging requires $W^\textrm{G}_a = W^\textrm{I}_a$ \citep{mor09,mor11}. However, we keep the two superscripts separate here to describe output images under the wrong assumption that the array is homogeneous when instead it is actually not.
 
 The sky response of the weighted visibility, referred to as {\it fringes}, is:
 \begin{align}
@@ -804,7 +802,7 @@ We now consider antenna array layouts described by three essential quantities in
 
 {\bf There is an upper limit set by the maximum number of antennas for each antenna size that can be densely packed inside various baseline lengths but is not shown on this figure to avoid crowding. We note that as antenna size increases the maximum number of antennas for a dense packing as a function of baseline length decreases. Hence, this upper limit shifts rightward as antenna size increases. Similarly, with increase in antenna size, $\Ngrid$ also decreases when field of view imaging is achieved with an increased grid spacing equal to antenna size and hence lowers the amount of computations required with the MOFF algorithm. This shifts the dashed lines rightward as well.}
 
-{\bf The different antennas are color coded by roughly the class of antenna size they fall into. Thus symbols of one color that lie to the left of same colored line indicate MOFF imaging is favoured for those telescopes and vice versa. For e.g., MOFF imaging is favoured in HERA-331 and HERA-6769 because they lie to the left of the orange line but not so in cases of HERA-19 and HERA-37}. A majority of the next-generation radio telescopes, namely, HERA-331 and its future expanded versions, SKA1-LC, SKA1-LCD, HIRAX, and CHIME will fall in the regime where MOFF imaging will be desirable. LWA1 and LWA-OV are already very close to the dividing line. Their hypothetical expansions,\footnote{LWA1-x2x1 and LWA1-x4x1.5, and LWA-OVx2x1 and LWA-OVx4x1.5 denote two-fold and four-fold increase in number of antennas within a core diameter that is 1 and 1.5 times the current size of 100~m and 200~m respectively for LWA1 and LWA-OV.} will be in the computational regime favoured by MOFF. For a fixed baseline length, regions favouring the MOFF algorithm tend to be towards large $\Nant$ indicating large-N dense array layouts with smaller antenna elements are best suited for deploying EPIC.
+{\bf The different antennas are color coded by roughly the class of antenna size they fall into. Thus symbols of one color that lie to the left of same colored line indicate MOFF imaging is favoured for those telescopes and vice versa. For example, MOFF imaging is favoured in HERA-331 and HERA-6769 because they lie to the left of the orange line but not so in cases of HERA-19 and HERA-37}. A majority of the next-generation radio telescopes, namely, HERA-331 and its future expanded versions, SKA1-LC, SKA1-LCD, HIRAX, and CHIME will fall in the regime where MOFF imaging will be desirable. LWA1 and LWA-OV are already very close to the dividing line. Their hypothetical expansions,\footnote{LWA1-x2x1 and LWA1-x4x1.5, and LWA-OVx2x1 and LWA-OVx4x1.5 denote two-fold and four-fold increase in number of antennas within a core diameter that is 1 and 1.5 times the current size of 100~m and 200~m respectively for LWA1 and LWA-OV.} will be in the computational regime favoured by MOFF. For a fixed baseline length, regions favouring the MOFF algorithm tend to be towards large $\Nant$ indicating large-N dense array layouts with smaller antenna elements are best suited for deploying EPIC.
 
 \subsection{Data Throughput}
 
