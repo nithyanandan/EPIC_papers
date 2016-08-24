@@ -1,3 +1,10 @@
+From 8c6110f (mnras):
+====================
+
+In ms.tex,
+
+(*) Add description to solid angle element
+
 From b52cb67 (Judd-v1):
 ======================
 

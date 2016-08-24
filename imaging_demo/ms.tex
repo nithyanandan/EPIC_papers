@@ -160,7 +160,7 @@ Electric fields from astrophysical sources, $\mathcal{E}(\hat{\mathbf{s}}, f, t)
 \begin{align}
   E(\mathbf{r}, f, t) &= \int \mathcal{E}(\hat{\mathbf{s}},f,t)\,e^{-2\pi i f\mathbf{r}\cdot\hat{\mathbf{s}}/c}\,\dif\Omega,
 \end{align}
-where, $\mathbf{r}$ denotes the observer's location, {\bf $f$ is the frequency of radiation, $c$ is the speed of light, $t$ denotes time} and $E(\mathbf{r}, f, t)$ is the propagated electric field. Thus the propagated electric field is a linear superposition of the electric fields emanating from astronomical sources with appropriate complex phases. {\bf Ignoring wide-field effects}, it can be {\bf simplified as} a Fourier transform of the electric fields in the sky coordinates. 
+where, $\mathbf{r}$ denotes the observer's location, {\bf $f$ is the frequency of radiation, $c$ is the speed of light, $t$ denotes time, $\dif\Omega$ is the infinitesimal solid angle element on the celestial sphere whose normal is the unit vector $\hat{\mathbf{s}}$}, and $E(\mathbf{r}, f, t)$ is the propagated electric field. Thus the propagated electric field is a linear superposition of the electric fields emanating from astronomical sources with appropriate complex phases. {\bf Ignoring wide-field effects}, it can be {\bf simplified as} a Fourier transform of the electric fields in the sky coordinates. 
 
 An antenna, {\bf located at $\mathbf{r}_a$ (indexed by $a$)}, measures a phased sum of these propagated electric fields over its effective collecting area with an additive receiver noise:
 \begin{align}\label{eqn:measured-E-field}
@@ -1107,7 +1107,7 @@ Since equation~\ref{eqn:apndx-wt-dirty-image-EPIC} is obtained by averaging weig
 \begin{align}\label{eqn:apndx-wt-dirty-image-EPIC-decomp}
   \mathcal{I}^\prime &= \frac{1}{\Nant(\Nant-1)}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\,\mathcal{I}^\prime_{ab}
 \end{align}
-Here, equation~\ref{eqn:wt-dirty-image-EPIC} has been re-written as the sum of fringes over all antenna pairs in an antenna pair type (inner sum) and subsequently summed over all antenna pair types (outer sum). The effective attenuation of the dirty image due to instrumental and gridding weights is:
+Here, equation~\ref{eqn:apndx-wt-dirty-image-EPIC} has been re-written as the sum of fringes over all antenna pairs in an antenna pair type (inner sum) and subsequently summed over all antenna pair types (outer sum). The effective attenuation of the dirty image due to instrumental and gridding weights is:
 \begin{align}\label{eqn:apndx-effective-weighting}
   \mathcal{W}_\textrm{eff} &= \mathcal{I}^\prime\, / \,\mathcal{I}_\textrm{D}^\textrm{iso}.
 \end{align}
@@ -1130,34 +1130,6 @@ In an optimally weighted image, $\mathcal{W}^\textrm{G}_{(i)} \equiv \mathcal{W}
   \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{ij} n_{ij}\,\left|\mathcal{W}^\textrm{I}_{(i)}\right|^2\left|\mathcal{W}^\textrm{I}_{(j)}\right|^2,
 \end{align}
 where the superscript `$\textrm{opt}$' denotes `optimal'.}
-
-% For purposes of illustration, we consider a simple scenario in which there are two antenna types each containing roughly equal numbers of antennas with similar layouts but the analysis is performed under the wrong assumption that all antennas are identical and are all of the first type. In an optimally weighted image, the optimal effective weighting given by equation~\ref{eqn:effective-weighting-optimal} will be:
-% \begin{align}\label{eqn:effective-weighting-optimal-example}
-%   \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)}\,\left[n_1(n_1-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^4 \right.\nonumber\\
-%   &\qquad\qquad\qquad\qquad + n_2(n_2-1)\,\left|\mathcal{W}^\textrm{I}_{(2)}\right|^4 \nonumber\\
-%   &\qquad\qquad\qquad\qquad \left. + n_1n_2\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^2\,\left|\mathcal{W}^\textrm{I}_{(2)}\right|^2\right].
-% \end{align}
-% On the other hand, $\mathcal{W}^\textrm{G}_{(1)} = \mathcal{W}^\textrm{I}_{(1)}$ and $\mathcal{W}^\textrm{G}_{(2)} = \mathcal{W}^\textrm{I}_{(1)}$ for an image obtained in the erroneous case in which all antennas are assumed to be identical. It will be sub-optimal with effective weighting:
-% \begin{align}\label{eqn:effective-weighting-suboptimal-example}
-%   \mathcal{W}_\textrm{eff}^\textrm{sub} &\approx \frac{1}{\Nant(\Nant-1)}\,\left[n_1(n_1-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^4\right.\nonumber\\
-%   &\qquad\qquad\qquad\qquad + n_2(n_2-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^2\,\left|\mathcal{W}^\textrm{I}_{(2)}\right|^2 \nonumber\\
-%   &\qquad\qquad\qquad\qquad \left. + n_1n_2\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^2 \,\mathcal{W}^\textrm{I}_{(1)}\,\mathcal{W}^{\textrm{I}\star}_{(2)}\right].
-% \end{align}
-% Finally, since no {\it a priori} information will be available about the heterogeneous array in case of the erroneous assumption, the effective weighting in the image will be believed to be $\mathcal{W}_\textrm{eff}^\textrm{err} = \left|\mathcal{W}_{(1)}^\textrm{I}\right|^4$. 
-
-% Estimates of the dirty images with uniform, isotropic weighting in the optimal and erroneous cases will be obtained by dividing the respective weighted images by their assumed effective weights $\mathcal{W}_\textrm{eff}^\textrm{opt}$ and $\mathcal{W}_\textrm{eff}^\textrm{err}$ respectively as:
-% \begin{align}
-%   \widehat{\mathcal{I}}_\textrm{D}^\textrm{iso} &\approx \begin{cases}
-%     \mathcal{I}_\textrm{D}^\textrm{iso} &\textrm{, \qquad optimal case} \\
-%     \mathcal{I}_\textrm{D}^\textrm{iso}\,\frac{\mathcal{W}_\textrm{eff}^\textrm{sub}}{\mathcal{W}_\textrm{eff}^\textrm{err}} &\textrm{, \qquad erroneous case}
-%   \end{cases}
-% \end{align}
-
-% If $\mathcal{I}_\textrm{M}$ is the sky model, then $\mathcal{I}_\textrm{D}^\textrm{iso}$ can be expressed as:
-% \begin{align}\label{eqn:img-uncertainties}
-%   \mathcal{I}_\textrm{D}^\textrm{iso} &= \mathcal{I}_\textrm{M} + \delta\mathcal{I}_\textrm{S} + \delta\mathcal{I}_\textrm{M},
-% \end{align}
-% where the second and third terms on the right hand side denote fluctuations due to sidelobes and those intrinsic to the model, respectively. We define the normalized estimates of the sky model $\widehat{\mathcal{I}}_\textrm{M}^\textrm{norm} \equiv \widehat{\mathcal{I}}_\textrm{D}^\textrm{iso} / \mathcal{I}_\textrm{M}$. Ideally, $\widehat{\mathcal{I}}_\textrm{M}^\textrm{norm}$ should be consistent with unity and not exceed beyond levels of uncertainty as determined by equation~\ref{eqn:img-uncertainties}.}
 
 % \section{Some extra material}
 
