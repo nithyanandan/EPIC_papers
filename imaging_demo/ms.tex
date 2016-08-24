@@ -95,7 +95,7 @@ $^{2}$University of Washington, Department of Physics, Seattle, WA 98195, USA\\
 
 % Abstract of the paper
 \begin{abstract}
-Modern radio telescopes are favouring densely packed array layouts with large numbers of antennas ($\Nant\gtrsim 1000$). Since the complexity of traditional correlators scales as $\mathcal{O}(\Nant^2)$, there will be a steep cost for realizing the full imaging potential of these powerful instruments. Through our generic and efficient E-field Parallel Imaging Correlator (EPIC), we present the first software demonstration of a generalized direct imaging algorithm, namely, the Modular Optimal Frequency Fourier (MOFF) imager. It takes advantage of the multiplication-convolution theorem of Fourier transforms. Not only does it bring down the cost for dense layouts to $\mathcal{O}(\Nant\log_2\Nant)$ but can also image from irregular layouts and heterogeneous arrays of antennas. EPIC is highly modular and parallelizable, implemented in object oriented Python, and publicly available. We have verified the images produced to be equivalent to those produced using traditional techniques to within a precision set by gridding coarseness. We have also validated our implementation on data observed with the Long Wavelength Array (LWA). {\bf We show that it robustly estimates the input sky model for heterogeneous arrays.} Antenna layouts with dense filling factors consisting of a large number of antennas such as LWA, the Square Kilometre Array, Hydrogen Epoch of Reionization Array, and Canadian Hydrogen Intensity Mapping Experiment will gain significant computational advantage by deploying {\bf an optimized version of} EPIC. {\bf The algorithm is a strong candidate for instruments targeting transient searches of Fast Radio Bursts (FRB) as well as planetary and exoplanetary phenomena due to the availability of high-speed calibrated time-domain images and low output bandwidth relative to visibility-based systems.}
+Modern radio telescopes are favouring densely packed array layouts with large numbers of antennas ($\Nant\gtrsim 1000$). Since the complexity of traditional correlators scales as $\mathcal{O}(\Nant^2)$, there will be a steep cost for realizing the full imaging potential of these powerful instruments. Through our generic and efficient E-field Parallel Imaging Correlator (EPIC), we present the first software demonstration of a generalized direct imaging algorithm, namely, the Modular Optimal Frequency Fourier (MOFF) imager. It takes advantage of the multiplication-convolution theorem of Fourier transforms. Not only does it bring down the cost for dense layouts to $\mathcal{O}(\Nant\log_2\Nant)$ but can also image from irregular layouts and heterogeneous arrays of antennas. EPIC is highly modular, parallelizable, implemented in object-oriented Python, and publicly available. We have verified the images produced to be equivalent to those from traditional techniques to within a precision set by gridding coarseness. We have also validated our implementation on data observed with the Long Wavelength Array (LWA). {\bf We show that it robustly estimates the input sky model for heterogeneous arrays.} Antenna layouts with dense filling factors consisting of a large number of antennas such as LWA, the Square Kilometre Array, Hydrogen Epoch of Reionization Array, and Canadian Hydrogen Intensity Mapping Experiment will gain significant computational advantage by deploying {\bf an optimized version of} EPIC. {\bf The algorithm is a strong candidate for instruments targeting transient searches of Fast Radio Bursts (FRB) as well as planetary and exoplanetary phenomena due to the availability of high-speed calibrated time-domain images and low output bandwidth relative to visibility-based systems.}
 \end{abstract}
 
 % Select between one and six entries from the list of approved keywords.
@@ -135,19 +135,7 @@ eliminates the intermediate cross-correlation data products of the FX and XF
 correlators, but instead directly forms images from the electric field 
 measurements.
 
-Direct imaging correlators have begun to be explored on deployed arrays including
-the Basic Element for SKA Training II (BEST-2) array \citep{fos14}, the Omniscope
-\citep{zhe14}, and an earlier incarnation at higher frequencies with the intent
-of pulsar timing \citep{oto94, dai00}. However, each of these examples make
-assumptions about the redundancy of the array layout, and require that the collecting
-elements are identical. On the other hand, the MOFF algorithm achieves the same
-$\Ngrid \log_2 \Ngrid$ computational scaling without placing any restriction on
-antenna placement, can accommodate non-identical antennas, and is provably 
-optimal \citep{mor11}. This algorithm uses the antenna beam patterns to 
-grid the electric field measurements to a regular grid in the software 
-holography/A-transpose fashion \citep{mor09,bha08,teg97b} before performing the
-spatial FFT. This process has been shown to mathematically produce a data product
-identical to images produced from traditional visibility-based techniques.
+Direct imaging correlators have begun to be explored on deployed arrays including the Basic Element for SKA Training II (BEST-2) array \citep{fos14}, the MIT EoR (MITEoR) experiment \citep{zhe14} using the {\it Omniscope} \citep{teg09,teg10}, and an earlier incarnation at higher frequencies with the intent of pulsar timing \citep{oto94,dai00}. However, each of these examples make assumptions about the redundancy of the array layout, and require that the collecting elements are identical. On the other hand, the MOFF algorithm achieves the same $\Ngrid \log_2 \Ngrid$ computational scaling without placing any restriction on antenna placement, can accommodate non-identical antennas, and is provably optimal \citep{mor11}. This algorithm uses the antenna beam patterns to grid the electric field measurements to a regular grid in the software holography/A-transpose fashion \citep{mor09,bha08,teg97b} before performing the spatial FFT. This process has been shown to mathematically produce a data product identical to images produced from traditional visibility-based techniques.
 
 Here we present the first software implementation of the MOFF correlator, and
 announce the public release of the E-field Parallel Imaging Correlator (EPIC)
@@ -561,30 +549,30 @@ thus validating the functionality of EPIC.
 
 \section{Imaging with Heterogeneous Antenna Arrays}\label{sec:versatility}
 
-{\bf One of the advanced features of the MOFF algorithm and its implementation via EPIC is the ability to naturally account for heterogeneity of antennas while still producing images with maximal information \citep{mor11}. Unlike the assumption frequently made in existing direct imaging techniques that all antennas are identical, EPIC does not assume $W_a(\mathbf{r}-\mathbf{r}_a)$ or $B_{ab}(\mathbf{r}-\mathbf{r}_{ab})$ for different antennas are identical. However, any {\it a priori} knowledge available that certain sets of antennas have identical illumination patterns can be easily passed on to EPIC to avoid redundant computations and thus increase efficiency. Here we present key highlights from the generic methodology detailed in appendix~\ref{sec:math-versatility} to understand the effective angular weighting in the image obtained with EPIC from a heterogeneous array. 
+{\bf One of the advanced features of the MOFF algorithm and its implementation via EPIC is the ability to naturally account for heterogeneity of antennas while still producing images with maximal information \citep{mor11}. Unlike the assumption frequently made in existing direct imaging techniques that all antennas are identical \citep{oto94,dai00,teg09,teg10,fos14,zhe14}, EPIC does not assume $W_a(\mathbf{r}-\mathbf{r}_a)$ or $B_{ab}(\mathbf{r}-\mathbf{r}_{ab})$ for different antennas are identical. However, any {\it a priori} knowledge available that certain sets of antennas have identical illumination patterns can be easily passed on to EPIC to avoid redundant computations and thus increase efficiency. Here we present key highlights from the generic methodology detailed in appendix~\ref{sec:math-versatility} to understand the effective angular weighting in the image obtained with EPIC from a heterogeneous array. 
 
 We look at the contribution to the image from the visibility, $V_{ab}$, from each antenna pair. While imaging, EPIC introduces a weighting to each antenna during gridding as given by equations~\ref{eqn:dirty-image-FX} and \ref{eqn:e-field-conv}, and equivalently, the weighted visibility from {\bf an} antenna pair $ab$ projected on the grid is:
 \begin{align}
   V^\prime_{ab}(\mathbf{r},f) &= B^{\textrm{G}\star}_{ab}(\mathbf{r}-\mathbf{r}_{ab},f)\,V_{ab},
 \end{align}
-where, $B^\textrm{G}_{ab}(\mathbf{r}-\mathbf{r}_{ab},f)$ is obtained by the spatial cross-correlation of weighting kernels associated with the individual antennas. The superscript `$\textrm{G}$' denotes the weighting introduced in analysis during the gridding process. We will use superscript `I' to denote the inherent weighting applied by the instrument during the measurement process in obtaining $V_{ab}$ from the true sky model. Optimal imaging requires $W^\textrm{G}_a = W^\textrm{I}_a$ \citep{mor09,mor11}. However, we keep the two superscripts separate here to describe output images under the wrong assumption that the array is homogeneous when instead it is actually not.
+where, $B^\textrm{G}_{ab}(\mathbf{r}-\mathbf{r}_{ab},f)$ is obtained by the spatial cross-correlation of weighting kernels associated with the individual antennas. The superscript `$\textrm{G}$' denotes the weighting introduced in analysis during the gridding process. We will use superscript `I' to denote the inherent weighting applied by the instrument during the measurement process in obtaining $V_{ab}$ from the true sky model. Optimal imaging requires $W^\textrm{G}_a = W^\textrm{I}_a$ \citep{mor09,mor11}. However, we keep the two superscripts separate here to describe output images when the array is wrongly assumed to be homogeneous.
 
 The sky response of the weighted visibility, referred to as {\it fringes}, is:
 \begin{align}
-  \mathcal{I}^\prime_{ab}(\hat{\mathbf{s}},f) &= \mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\,V_{ab}\,e^{2\pi i f\mathbf{r}_{ab}\!\cdot\,\hat{\mathbf{s}}/c}.
+  \mathcal{I}^\prime_{ab}(\hat{\mathbf{s}},f) &= \mathcal{W}^{\textrm{G}\star}_a(\hat{\mathbf{s}},f)\,\mathcal{W}^\textrm{G}_b(\hat{\mathbf{s}},f)\,V_{ab}\,e^{2\pi i f\mathbf{r}_{ab}\!\cdot\,\hat{\mathbf{s}}/c}.
 \end{align}
 Since all quantities in the celestial plane (calligraphic fonts) are functions of position, $\hat{\mathbf{s}}$, and frequency, $f$, we drop writing this dependence explicitly hereafter.
 
 The image output of EPIC is the average of these weighted fringes from all antenna pairs:
 \begin{align}\label{eqn:wt-dirty-image-EPIC}
-  \mathcal{I}^\prime &= \frac{1}{\Nant(\Nant-1)}\,\sum_{\substack{ab\\a\ne b}}\mathcal{I}^\prime_{ab}
+  \mathcal{I}^\prime &= \frac{1}{\Nant(\Nant-1)}\,\sum_{\substack{ab\\a\ne b}}\,\mathcal{I}^\prime_{ab}.
 \end{align}
 
 We define the effective attenuation of the dirty image due to instrumental and gridding weights as:
 \begin{align}\label{eqn:effective-weighting}
   \mathcal{W}_\textrm{eff} &= \mathcal{I}^\prime\, / \,\mathcal{I}_\textrm{D}^\textrm{iso},
 \end{align}
-where, $\mathcal{I}_\textrm{D}^\textrm{iso}$ is the dirty image with no beam weighting (isotropic, uniform weighting of the sky) determined only by the array layout. 
+where, $\mathcal{I}_\textrm{D}^\textrm{iso}$ is the dirty image with no beam weighting (isotropic, uniform weighting of the sky).
 
 For a homogeneous array, $W^\textrm{G} \equiv W^\textrm{G}_a \equiv W^\textrm{G}_b$. Thus,  
 \begin{align}\label{eqn:wt-dirty-image-homogeneous}
@@ -596,7 +584,7 @@ For a heterogeneous array,
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp}
   \mathcal{I}^\prime &= \frac{1}{\Nant(\Nant-1)}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\,\mathcal{I}^\prime_{ab},
 \end{align}
-where, $ab$ indexes pairs of antennas $a$ and $b$, $ij$ indexes types of pairs of antennas, with $i$ and $j$ indexing antenna types. Thus, $\mathcal{I}^\prime$ is written as the sum of fringes over all unique antenna pairs in an antenna pair type (inner sum) and subsequently summed over all antenna pair types (outer sum). 
+where, $ab$ indexes pairs of antennas $a$ and $b$, $ij$ indexes types of pairs of antennas, with $i$ and $j$ indexing antenna types. Thus, equation~\ref{eqn:wt-dirty-image-homogeneous} is re-written as the sum of fringes over all unique antenna pairs in an antenna pair type (inner sum) and subsequently summed over all antenna pair types (outer sum). 
 
 For purposes of demonstration in this study, we assume that the spatial distribution of antenna pairs in each antenna pair type is similar and thus results in a similar dirty image, $\mathcal{I}_\textrm{D}^\textrm{iso}$. This usually holds when antennas under each antenna type are chosen randomly or identically such that differences in the synthesized beams are insignificant. Then, equation~\ref{eqn:wt-dirty-image-EPIC-decomp} can be approximated as:
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx1}
@@ -618,7 +606,7 @@ For purposes of illustration, we consider a simple scenario in which there are t
   &\qquad\qquad\qquad\qquad + n_2(n_2-1)\,\left|\mathcal{W}^\textrm{I}_{(2)}\right|^4 \nonumber\\
   &\qquad\qquad\qquad\qquad \left. + n_1n_2\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^2\,\left|\mathcal{W}^\textrm{I}_{(2)}\right|^2\right].
 \end{align}
-On the other hand, $\mathcal{W}^\textrm{G}_{(1)} = \mathcal{W}^\textrm{I}_{(1)}$ and $\mathcal{W}^\textrm{G}_{(2)} = \mathcal{W}^\textrm{I}_{(1)}$ for an image obtained in the erroneous case in which all antennas are assumed to be identical. It will be sub-optimal with effective weighting:
+On the other hand, $\mathcal{W}^\textrm{G}_{(1)} = \mathcal{W}^\textrm{I}_{(1)}$ and $\mathcal{W}^\textrm{G}_{(2)} = \mathcal{W}^\textrm{I}_{(1)}$ for an image obtained in the erroneous case in which all antennas are assumed to be identical. It will be sub-optimal. From equation~\ref{eqn:wt-dirty-image-EPIC-decomp-approx2}, the effective weighting will be:
 \begin{align}\label{eqn:effective-weighting-suboptimal-example}
   \mathcal{W}_\textrm{eff}^\textrm{sub} &\approx \frac{1}{\Nant(\Nant-1)}\,\left[n_1(n_1-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^4\right.\nonumber\\
   &\qquad\qquad\qquad\qquad + n_2(n_2-1)\,\left|\mathcal{W}^\textrm{I}_{(1)}\right|^2\,\left|\mathcal{W}^\textrm{I}_{(2)}\right|^2 \nonumber\\
@@ -1077,7 +1065,7 @@ where, $B^\textrm{G}_{ab}(\mathbf{r}-\mathbf{r}_{ab},f)$ is obtained by the spat
   B^\textrm{G}_{ab}(\mathbf{r}-\mathbf{r}_{ab},f) &= \int \left[ W^{\textrm{G}\star}_b(\mathbf{r}^\prime+\mathbf{r}-\mathbf{r}_b,f)\right. \nonumber\\
   &\qquad\qquad\qquad \left.\times\, W^\textrm{G}_a(\mathbf{r}^\prime-\mathbf{r}_a,f)\right]\,\dif^2\mathbf{r}^\prime.
 \end{align}
-The superscript `$\textrm{G}$' denotes the weighting introduced in analysis during the gridding process. Optimal imaging requires $W^\textrm{G}_a = W^\textrm{I}_a$ \citep{mor09,mor11}. However, we keep the two superscripts separately to describe output images under the wrong assumption that the array is homogeneous when instead it is actually heterogeneous.
+The superscript `$\textrm{G}$' denotes the weighting introduced in analysis during the gridding process. Optimal imaging requires $W^\textrm{G}_a = W^\textrm{I}_a$ \citep{mor09,mor11}. However, we keep the two superscripts separate here to describe output images made assuming wrongly that the array is homogeneous.
 
 The sky response of the weighted visibility is:
 \begin{align}
@@ -1124,7 +1112,7 @@ Here, equation~\ref{eqn:wt-dirty-image-EPIC} has been re-written as the sum of f
   \mathcal{W}_\textrm{eff} &= \mathcal{I}^\prime\, / \,\mathcal{I}_\textrm{D}^\textrm{iso}.
 \end{align}
 
-We can simplify further if we assume that the spatial distribution of antenna pairs in each antenna pair type are similar and thus result in a similar dirty image, $\mathcal{I}_\textrm{D}^\textrm{iso}$. This usually holds when $\Nant$ is large and antennas under each antenna type are chosen randomly such that differences in the point spread functions are insignificant. Under this assumption, equation~\ref{eqn:apndx-wt-dirty-image-EPIC-decomp} can be written as:
+We can simplify further if we assume that the spatial distribution of antenna pairs in each antenna pair type are similar and thus result in a similar dirty image, $\mathcal{I}_\textrm{D}^\textrm{iso}$. This is valid when antennas under each antenna type are chosen such that differences in the point spread functions are insignificant. Then, equation~\ref{eqn:apndx-wt-dirty-image-EPIC-decomp} can be written as:
 \begin{align}\label{eqn:apndx-t-dirty-image-EPIC-decomp-approx1}
   \mathcal{I}^\prime &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}}{\Nant(\Nant-1)}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}} \mathcal{W}^{\textrm{G}\star}_a\,\mathcal{W}^\textrm{G}_b\,\mathcal{W}^\textrm{I}_a\,\mathcal{W}^{\textrm{I}\star}_b,
 \end{align}
