@@ -464,6 +464,7 @@ We examine in detail the respective synthesized beams in each case in Fig.~\ref{
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{figure6}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_synthesized_beam_slices}
   \caption{Synthesized beams weighted by antenna power pattern sliced at $m=0$ obtained with MOFF algorithm using EPIC (solid black line) and visibility-based imaging (dashed gray line). The two appear almost identical. The inset provides a magnified view of differences in the synthesized beam slices between the two techniques at levels $\lesssim 0.5$\% relative to the peak. These are attributed to differences that arise in gridding and depends on the coarseness of the grid.}
   \label{fig:MOFF-FX-psf-diff}
 \end{figure}
@@ -472,8 +473,8 @@ The left panel of Fig.~\ref{fig:MOFF-FX-uvwts-diff} shows differences (in percen
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{figure7}
-  % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_uvwts_test_aperture_zero_spacing_removed}
-  % \includegraphics[width=\columnwidth]{MOFF_FX_comparison_uvwts_test_aperture_zero_spacing_removed.eps}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_fracdiff_uvwts_test_aperture_zero_spacing_removed}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_fracdiff_uvwts_test_aperture_zero_spacing_removed.eps}
   \caption{{\it Left}: Differences (in \%) in cross-correlated weights in the $uv$ plane relative to the peak. The biggest difference ($\sim 20$\%) is found around the zero-spacing corresponding to auto-correlations of antenna weights due to gridding differences augmented by the relatively high number density of antenna auto-correlation footprints in that region. In most of the other regions, differences of the order of less than a few percent are seen. {\it Right}: Histogram (expressed as percentage) of the relative differences (in \%) between antenna cross-correlation weights shown on the left binned in intervals of 0.5\%. Over 70\% of the $uv$-cells do not differ by more than 0.5\% and over 90\% of $uv$-cells only differ by $<5$\% for the gridding coarseness used.} 
   \label{fig:MOFF-FX-uvwts-diff}
 \end{figure}
@@ -782,8 +783,8 @@ We now consider antenna array layouts described by three essential quantities in
 
 \begin{figure}
   \includegraphics[width=\columnwidth]{figure12}
-  % \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended}
-  % \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended.eps}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended_v2}
+  % \includegraphics[width=\columnwidth]{MOFF_FX_crossover_baseline_n-antennas_rho_fov_gridding_legended_v2.eps}
   \caption{Current and planned instruments in parameter space of baseline length and number of antennas with MOFF and FX. Lines of different colors denote different classes of antenna sizes (cyan - 1~m$^2$, blue - 7~m$^2$, purple - 16~m$^2$, green - 28~m$^2$, orange - 150~m$^2$, red - 740~m$^2$, gray - 5900~m$^2$). Lines of each color denote the boundary to the left of which MOFF algorithm is favoured for the corresponding antenna size. These lines shift rightward with increasing antenna size. The different antennas are color coded by roughly the class of antenna size they fall into. Thus symbols of one color falling to the left of a line of the same color indicate MOFF imaging is advantageous for those telescopes and vice versa. For example, MOFF imaging is favoured in HERA-331 and HERA-6769 because they lie to the left of the orange line but not so in cases of HERA-19 and HERA-37.}
   \label{fig:parameter-space-bll-nant-instruments}
 \end{figure}

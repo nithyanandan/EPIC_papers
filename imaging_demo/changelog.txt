@@ -1,3 +1,9 @@
+From 25eeda9 (mnras):
+====================
+
+(*) Update figures to have uniform properties as per second round of
+referee report
+
 From 9767443 (mnras):
 ====================
 
