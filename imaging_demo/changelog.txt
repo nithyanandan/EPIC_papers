@@ -1,3 +1,10 @@
+From 9767443 (mnras):
+====================
+
+In ms.tex,
+
+(*) Remove boldface fonts that were highlighting changes
+
 From 8c6110f (mnras):
 ====================
 
