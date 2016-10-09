@@ -1,3 +1,8 @@
+From 838d1bb (arxiv) + dc507db (mnras):
+======================================
+
+Merge mnras branch on to arxiv branch
+
 From b8e3bc0 (arxiv) + 2add9d8 (mnras):
 ======================================
 
@@ -10,6 +15,142 @@ From ae5ce63 (arxiv):
 MNRAS-1.0
 (*) Remove all figure files from git tracking
 (*) In this commit, ms.tex will not compile
+
+From 25eeda9 (mnras):
+====================
+
+(*) Update figures to have uniform properties as per second round of
+referee report
+
+From 9767443 (mnras):
+====================
+
+In ms.tex,
+
+(*) Remove boldface fonts that were highlighting changes
+
+From 8c6110f (mnras):
+====================
+
+In ms.tex,
+
+(*) Add description to solid angle element
+
+From b52cb67 (Judd-v1):
+======================
+
+In ms.tex,
+
+(*) Minor changes throughout
+
+From e1be335 (Judd-v1):
+======================
+
+In ms.tex,
+
+(*) Make corrections suggested by Judd
+
+From 601fdcb (Judd-v1):
+======================
+
+In ms.tex,
+
+(*) Shorten section 5 and add appendix for detailed math
+
+From 5c6f2b0 (mnras):
+====================
+
+In ms.tex,
+
+(*) Minor changes throughout
+
+In epic.bib,
+
+(*) Add references to holography papers
+
+From 7ffd480 (mnras):
+====================
+
+(*) Update MOFF, FX flowcharts for correct notation
+
+From 1d980f4 (mnras):
+====================
+
+In ms.tex,
+
+(*) Use boldface to mark changes compared to previous submitted
+version
+
+From 8bce8b2 (Adam-v1):
+======================
+
+In ms.tex,
+
+(*) Simplify notation in section 5 further
+
+From 60cde0b (Adam-v1):
+======================
+
+In ms.tex,
+
+(*) Simplify notation in section 5
+
+From 357d600 (Adam-v1):
+======================
+
+In ms.tex,
+
+(*) Update sections 2 and 3 with Adam's suggestions
+
+From 0c31757 (mnras):
+====================
+
+In ms.tex,
+
+(*) Update abstract and Introduction with Adam's suggestions
+
+From 65210aa (mnras):
+====================
+
+(*) Update notation in block diagram figures
+
+From 3f838e8 (mnras):
+====================
+
+In ms.tex,
+
+(*) Make minor revisions throughout
+
+In epic.bib,
+
+(*) Add reference to HERA paper by DeBoer et al. (2016)
+
+From e6e6612 (mnras):
+====================
+
+(*) Add section on imaging with heterogeneous arrays
+(*) Make associated changes in Abstract, Introduction and Conclusions
+
+From 8448190 (mnras):
+====================
+
+(*) Make changes in notation in section 2 (mathematical framework)
+
+From df79977 (mnras):
+====================
+
+Update figures as per referee report
+
+In ms.tex,
+
+(*) Add, remove and update figures as per referee report
+
+From 2add9d8 (mnras):
+====================
+
+In ms.tex,
+
+(*) Make few changes addressing referee comments
 
 From dca9220 (mnras):
 ====================
