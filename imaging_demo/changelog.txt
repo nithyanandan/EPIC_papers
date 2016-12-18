@@ -1,3 +1,8 @@
+From dc507db (mnras):
+====================
+
+(*) Add epic.bib to repo
+
 From 25eeda9 (mnras):
 ====================
 
