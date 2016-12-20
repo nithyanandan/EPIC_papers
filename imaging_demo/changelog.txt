@@ -1,3 +1,12 @@
+From b76b8b9 (mnras):
+====================
+
+(*) Modify figures 1 and A1
+
+In ms.tex,
+
+(*) Minor changes in text
+
 From 1c821b1 (mnras):
 ====================
 
