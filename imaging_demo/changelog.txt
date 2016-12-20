@@ -1,3 +1,12 @@
+From 0236a60 (mnras):
+====================
+
+In ms.tex,
+
+(*) Remove comment on all arrays being heterogeneous
+(*) Adhere to British spelling for colour, neighbour, centre, and
+grey
+
 From 9f5bce2 (mnras):
 ====================
 
