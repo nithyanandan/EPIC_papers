@@ -1,3 +1,21 @@
+From e50a08f (mnras):
+====================
+
+In ms.tex,
+
+(*) Emphasize the extra message that a mathematical framework is
+provided for imaging with heterogeneous arrays in abstract, intro
+and conclusions
+(*) Remove erroneous superscript in the estimated weights in equation
+B15 in appendix B
+(*) Strikethrough the sentence on "taking advantage of the
+multiplication-convolution theorem of Fourier transforms in the
+abstract (to keep abstract under 250 words)
+(*) Include package ulem for strikethrough in LaTeX
+(*) Reposition i in all the complex exponents to appear first before
+other arguments and define it as square root of -1
+(*) Minor edits throughout the manuscript
+
 From 01314a1 (mnras):
 ====================
 
