@@ -1,3 +1,15 @@
+From 0e5007d (mnras):
+====================
+
+In ms.tex,
+
+(*) Change indexing of antenna types from i and j to p and q
+respectively
+(*) Clarify indexing notation involving 'ab' and 'pq'
+(*) Clarify quantity denoted by n is different in section 2 compared
+to that in sections 5 and appendix B
+
+
 From e50a08f (mnras):
 ====================
 

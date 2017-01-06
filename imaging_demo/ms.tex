@@ -417,21 +417,21 @@ Consistent with \citet{mor09}, the dirty image, which is already attenuated by t
 
 For a heterogeneous array, 
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp}
-  \mathcal{I}^\prime &= \frac{1}{\Nant(\Nant-1)}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\,\mathcal{I}^\prime_{ab},
+  \mathcal{I}^\prime &= \frac{1}{\Nant(\Nant-1)}\,\sum_{pq}\sum_{\substack{ab\\a\ne b\\a\in p, b\in q}}\,\mathcal{I}^\prime_{ab},
 \end{align}
-where, $ab$ indexes pairs of antennas $a$ and $b$, $ij$ indexes types of pairs of antennas, with $i$ and $j$ indexing antenna types. Thus, equation~\ref{eqn:wt-dirty-image-homogeneous} is re-written as the sum of fringes over all unique antenna pairs in an antenna pair type (inner sum) and subsequently summed over all antenna pair types (outer sum). 
+where, $ab$ indexes pairs of antennas $a$ and $b$, {\bf $pq$ indexes the different types of antenna pairs, with $p$ and $q$ indexing antenna types (note that $ab$ and $pq$ are simply indices in our notation and are not to be interpreted as products of the individual indices)}. Thus, equation~\ref{eqn:wt-dirty-image-homogeneous} is re-written as the sum of fringes over all unique antenna pairs in an antenna pair type (inner sum) and subsequently summed over all antenna pair types (outer sum). 
 
 For purposes of demonstration in this study, we assume that the spatial distribution of antenna pairs in each antenna pair type is similar and thus results in a similar dirty image, $\mathcal{I}_\textrm{D}^\textrm{iso}$. This usually holds when antennas under each antenna type are chosen randomly or identically such that differences in the synthesized beams are insignificant. Then, equation~\ref{eqn:wt-dirty-image-EPIC-decomp} can be approximated as:
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx1}
-  \mathcal{I}^\prime &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}}{\Nant(\Nant-1)}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}} \mathcal{W}^{\textrm{G}\star}_a\,\mathcal{W}^\textrm{G}_b\,\mathcal{W}^\textrm{I}_a\,\mathcal{W}^{\textrm{I}\star}_b,
+  \mathcal{I}^\prime &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}}{\Nant(\Nant-1)}\,\sum_{pq}\sum_{\substack{ab\\a\ne b\\a\in p, b\in q}} \mathcal{W}^{\textrm{G}\star}_a\,\mathcal{W}^\textrm{G}_b\,\mathcal{W}^\textrm{I}_a\,\mathcal{W}^{\textrm{I}\star}_b,
 \end{align}
-where, $\mathcal{I}_\textrm{D}^\textrm{iso}$ is the same for all terms and has been pulled out of the summations. For all antennas indexed by $a$ that belong to a particular type $i$, we replace $\mathcal{W}_a$ with $\mathcal{W}_{(i)}$ and is applicable to those arising from both instrumental (superscript `$I$') and gridding (superscript `$G$') origins. If $n_{ij}$ is the number of antenna pairs in the antenna pair type $ij$, $\mathcal{W}_\textrm{eff}$ can be simplified as:
+where, $\mathcal{I}_\textrm{D}^\textrm{iso}$ is the same for all terms and has been pulled out of the summations. For all antennas indexed by $a$ that belong to a particular type $p$, we replace $\mathcal{W}_a$ with $\mathcal{W}_{(p)}$ and is applicable to those arising from both instrumental (superscript `$I$') and gridding (superscript `$G$') origins. If $n_{pq}$ is the number of antenna pairs in the antenna pair type $pq$ {\bf (unrelated to the noise quantity also denoted by $n$ in \S\ref{sec:math})}, $\mathcal{W}_\textrm{eff}$ can be simplified as:
 \begin{align}\label{eqn:wt-dirty-image-EPIC-decomp-approx2}
-  \mathcal{W}_\textrm{eff} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{ij}n_{ij}\,\mathcal{W}^{\textrm{G}\star}_{(i)}\,\mathcal{W}^\textrm{G}_{(j)}\,\mathcal{W}^\textrm{I}_{(i)}\,\mathcal{W}^{\textrm{I}\star}_{(j)}.
+  \mathcal{W}_\textrm{eff} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{pq}n_{pq}\,\mathcal{W}^{\textrm{G}\star}_{(p)}\,\mathcal{W}^\textrm{G}_{(q)}\,\mathcal{W}^\textrm{I}_{(p)}\,\mathcal{W}^{\textrm{I}\star}_{(q)}.
 \end{align}
-In an optimally weighted image, $\mathcal{W}^\textrm{G}_{(i)} \equiv \mathcal{W}^\textrm{I}_{(i)}$. Thus,
+In an optimally weighted image, $\mathcal{W}^\textrm{G}_{(p)} \equiv \mathcal{W}^\textrm{I}_{(q)}$. Thus,
 \begin{align}\label{eqn:effective-weighting-optimal}
-  \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{ij} n_{ij}\,\left|\mathcal{W}^\textrm{I}_{(i)}\right|^2\left|\mathcal{W}^\textrm{I}_{(j)}\right|^2,
+  \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{pq} n_{pq}\,\left|\mathcal{W}^\textrm{I}_{(p)}\right|^2\left|\mathcal{W}^\textrm{I}_{(q)}\right|^2,
 \end{align}
 where, superscript `$\textrm{opt}$' denotes `optimal'.
 
@@ -739,19 +739,19 @@ Thus, the dirty image, which is already attenuated by the instrumental power pat
 
 We note that all quantities in the celestial plane (calligraphic fonts) are functions of position, $\hat{\mathbf{s}}$, and frequency, $f$. For convenience, we drop writing this dependence explicitly hereafter.
 
-For a heterogeneous array, it is necessary to keep track of antennas and antenna pairs of different types which will determine the final weighting in the synthesized image. We consider a heterogeneous array consisting of a total of $\Nant$ antennas under $N_\textrm{T}$ different types. And under each antenna type $i$, there are $n_i$ antennas such that $\sum_i n_i = \Nant$. The total number of unique non-zero spacing antenna pairs is $\Nant(\Nant-1)/2$ and there are potentially up to $N_\textrm{T}(N_\textrm{T}+1)/2$ unique antenna pair types obtained by pairwise combination of the $N_\textrm{T}$ antenna types. The total number of antenna pairs, 
+For a heterogeneous array, it is necessary to keep track of antennas and antenna pairs of different types which will determine the final weighting in the synthesized image. We consider a heterogeneous array consisting of a total of $\Nant$ antennas under $N_\textrm{T}$ different types. And under each antenna type $p$, there are $n_p$ antennas such that $\sum_p n_p = \Nant$ {\bf (unrelated to the noise quantity also denoted by $n$ in \S\ref{sec:math})}. The total number of unique non-zero spacing antenna pairs is $\Nant(\Nant-1)/2$ and there are potentially up to $N_\textrm{T}(N_\textrm{T}+1)/2$ unique antenna pair types obtained by pairwise combination of the $N_\textrm{T}$ antenna types. The total number of antenna pairs, 
 \begin{align}\label{eqn:apndx-total-baselines}
-  \Nant(\Nant-1) &= \sum_{ij} n_{ij}, \\
-  \textrm{where}, \quad   n_{ij} &= \begin{cases}
-    n_i\,n_j, & i\ne j \\
-    n_i(n_i-1), & i=j, 
+  \Nant(\Nant-1) &= \sum_{pq} n_{pq}, \\
+  \textrm{where}, \quad   n_{pq} &= \begin{cases}
+    n_p\,n_q, & p\ne q \\
+    n_p(n_p-1), & p=q, 
   \end{cases}
 \end{align}
-is obtained by counting antenna pairs, $n_{ij}$, in different antenna pair types, $ij$.
+is obtained by counting antenna pairs, $n_{pq}$, in different antenna pair types, $pq$. {\bf Note that $ab$ and $pq$ act as simple indices into pairs formed from individual indices and not their product.}
 
 Since equation~\ref{eqn:apndx-wt-dirty-image-EPIC} is obtained by averaging weighted fringes over all antenna pairs, it can be expressed as: 
 \begin{align}\label{eqn:apndx-wt-dirty-image-EPIC-decomp}
-  \mathcal{I}^\prime &= \frac{1}{\Nant(\Nant-1)}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}}\,\mathcal{I}^\prime_{ab}
+  \mathcal{I}^\prime &= \frac{1}{\Nant(\Nant-1)}\,\sum_{pq}\sum_{\substack{ab\\a\ne b\\a\in p, b\in q}}\,\mathcal{I}^\prime_{ab}
 \end{align}
 Here, equation~\ref{eqn:apndx-wt-dirty-image-EPIC} has been re-written as the sum of fringes over all antenna pairs in an antenna pair type (inner sum) and subsequently summed over all antenna pair types (outer sum). The effective attenuation of the dirty image due to instrumental and gridding weights is:
 \begin{align}\label{eqn:apndx-effective-weighting}
@@ -760,20 +760,20 @@ Here, equation~\ref{eqn:apndx-wt-dirty-image-EPIC} has been re-written as the su
 
 We can simplify further if we assume that the spatial distribution of antenna pairs in each antenna pair type are similar and thus result in a similar dirty image, $\mathcal{I}_\textrm{D}^\textrm{iso}$. This is valid when antennas under each antenna type are chosen such that differences in the point spread functions are insignificant. Then, equation~\ref{eqn:apndx-wt-dirty-image-EPIC-decomp} can be written as:
 \begin{align}\label{eqn:apndx-wt-dirty-image-EPIC-decomp-approx1}
-  \mathcal{I}^\prime &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}}{\Nant(\Nant-1)}\,\sum_{ij}\sum_{\substack{ab\\a\ne b\\a\in i, b\in j}} \mathcal{W}^{\textrm{G}\star}_a\,\mathcal{W}^\textrm{G}_b\,\mathcal{W}^\textrm{I}_a\,\mathcal{W}^{\textrm{I}\star}_b,
+  \mathcal{I}^\prime &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}}{\Nant(\Nant-1)}\,\sum_{pq}\sum_{\substack{ab\\a\ne b\\a\in p, b\in q}} \mathcal{W}^{\textrm{G}\star}_a\,\mathcal{W}^\textrm{G}_b\,\mathcal{W}^\textrm{I}_a\,\mathcal{W}^{\textrm{I}\star}_b,
 \end{align}
-where, $\mathcal{I}_\textrm{D}^\textrm{iso}$ is the same for all terms and has been pulled outside the summations. For all antennas indexed by $a$ that belong to a particular type $i$, we replace $\mathcal{W}_a$ with $\mathcal{W}_{(i)}$ and is applicable to those arising from both instrumental (superscript `$I$') and gridding (superscript `$G$') origins. Using arguments similar to those in equation~\ref{eqn:apndx-total-baselines}, equation~\ref{eqn:apndx-wt-dirty-image-EPIC-decomp-approx1} can be further simplified to:
+where, $\mathcal{I}_\textrm{D}^\textrm{iso}$ is the same for all terms and has been pulled outside the summations. For all antennas indexed by $a$ that belong to a particular type $p$, we replace $\mathcal{W}_a$ with $\mathcal{W}_{(p)}$ and is applicable to those arising from both instrumental (superscript `$I$') and gridding (superscript `$G$') origins. Using arguments similar to those in equation~\ref{eqn:apndx-total-baselines}, equation~\ref{eqn:apndx-wt-dirty-image-EPIC-decomp-approx1} can be further simplified to:
 \begin{align}\label{eqn:apndx-wt-dirty-image-EPIC-decomp-approx2}
-  \mathcal{I}^\prime &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}}{\Nant(\Nant-1)}\,\sum_{ij}n_{ij}\,\mathcal{W}^{\textrm{G}\star}_{(i)}\,\mathcal{W}^\textrm{G}_{(j)}\,\mathcal{W}^\textrm{I}_{(i)}\,\mathcal{W}^{\textrm{I}\star}_{(j)}.
+  \mathcal{I}^\prime &\approx \frac{\mathcal{I}_\textrm{D}^\textrm{iso}}{\Nant(\Nant-1)}\,\sum_{pq}n_{pq}\,\mathcal{W}^{\textrm{G}\star}_{(p)}\,\mathcal{W}^\textrm{G}_{(q)}\,\mathcal{W}^\textrm{I}_{(p)}\,\mathcal{W}^{\textrm{I}\star}_{(q)}.
 \end{align}
 
 This means $\mathcal{W}_\textrm{eff}$ can be expressed as fourth-power combinations of antenna voltage patterns each weighted by the number of antenna pairs in those antenna pair types:
 \begin{align}
-  \mathcal{W}_\textrm{eff} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{ij}n_{ij}\,\mathcal{W}^{\textrm{G}\star}_{(i)}\,\mathcal{W}^\textrm{G}_{(j)}\,\mathcal{W}^\textrm{I}_{(i)}\,\mathcal{W}^{\textrm{I}\star}_{(j)}.
+  \mathcal{W}_\textrm{eff} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{pq}n_{pq}\,\mathcal{W}^{\textrm{G}\star}_{(p)}\,\mathcal{W}^\textrm{G}_{(q)}\,\mathcal{W}^\textrm{I}_{(p)}\,\mathcal{W}^{\textrm{I}\star}_{(q)}.
 \end{align}
-In an optimally weighted image, $\mathcal{W}^\textrm{G}_{(i)} \equiv \mathcal{W}^\textrm{I}_{(i)}$. Then, equation~\ref{eqn:apndx-effective-weighting} reduces to:
+In an optimally weighted image, $\mathcal{W}^\textrm{G}_{(p)} \equiv \mathcal{W}^\textrm{I}_{(q)}$. Then, equation~\ref{eqn:apndx-effective-weighting} reduces to:
 \begin{align}\label{eqn:apndx-effective-weighting-optimal}
-  \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{ij} n_{ij}\,\left|\mathcal{W}^\textrm{I}_{(i)}\right|^2\left|\mathcal{W}^\textrm{I}_{(j)}\right|^2,
+  \mathcal{W}_\textrm{eff}^\textrm{opt} &\approx \frac{1}{\Nant(\Nant-1)}\,\sum_{pq} n_{pq}\,\left|\mathcal{W}^\textrm{I}_{(p)}\right|^2\left|\mathcal{W}^\textrm{I}_{(q)}\right|^2,
 \end{align}
 where the superscript `$\textrm{opt}$' denotes `optimal'.
 
