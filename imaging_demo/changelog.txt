@@ -1,3 +1,11 @@
+From 01314a1 (mnras):
+====================
+
+In ms.tex,
+
+(*) Add 'telescopes' to list of keywords
+(*) Remove unused comments
+
 From 0236a60 (mnras):
 ====================
 

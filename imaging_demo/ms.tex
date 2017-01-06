@@ -101,7 +101,7 @@ Modern radio telescopes are favouring densely packed array layouts with large nu
 % Select between one and six entries from the list of approved keywords.
 % Don't make up new ones.
 \begin{keywords}
-instrumentation: interferometers -- techniques: image processing -- techniques: interferometric
+instrumentation: interferometers -- techniques: image processing -- techniques: interferometric -- telescopes
 \end{keywords}
 
 %%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
@@ -319,16 +319,6 @@ field spectra. This step can be parallelized across antennas%  as shown in
 % Fig.~\ref{fig:f-engine}
 . The output is then fed to either MOFF or 
 visibility-based imaging pipelines.
-
-% \begin{figure}
-%   \includegraphics[width=\columnwidth]{figure4}
-%   % \includegraphics[width=\columnwidth]{parallel_F_engine}
-%   % \includegraphics[width=\columnwidth]{parallel_F_engine.eps}
-%   \caption{Block diagram of a F-engine. The electric field data streams from
-%     antennas are Fourier transformed in parallel to generate electric field
-%     spectra.}
-%   \label{fig:f-engine}
-% \end{figure}
 
 \par\medskip
 \noindent {\bf Calibration}
@@ -552,8 +542,7 @@ thus validating the functionality of EPIC.
 
 One of the advanced features of the MOFF algorithm and its implementation via EPIC is the ability to naturally account for heterogeneity of antennas while still producing images with maximal information \citep{mor11}. Unlike the assumption frequently made in existing direct imaging techniques that all antennas are identical \citep{oto94,dai00,teg09,teg10,fos14,zhe14}, EPIC does not assume $W_a(\mathbf{r}-\mathbf{r}_a)$ or $B_{ab}(\mathbf{r}-\mathbf{r}_{ab})$ for different antennas are identical. However, any {\it a priori} knowledge available that certain sets of antennas have identical illumination patterns can be easily passed on to EPIC to avoid redundant computations and thus increase efficiency. Here we present key highlights from the generic methodology detailed in appendix~\ref{sec:math-versatility} to understand the effective angular weighting in the image obtained with EPIC from a heterogeneous array. 
 
-{\bf Heterogeneity in antenna arrays occurs primarily in two scenarios. The first is when the array is intended to be identical but differences in aperture and electrical properties arise due to deviations during the manufacturing process or from random deviant behaviour such as differences in gains between dipoles in a phased array. % In practice, due to this reason almost all arrays are heterogeneous albeit by varying degrees. 
-  The second scenario is when the array is designed to be heterogeneous to gain specific advantages such as sampling a wider range of spatial frequencies and decoupling the sky brightness distribution from the antenna power pattern. This has motivated a number of heterogeneous arrays such as the Combined Array for Research in Millimeter-wave Astronomy (CARMA; \citealt{woo04,wri10}), the Atacama Large Millimeter/submillimeter Array (ALMA; \citealt{igu09}), and the Very Long Baseline Array (VLBA). The following analysis applies to both of the aforementioned scenarios although for purposes of clear demonstration, we will choose an example with large differences across antennas, making it closer to the second scenario.}
+{\bf Heterogeneity in antenna arrays occurs primarily in two scenarios. The first is when the array is intended to be identical but differences in aperture and electrical properties arise due to deviations during the manufacturing process or from random deviant behaviour such as differences in gains between dipoles in a phased array. The second scenario is when the array is designed to be heterogeneous to gain specific advantages such as sampling a wider range of spatial frequencies and decoupling the sky brightness distribution from the antenna power pattern. This has motivated a number of heterogeneous arrays such as the Combined Array for Research in Millimeter-wave Astronomy (CARMA; \citealt{woo04,wri10}), the Atacama Large Millimeter/submillimeter Array (ALMA; \citealt{igu09}), and the Very Long Baseline Array (VLBA). The following analysis applies to both of the aforementioned scenarios although for purposes of clear demonstration, we will choose an example with large differences across antennas, making it closer to the second scenario.}
 
 We look at the contribution to the image from the visibility, $V_{ab}$, from each antenna pair. While imaging, EPIC introduces a weighting to each antenna during gridding as given by equations~\ref{eqn:dirty-image-FX} and \ref{eqn:e-field-conv}, and equivalently, the weighted visibility from an antenna pair $ab$ projected on the grid is:
 \begin{align}
@@ -646,8 +635,6 @@ $\widehat{\mathcal{I}}_\textrm{D}^\textrm{iso}$ was estimated at the point sourc
 Fig.~\ref{fig:norm-flux-density} shows $\widehat{\mathcal{I}}_\textrm{M}^\textrm{norm}$ including the uncertainty as a function of distance from the centre of the image. The grey and red bands denote estimates from the optimal and the erroneous cases, respectively. The solid and dashed lines correspond to point sources in the south-westward and westward directions respectively. It can be clearly seen that the estimates in the optimal case in almost all parts of the image are consistent with unity to within $1\sigma$. In complete contrast, in the erroneous case, the estimated values appear to be underestimated and deviate from the ideal value of unity with very high significance ($\gtrsim 5\sigma$) in most parts of the image. The reason for underestimation is because nearly half the antennas are assumed to be smaller than they actually are and thus results in dividing by overestimated $\mathcal{W}_\textrm{eff}^\textrm{err}$. These trends do not seem to be affected by the placement of sources along westward and south-westward directions. 
 
 This demonstrates that images from EPIC can robustly image data from heterogeneous arrays while being mathematically optimal. Besides being sub-optimal, erroneous assumptions about the homogeneity of an array can lead to significant and systematic mis-estimates ({\bf an underestimate in the above example}) of the sky model.
-
-% {\bf In the above example, we chose a scenario wherein the antennas in the array have large differences between them to clearly demonstrate the functionality in EPIC to image data from heterogeneous arrays. The analysis, however, is applicable to any heterogeneous array. In cases where the differences are smaller, the fidelity with which the sky model is recovered will still be degraded, although to a correspondingly smaller extent. To robustly quantify this degradation as a function of deviation from homogeneity will require image deconvolution and will be investigated in the future as it is currently beyond the scope of this paper.}
 
 \section{Analysis and Feasibility}\label{sec:analysis}
 
