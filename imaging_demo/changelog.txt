@@ -1,3 +1,11 @@
+From b5e83c5 (mnras):
+====================
+
+In ms.tex,
+
+(*) Specify data used is from LWA1
+(*) Minor changes throughout
+
 From 0e5007d (mnras):
 ====================
 
