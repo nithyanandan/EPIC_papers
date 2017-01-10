@@ -1,3 +1,10 @@
+From c6789d1 (mnras):
+====================
+
+In ms.tex,
+
+(*) Remove strikethroughs and bold fonts
+
 From b5e83c5 (mnras):
 ====================
 
