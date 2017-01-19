@@ -1,3 +1,8 @@
+From ad363fd (arxiv), 9c73651 (mnras):
+=====================================
+
+(*) Merge mnras branch on to arxiv branch
+
 From 838d1bb (arxiv) + dc507db (mnras):
 ======================================
 
@@ -15,6 +20,99 @@ From ae5ce63 (arxiv):
 MNRAS-1.0
 (*) Remove all figure files from git tracking
 (*) In this commit, ms.tex will not compile
+
+From c6789d1 (mnras):
+====================
+
+In ms.tex,
+
+(*) Remove strikethroughs and bold fonts
+
+From b5e83c5 (mnras):
+====================
+
+In ms.tex,
+
+(*) Specify data used is from LWA1
+(*) Minor changes throughout
+
+From 0e5007d (mnras):
+====================
+
+In ms.tex,
+
+(*) Change indexing of antenna types from i and j to p and q
+respectively
+(*) Clarify indexing notation involving 'ab' and 'pq'
+(*) Clarify quantity denoted by n is different in section 2 compared
+to that in sections 5 and appendix B
+
+
+From e50a08f (mnras):
+====================
+
+In ms.tex,
+
+(*) Emphasize the extra message that a mathematical framework is
+provided for imaging with heterogeneous arrays in abstract, intro
+and conclusions
+(*) Remove erroneous superscript in the estimated weights in equation
+B15 in appendix B
+(*) Strikethrough the sentence on "taking advantage of the
+multiplication-convolution theorem of Fourier transforms in the
+abstract (to keep abstract under 250 words)
+(*) Include package ulem for strikethrough in LaTeX
+(*) Reposition i in all the complex exponents to appear first before
+other arguments and define it as square root of -1
+(*) Minor edits throughout the manuscript
+
+From 01314a1 (mnras):
+====================
+
+In ms.tex,
+
+(*) Add 'telescopes' to list of keywords
+(*) Remove unused comments
+
+From 0236a60 (mnras):
+====================
+
+In ms.tex,
+
+(*) Remove comment on all arrays being heterogeneous
+(*) Adhere to British spelling for colour, neighbour, centre, and
+grey
+
+From 9f5bce2 (mnras):
+====================
+
+(*) Modify figure 5
+
+From b76b8b9 (mnras):
+====================
+
+(*) Modify figures 1 and A1
+
+In ms.tex,
+
+(*) Minor changes in text
+
+From 1c821b1 (mnras):
+====================
+
+In epic.bib,
+
+(*) Add Iguchi et al. (2009) reference
+
+In ms.tex,
+
+(*) Add a couple of paragraphs in section 5 to set up the context of
+heterogeneous array imaging analysis
+
+From dc507db (mnras):
+====================
+
+(*) Add epic.bib to repo
 
 From 25eeda9 (mnras):
 ====================

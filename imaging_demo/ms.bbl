@@ -92,6 +92,11 @@ Foster G.,  Hickish J.,  Magro A.,  Price D.,   Zarb~Adami K.,  2014, \mn@doi
   [Monthly Notices of the Royal Astronomical Society] {10.1093/mnras/stu188},
   439, 3180
 
+\bibitem[\protect\citeauthoryear{{Iguchi} et~al.,}{{Iguchi}
+  et~al.}{2009}]{igu09}
+{Iguchi} S.,  et~al., 2009, \mn@doi [\pasj] {10.1093/pasj/61.1.1}, \href
+  {http://adsabs.harvard.edu/abs/2009PASJ...61....1I} {61, 1}
+
 \bibitem[\protect\citeauthoryear{{Lonsdale}, {Doeleman}, {Cappallo}, {Hewitt}
   \& {Whitney}}{{Lonsdale} et~al.}{2000}]{lon00}
 {Lonsdale} C.~J.,  {Doeleman} S.~S.,  {Cappallo} R.~J.,  {Hewitt} J.~N.,
@@ -181,6 +186,16 @@ Wiley
   van~der Veen}{2009}]{wij09}
 Wijnholds S.,  van~der Veen A.-J.,  2009, \mn@doi [Signal Processing, IEEE
   Transactions on] {10.1109/TSP.2009.2022894}, 57, 3512
+
+\bibitem[\protect\citeauthoryear{{Woody} et~al.,}{{Woody} et~al.}{2004}]{woo04}
+{Woody} D.~P.,  et~al., 2004, in {Bradford} C.~M.,  et~al., eds,  \procspie
+  Vol. 5498, Z-Spec: a broadband millimeter-wave grating spectrometer: design,
+  construction, and first cryogenic measurements. pp 30--41,
+  \mn@doi{10.1117/12.552446}
+
+\bibitem[\protect\citeauthoryear{{Wright}}{{Wright}}{2010}]{wri10}
+{Wright} M.~C.~H.,  2010, in Ground-based and Airborne Telescopes III. p.
+  77331B, \mn@doi{10.1117/12.856707}
 
 \bibitem[\protect\citeauthoryear{{Zernike}}{{Zernike}}{1938}]{zer38}
 {Zernike} F.,  1938, \mn@doi [Physica] {10.1016/S0031-8914(38)80203-2}, \href
